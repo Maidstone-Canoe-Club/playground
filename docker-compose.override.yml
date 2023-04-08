@@ -1,0 +1,29 @@
+﻿version: '3.8'
+
+services:
+
+  directus:
+    environment:
+      - EXTENSIONS_AUTO_RELOAD=true
+      - CORS_ENABLED=true
+      - CACHE_ENABLED=true
+      - CACHE_AUTO_PURGE=true
+
+  frontend:
+    build:
+      target: base
+    environment:
+      - NODE_ENV=development
+      - DIRECTUS_URL=http://host.docker.internal:8055
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "24678:24678"
+    volumes:
+      - ./frontend/src:/opt/node_app/app/src
+      - ./frontend/.npmrc:/opt/node_app/app/.npmrc
+      - ./frontend/nuxt.config.ts:/opt/node_app/app/nuxt.config.ts
+      - ./frontend/tsconfig.json:/opt/node_app/app/tsconfig.json
+      - ./frontend/package.json:/opt/node_app/app/package.json
+      - ./frontend/package-lock.json:/opt/node_app/app/package-lock.json
+    command: ["/wait-for", "http://directus:8055/server/ping", "-t", "30", "--", "npm", "run", "dev"]

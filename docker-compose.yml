@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  
+  directus:
+    container_name: mcc-backend-playground
+    # image: directus/directus:latest
+    build: 
+      context: "."
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "8055:8055"
+    networks:
+      - directus
+    volumes:
+      - ./snapshots:/directus/snapshots
+      - ./uploads:/directus/uploads
+      - ./database:/directus/database
+      - ./extensions:/directus/extensions
+    environment:
+      KEY: '255d861b-5ea1-5996-9aa3-922530ec40b1'
+      SECRET: '6116487b-cda1-52c2-b5b5-c8022c45e263'
+
+      DB_CLIENT: 'sqlite3'
+      DB_FILENAME: './database/data.db'
+
+      ADMIN_EMAIL: 'admin@example.com'
+      ADMIN_PASSWORD: 'password'
+      
+  frontend:
+    depends_on:
+      - directus
+    container_name: mcc-frontend-playground
+    networks:
+      - directus
+    build: 
+      context: "./frontend"
+      dockerfile: "Dockerfile"
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    command: ["/wait-for", "http://directus:8055/server/ping", "-t", "10", "--", "node", ".output/server/index.mjs"]
+  
+networks:
+  directus:
