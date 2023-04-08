@@ -28,6 +28,8 @@ jobs:
       - name: Git Version
         id: version
         uses: codacy/git-version@2.7.1
+      
+      - name: Set version
         run: echo "version=${{ steps.version.outputs.version }}" >> "$GITHUB_OUTPUT"
 
   frontend:
