@@ -122,7 +122,7 @@ jobs:
         id: script
         uses: andstor/file-reader-action@v1
         with:
-          path: ${{ github.workspace }}/install.s
+          path: ${{ github.workspace }}/install.sh
 
       - name: Run ssh command
         uses: appleboy/ssh-action@v0.1.9
