@@ -16,8 +16,8 @@ on:
       - 'master'
 env:
   REGISTRY: ghcr.io
-  FRONTEND_IMAGE_NAME: playground-frontend
-  BACKEND_IMAGE_NAME: playground-backend
+  FRONTEND_IMAGE_NAME: ${{ github.repository }}-frontend
+  BACKEND_IMAGE_NAME: ${{ github.repository }}-backend
 
 jobs:
   frontend:
