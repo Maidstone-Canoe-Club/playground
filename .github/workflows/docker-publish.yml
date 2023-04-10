@@ -118,8 +118,8 @@ jobs:
       - name: Setup SSH Key
         uses: webfactory/ssh-agent@v0.5.0
         with:
+          host: ${{ secrets.SERVER_IP_ADDRESS }}
+          username: ${{ secrets.SSH_USERNAME }}
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-      - name: Run script on remote server
-        run: |
-          ssh -o StrictHostKeyChecking=no ${secrets.SSH_USERNAME}@${secrets.SERVER_IP_ADDRESS} "bash -s" < ${{ github.workspace }}/install.sh --token "${{ secrets.GITHUB_TOKEN }}" --username "${{ github.repository_owner }}"
+          script: |
+            "bash -s" < ${{ github.workspace }}/install.sh --token "${{ secrets.GITHUB_TOKEN }}" --username "${{ github.repository_owner }}"
