@@ -130,7 +130,6 @@ jobs:
           host: ${{ secrets.SERVER_IP_ADDRESS }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          env: TOKEN, USERNAME
           script: ${{ steps.script.outputs.contents }}
           # script: |
 #            "bash -s" < ${{ github.workspace }}/install.sh --token "${{ secrets.GITHUB_TOKEN }}" --username "${{ github.repository_owner }}"
