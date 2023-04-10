@@ -9,11 +9,13 @@ on:
   push:
     branches:
       - main
-
+    tags:
+      - "v*"
+  pull_request:
+    branches:
+      - 'master'
 env:
-  # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
-  # github.repository as <account>/<repo>
   FRONTEND_IMAGE_NAME: playground-frontend
   BACKEND_IMAGE_NAME: playground-backend
 
@@ -50,6 +52,8 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}
           flavor: latest=true
           tags: |
+            type=ref,event=branch
+            type=ref,event=pr
             type=semver,pattern={{version}}
       
       - name: Build and push Docker image
@@ -92,6 +96,8 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}
           flavor: latest=true
           tags: |
+            type=ref,event=branch
+            type=ref,event=pr
             type=semver,pattern={{version}}
       
       - name: Build and push Docker image
