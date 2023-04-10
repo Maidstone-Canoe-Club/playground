@@ -14,8 +14,8 @@ env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
   # github.repository as <account>/<repo>
-  DOCKER_IMAGE_FRONTEND_NAME: playground-frontend
-  DOCKER_IMAGE_BACKEND_NAME: playground-backend
+  FRONTEND_IMAGE_NAME: playground-frontend
+  BACKEND_IMAGE_NAME: playground-backend
 
 jobs:
   frontend:
@@ -36,22 +36,29 @@ jobs:
         with:
           versionSpec: '5.x'
 
-      - name: Build frontend Docker image
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          push: true
-          tags: |
-            ghcr.io/${{ github.repository_owner }}/${{ env.DOCKER_IMAGE_FRONTEND_NAME }}:${{ steps.gitversion.outputs.fullSemVer }}
-            ghcr.io/${{ github.repository_owner }}/${{ env.DOCKER_IMAGE_FRONTEND_NAME }}:latest
-
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v1
         with:
-          registry: ghcr.io
+          registry: ${{ env.REGISTRY }}
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
   
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+        with:
+          images: | 
+            ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:${{ steps.gitversion.outputs.fullSemVer }}
+            ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:latest
+  
+      - name: Build and push Docker image
+        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+        with:
+          context: frontend/.
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
   backend:
     runs-on: ubuntu-latest
     permissions:
@@ -70,21 +77,28 @@ jobs:
         with:
           versionSpec: '5.x'
 
-      - name: Build backend Docker image
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          push: true
-          tags: |
-            ghcr.io/${{ github.repository_owner }}/${{ env.DOCKER_IMAGE_BACKEND_NAME }}:${{ steps.gitversion.outputs.fullSemVer }}
-            ghcr.io/${{ github.repository_owner }}/${{ env.DOCKER_IMAGE_BACKEND_NAME }}:latest
-
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v1
         with:
-          registry: ghcr.io
+          registry: ${{ env.REGISTRY }}
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
+  
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+        with:
+          images: | 
+            ${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}:${{ steps.gitversion.outputs.fullSemVer }}
+            ${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}:latest
+  
+      - name: Build and push Docker image
+        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
 
   # install:
     # runs-on: ubuntu-latest
