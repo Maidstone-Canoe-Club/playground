@@ -16,7 +16,6 @@ env:
   # github.repository as <account>/<repo>
   DOCKER_IMAGE_FRONTEND_NAME: playground-frontend
   DOCKER_IMAGE_BACKEND_NAME: playground-backend
-  GITVERSION_FULLSEMVER: ${{ env.GITVERSION_FULLSEMVER }}
 
 jobs:
   version:
@@ -32,6 +31,9 @@ jobs:
         uses: gittools/actions/gitversion/setup@v0.9.6
         with:
           versionSpec: '5.x'
+          
+      - name: Set version
+        run: echo "version=${{ steps.version.outputs.version }}" >> "$GITHUB_OUTPUT"
 
   frontend:
     needs: version
@@ -53,7 +55,7 @@ jobs:
           context: .
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/${{ env.DOCKER_IMAGE_FRONTEND_NAME }}:${{ env.GITVERSION_FULLSEMVER }}
+            ghcr.io/${{ github.repository_owner }}/${{ env.DOCKER_IMAGE_FRONTEND_NAME }}:${{ needs.version.outputs.version }}
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v1
@@ -82,7 +84,7 @@ jobs:
           context: .
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/${{ env.DOCKER_IMAGE_BACKEND_NAME }}:${{ env.GITVERSION_FULLSEMVER }}
+            ghcr.io/${{ github.repository_owner }}/${{ env.DOCKER_IMAGE_BACKEND_NAME }}:${{ needs.version.outputs.version }}
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v1
