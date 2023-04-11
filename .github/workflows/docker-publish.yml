@@ -126,7 +126,6 @@ jobs:
         with:
           host: "46.101.75.172"
           username: mcc
-          password: ${{ secrets.SSH_PASSWORD }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: ${{ steps.script.outputs.contents }}
           debug: true
