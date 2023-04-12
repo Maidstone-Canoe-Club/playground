@@ -1,4 +1,4 @@
-﻿sudo mkdir ~/docker
+sudo mkdir ~/docker
 
 # Set the working directory to the directory containing the docker-compose.yml file
 cd ~/docker || echo "Could not set working directory to docker" exit
