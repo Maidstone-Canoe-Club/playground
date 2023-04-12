@@ -111,9 +111,6 @@ jobs:
   install:
     runs-on: ubuntu-latest
     needs: [frontend, backend]
-    env:
-      TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      USERNAME: ${{ github.repository_owner }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
@@ -125,12 +122,12 @@ jobs:
           path: ${{ github.workspace }}/install.sh
 
       - name: Run ssh command
-        uses: appleboy/ssh-action@v0.1.9
+        uses: appleboy/ssh-action@v0.1.4
         with:
-          host: ${{ secrets.SERVER_IP_ADDRESS }}
-          username: ${{ secrets.SSH_USERNAME }}
+          host: "46.101.75.172"
+          username: mcc
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          env: TOKEN, USERNAME
           script: ${{ steps.script.outputs.contents }}
+          debug: true
           # script: |
 #            "bash -s" < ${{ github.workspace }}/install.sh --token "${{ secrets.GITHUB_TOKEN }}" --username "${{ github.repository_owner }}"
