@@ -4,10 +4,7 @@ services:
   
   directus:
     container_name: mcc-backend-playground
-    # image: directus/directus:latest
-    build: 
-      context: "."
-      dockerfile: Dockerfile
+    image: ghcr.io/maidstone-canoe-club/playground-backend:latest
     restart: unless-stopped
     ports:
       - "8055:8055"
@@ -32,11 +29,9 @@ services:
     depends_on:
       - directus
     container_name: mcc-frontend-playground
+    image: docker pull ghcr.io/maidstone-canoe-club/playground-frontend:latest
     networks:
       - directus
-    build: 
-      context: "./frontend"
-      dockerfile: "Dockerfile"
     restart: unless-stopped
     ports:
       - "3000:3000"
