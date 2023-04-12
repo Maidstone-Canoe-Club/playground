@@ -29,7 +29,7 @@ services:
     depends_on:
       - directus
     container_name: mcc-frontend-playground
-    image: docker pull ghcr.io/maidstone-canoe-club/playground-frontend:latest
+    image: ghcr.io/maidstone-canoe-club/playground-frontend:latest
     networks:
       - directus
     restart: unless-stopped
