@@ -5,6 +5,8 @@ cd ~/docker || echo "Could not set working directory to docker" exit
 
 wget -O docker-compose.prod.yml https://raw.githubusercontent.com/Maidstone-Canoe-Club/playground/main/docker-compose.prod.yml
 
+docker compose stop
+
 docker compose rm -f
 
 # Pull the latest versions of the images
