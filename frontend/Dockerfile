@@ -29,6 +29,9 @@ COPY ./src ./src
 COPY ./nuxt.config.ts ./
 COPY ./tsconfig.json ./
 
+ARG DIRECTUS_URL
+ENV DIRECTUS_URL ${DIRECTUS_URL}
+
 RUN npm run build
 
 RUN rm -rf node_modules && rm -rf .nuxt && npm cache clean --force
