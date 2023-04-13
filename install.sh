@@ -10,4 +10,4 @@ wget -O docker-compose.prod.yml https://raw.githubusercontent.com/Maidstone-Cano
 docker compose pull
 
 # Recreate the containers with the new images
-docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --remove-orphans
+docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --remove-orphans --force-recreate
