@@ -5,12 +5,12 @@ cd ~/docker || echo "Could not set working directory to docker" exit
 
 wget -O docker-compose.prod.yml https://raw.githubusercontent.com/Maidstone-Canoe-Club/playground/main/docker-compose.prod.yml
 
-docker compose stop
+docker compose -f docker-compose.prod.yml stop
 
-docker compose rm -f
+docker compose -f docker-compose.prod.yml rm -f
 
 # Pull the latest versions of the images
-docker compose pull
+docker compose -f docker-compose.prod.yml pull
 
 # Recreate the containers with the new images
 docker compose -f docker-compose.prod.yml up -d --remove-orphans --force-recreate
