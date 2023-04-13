@@ -9,10 +9,7 @@ services:
     volumes:
       - ./snapshots:/directus/snapshots
     environment:
-      - EXTENSIONS_AUTO_RELOAD=true
-      - CORS_ENABLED=true
-      - CACHE_ENABLED=true
-      - CACHE_AUTO_PURGE=true
+      EXTENSIONS_AUTO_RELOAD: 'true'
 
   frontend:
     build:
@@ -20,8 +17,8 @@ services:
       dockerfile: "Dockerfile"
       target: base
     environment:
-      - NODE_ENV=development
-      - DIRECTUS_URL=http://host.docker.internal:8055
+      NODE_ENV: 'development'
+      DIRECTUS_URL: 'http://host.docker.internal:8055'
     extra_hosts:
       - "host.docker.internal:host-gateway"
     ports:

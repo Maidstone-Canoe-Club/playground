@@ -10,4 +10,4 @@ services:
   frontend:
     image: ghcr.io/maidstone-canoe-club/playground-frontend:latest
     environment:
-      - DIRECTUS_URL=https://mccdev.co.uk/cms
+      DIRECTUS_URL: 'https://mccdev.co.uk/cms'

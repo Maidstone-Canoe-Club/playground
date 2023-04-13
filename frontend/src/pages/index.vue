@@ -3,6 +3,8 @@
 </template>
 
 <script setup>
+const url = useDirectusUrl();
+console.log("DIRECTUS_URL", url);
 const { getSingletonItem } = useDirectusItems();
 
 try {
