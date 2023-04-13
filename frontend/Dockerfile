@@ -41,8 +41,10 @@ WORKDIR /opt/
 COPY --from=build --chown=node:node /opt/node_app/app/.output node_app/app/.output
 WORKDIR /opt/node_app/app
 
-ENV NODE_ENV production
+ARG DIRECTUS_URL
+ENV DIRECTUS_URL ${DIRECTUS_URL}
 
+ENV NODE_ENV production
 ENV PORT 3000
 ENV NITRO_PORT 3000
 ENV HOST 0.0.0.0
