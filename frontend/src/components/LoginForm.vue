@@ -34,6 +34,10 @@
 import { useVuelidate, Validation } from "@vuelidate/core";
 import { minLength, required, email as emailValidator } from "@vuelidate/validators";
 
+const url = useDirectusUrl();
+console.log("DIRECTUS_URL", url);
+console.log("env url", process.env.DIRECTUS_URL);
+
 const loading = ref(false);
 const email = ref("admin@example.com");
 const password = ref("password");
