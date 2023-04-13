@@ -3,6 +3,11 @@
 services:
 
   directus:
+    build:
+      context: "."
+      dockerfile: Dockerfile
+    volumes:
+      - ./snapshots:/directus/snapshots
     environment:
       - EXTENSIONS_AUTO_RELOAD=true
       - CORS_ENABLED=true
@@ -11,6 +16,8 @@ services:
 
   frontend:
     build:
+      context: "./frontend"
+      dockerfile: "Dockerfile"
       target: base
     environment:
       - NODE_ENV=development

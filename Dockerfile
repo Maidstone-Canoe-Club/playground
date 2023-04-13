@@ -4,6 +4,7 @@ WORKDIR /builder
 
 COPY package.json package-lock.json ./
 COPY extensions/ extensions/
+COPY snapshots/ snapshots/
 
 RUN npm ci && npm run build
 
@@ -12,8 +13,7 @@ FROM directus/directus:latest
 USER node
 WORKDIR /directus
 
-COPY snapshots/ ./snapshots/
-
+COPY --from=builder /builder/snapshots ./snapshots
 COPY --from=builder /builder/extensions/directus-extension-permissions ./extensions/directus-extension-permissions
 
 CMD npx directus bootstrap && \
