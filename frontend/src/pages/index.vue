@@ -3,16 +3,15 @@
 </template>
 
 <script setup>
-const { getSingletonItem } = useDirectusItems()
+const { getSingletonItem } = useDirectusItems();
 
-const { data } = await useAsyncData('global', () => {
-  return getSingletonItem({
-    collection: 'global'
-  })
-})
-
-const item = await getSingletonItem({
-  collection: 'global'
-})
-
+try {
+  const { data } = await useAsyncData("global", () => {
+    return getSingletonItem({
+      collection: "global"
+    });
+  });
+} catch (err) {
+  console.error("error", err);
+}
 </script>
