@@ -1,0 +1,9 @@
+﻿version: '3.8'
+
+services:
+  
+  directus:
+    image: ghcr.io/maidstone-canoe-club/playground-backend:latest
+  
+  frontend:
+    image: ghcr.io/maidstone-canoe-club/playground-frontend:latest
