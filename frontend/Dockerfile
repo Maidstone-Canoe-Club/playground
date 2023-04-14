@@ -32,8 +32,6 @@ COPY ./tsconfig.json ./
 ARG DIRECTUS_URL
 ENV DIRECTUS_URL ${DIRECTUS_URL}
 
-RUN echo "Directus URL ${DIRECTUS_URL}"
-
 RUN npm run build
 
 RUN rm -rf node_modules && rm -rf .nuxt && npm cache clean --force
@@ -45,9 +43,6 @@ USER node
 WORKDIR /opt/
 COPY --from=build --chown=node:node /opt/node_app/app/.output node_app/app/.output
 WORKDIR /opt/node_app/app
-
-ARG DIRECTUS_URL
-ENV DIRECTUS_URL ${DIRECTUS_URL}
 
 ENV NODE_ENV production
 ENV PORT 3000
