@@ -34,6 +34,7 @@
 import { useVuelidate, Validation } from "@vuelidate/core";
 import { minLength, required, email as emailValidator } from "@vuelidate/validators";
 import { Ref } from "vue";
+import { useAppStore } from "~/stores/app";
 
 const loading = ref(false);
 const email = ref("admin@example.com");
@@ -56,6 +57,8 @@ const rules = {
 
 const v$: Ref<Validation> = useVuelidate(rules, { email, password });
 
+const appStore = useAppStore();
+
 const onSubmit = async () => {
   v$.value.$touch();
 
@@ -63,10 +66,14 @@ const onSubmit = async () => {
     error.value = null;
     loading.value = true;
     try {
-      await login({
+      const res = await login({
         email: email.value,
         password: password.value
       });
+
+      if (res) {
+        appStore.accessTokenExpiry = Date.now() + res.expires;
+      }
     } catch (e: any) {
       clearError();
       error.value = e.data;

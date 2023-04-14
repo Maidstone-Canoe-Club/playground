@@ -1,8 +1,8 @@
 
-export default defineNuxtRouteMiddleware((to, _) => {
-  const user = useDirectusUser()
+export default defineNuxtRouteMiddleware((_to, _from) => {
+  const user = useDirectusUser();
 
   if (!user.value) {
-    return navigateTo('/login')
+    return navigateTo("/login");
   }
-})
+});

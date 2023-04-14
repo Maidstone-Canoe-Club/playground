@@ -1,6 +1,9 @@
 <template>
   <div>
     <div>
+      <nuxt-link to="/">
+        Home
+      </nuxt-link>
       <div v-if="user">
         <nuxt-link to="/profile">
           Profile
@@ -21,12 +24,17 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import { useAppStore } from "~/stores/app";
+
 const user = useDirectusUser();
 const { logout } = useDirectusAuth();
 
+const appStore = useAppStore();
+
 const onLogout = async () => {
-  await logout();
+  const res = await logout();
+  appStore.accessTokenExpiry = 0;
 };
 
 </script>

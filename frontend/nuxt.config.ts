@@ -4,7 +4,8 @@ export default defineNuxtConfig({
 
   modules: [
     "nuxt-directus",
-    "@nuxtjs/google-fonts"
+    "@nuxtjs/google-fonts",
+    "@pinia/nuxt"
   ],
 
   googleFonts: {
