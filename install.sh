@@ -8,6 +8,7 @@ wget -O docker-compose.prod.yml https://raw.githubusercontent.com/Maidstone-Cano
 docker compose -f docker-compose.prod.yml stop
 
 docker compose -f docker-compose.prod.yml rm -f
+docker image prune -a -f
 
 # Pull the latest versions of the images
 docker compose -f docker-compose.prod.yml pull
