@@ -5,6 +5,7 @@
       v-model="item.title"
       type="text"
       label="Title" />
+    <custom-editor v-model="item.content" />
     <button
       class="btn"
       @click="onSave">
