@@ -18,6 +18,7 @@ const props = defineProps({
 });
 
 const directusUrl = useDirectusUrl();
+const { token } = useDirectusToken();
 
 const modules = {
   name: "imageUploader",
@@ -29,7 +30,14 @@ const modules = {
         formData.append("title", file.name);
         formData.append("image", file);
 
-        axios.post(directusUrl + "/files", formData)
+        axios.post(
+          directusUrl + "/files",
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${token.value}`
+            }
+          })
           .then((res) => {
             resolve(directusUrl + "/assets/" + res.data.data.id);
           })
