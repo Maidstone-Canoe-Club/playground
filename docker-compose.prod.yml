@@ -30,6 +30,8 @@ services:
       ADMIN_PASSWORD: 'password'
       
       PUBLIC_URL: 'https://mccdev.co.uk/cms'
+      
+      MAX_PAYLOAD_SIZE: '10mb'
   
   frontend:
     image: ghcr.io/maidstone-canoe-club/playground-frontend:latest
