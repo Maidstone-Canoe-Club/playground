@@ -8,23 +8,23 @@ export default defineNuxtRouteMiddleware(async (_to, _from) => {
   if (appStore.firstRefresh) {
     appStore.firstRefresh = false;
   } else if (!user.value) {
-    user.value = (await fetchUser()).value;
     return;
   }
 
   const {
-    refreshToken,
     refreshTokens
   } = useDirectusToken();
-
-  const nuxtApp = useNuxtApp();
 
   if (!appStore.accessTokenExpiry ||
     appStore.accessTokenExpiry === 0 ||
     Date.now() >= appStore.accessTokenExpiry - 10000) {
-    const res = await refreshTokens();
-    if (res) {
-      appStore.accessTokenExpiry = Date.now() + res.expires;
+    try {
+      const res = await refreshTokens();
+      if (res) {
+        appStore.accessTokenExpiry = Date.now() + res.expires;
+      }
+    } catch (err) {
+      console.log("Error refreshing tokens!", err);
     }
   }
 });

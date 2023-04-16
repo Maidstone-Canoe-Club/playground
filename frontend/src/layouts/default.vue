@@ -31,7 +31,12 @@
 import { useAppStore } from "~/stores/app";
 
 const route = useRoute();
-const user = useDirectusUser();
+let user;
+try {
+  user = useDirectusUser();
+} catch (err) {
+  console.log("Error loading user", err);
+}
 const { logout } = useDirectusAuth();
 
 const appStore = useAppStore();
