@@ -36,6 +36,10 @@ import { minLength, required, email as emailValidator } from "@vuelidate/validat
 import { Ref } from "vue";
 import { useAppStore } from "~/stores/app";
 
+const props = defineProps<{
+  redirect?: string
+}>();
+
 const loading = ref(false);
 const email = ref("admin@example.com");
 const password = ref("password");
@@ -73,6 +77,9 @@ const onSubmit = async () => {
 
       if (res) {
         appStore.accessTokenExpiry = Date.now() + res.expires;
+        if (props.redirect) {
+          navigateTo(props.redirect);
+        }
       }
     } catch (e: any) {
       clearError();

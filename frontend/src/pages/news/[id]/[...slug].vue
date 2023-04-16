@@ -6,6 +6,7 @@
 </template>
 
 <script setup lang="ts">
+import { Ref } from "vue";
 import { NewsItem } from "~/types";
 
 const { getItems } = useDirectusItems();
@@ -16,7 +17,7 @@ const { data: items } = await useAsyncData("news-item", async () => {
     collection: "news",
     params: {
       filter: {
-        id: route.params.slug
+        id: route.params.id
       }
     }
   });
@@ -33,6 +34,16 @@ if (!item.value) {
     statusCode: 404,
     statusMessage: "News post not found"
   });
+}
+
+if (!route.params.slug && item.value.slug) {
+  let redirect = route.path;
+  if (!redirect.endsWith("/")) {
+    redirect += "/";
+  }
+
+  redirect += item.value.slug;
+  navigateTo(redirect);
 }
 
 </script>

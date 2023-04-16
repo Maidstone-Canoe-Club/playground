@@ -3,4 +3,10 @@
 </template>
 
 <script setup>
+definePageMeta({
+  middleware: [
+    "auth",
+    "permission"
+  ]
+});
 </script>

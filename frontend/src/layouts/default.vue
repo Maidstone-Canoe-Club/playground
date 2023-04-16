@@ -4,6 +4,9 @@
       <nuxt-link to="/">
         Home
       </nuxt-link>
+      <nuxt-link to="/news">
+        News
+      </nuxt-link>
       <div v-if="user">
         <nuxt-link to="/profile">
           Profile
@@ -13,7 +16,7 @@
         </button>
       </div>
       <div v-else>
-        <nuxt-link to="/login">
+        <nuxt-link :to="loginUrl">
           Login
         </nuxt-link>
       </div>
@@ -27,10 +30,13 @@
 <script setup lang="ts">
 import { useAppStore } from "~/stores/app";
 
+const route = useRoute();
 const user = useDirectusUser();
 const { logout } = useDirectusAuth();
 
 const appStore = useAppStore();
+
+const loginUrl = "/login?redirect=" + route.fullPath;
 
 const onLogout = async () => {
   const res = await logout();

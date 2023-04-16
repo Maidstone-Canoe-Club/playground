@@ -3,7 +3,7 @@
     <h1>Login Page</h1>
 
     <NuxtErrorBoundary>
-      <login-form />
+      <login-form :redirect="redirect" />
       <template #error="{error}">
         <p>There was an error</p>
         <pre>{{ error }}</pre>
@@ -11,3 +11,10 @@
     </NuxtErrorBoundary>
   </div>
 </template>
+
+<script setup lang="ts">
+const route = useRoute();
+
+const redirect = route.query.redirect;
+
+</script>
