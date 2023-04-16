@@ -7,8 +7,6 @@
 </template>
 
 <script setup>
-import { QuillEditor } from "@vueup/vue-quill";
-import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import ImageUploader from "quill-image-uploader";
 import axios from "axios";
 
@@ -59,8 +57,6 @@ const content = computed({
   }
 });
 
-const { vueApp } = useNuxtApp();
-vueApp.component("QuillEditor", QuillEditor);
 </script>
 
 <style lang="scss">

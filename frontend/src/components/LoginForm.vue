@@ -11,7 +11,7 @@
       v-model="password"
       :v="v$.password" />
     <button
-      class="btn"
+      class="btn btn-primary"
       type="submit"
       :disabled="loading"
       @click="onSubmit">

@@ -11,19 +11,27 @@
         <li
           v-for="(link, index) in links"
           :key="index"
-          class="page-header__link">
+          class="page-header__link"
+          :class="{'page-header__link--active': isActive(link.url)}">
           <nuxt-link :to="link.url">
             {{ link.name }}
           </nuxt-link>
         </li>
         <li v-if="user">
-          <nuxt-link to="/profile">
-            {{ user.email }}
+          <nuxt-link
+            to="/profile"
+            class="page-header__profile-link">
+            <user-dropdown :user="user" />
           </nuxt-link>
+          <button
+            class="btn btn-primary"
+            @click="onLogout">
+            Logout
+          </button>
         </li>
         <li v-else>
           <nuxt-link
-            to="/login"
+            :to="loginUrl"
             class="btn btn-primary">
             Login
           </nuxt-link>
@@ -39,6 +47,11 @@
 </template>
 
 <script setup lang="ts">
+import { useAppStore } from "~/stores/app";
+
+const route = useRoute();
+const appStore = useAppStore();
+const { logout } = useDirectusAuth();
 
 let user;
 try {
@@ -47,10 +60,22 @@ try {
   console.log("Error loading user", err);
 }
 
+const loginUrl = "/login?redirect=" + route.fullPath;
+
 const links = [
   { url: "/", name: "Home" },
   { url: "/news", name: "News" }
 ];
+
+function isActive (url) {
+  return url === route.path;
+}
+
+const onLogout = async () => {
+  const res = await logout();
+  appStore.accessTokenExpiry = 0;
+  navigateTo("/");
+};
 
 </script>
 
@@ -59,7 +84,6 @@ const links = [
 
 .page-header {
   width: 100%;
-  outline: 1px solid red;
   height: 120px;
   padding: 1rem 0;
 
@@ -71,7 +95,7 @@ const links = [
     margin: 0 auto;
   }
 
-  &__logo{
+  &__logo {
     height: 120px;
   }
 
@@ -79,13 +103,25 @@ const links = [
     list-style: none;
     padding: 0;
     display: flex;
+    align-items: center;
     flex-direction: row;
     gap: 1rem;
     margin-left: auto;
   }
 
-  &__link > a{
-    font-weight: 700;
+  &__link {
+    &--active {
+      text-decoration: underline;
+    }
+
+    & > a {
+      font-weight: 700;
+      text-decoration: none;
+      color: $black;
+    }
+  }
+
+  &__profile-link {
     text-decoration: none;
     color: $black;
   }
@@ -98,7 +134,7 @@ const links = [
     justify-content: space-between;
     padding: .25rem;
 
-    @media ( max-width: 767px ) {
+    @media (max-width: 767px) {
       display: flex;
     }
 

@@ -1,5 +1,7 @@
 <template>
-  <article v-if="item">
+  <article
+    v-if="item"
+    class="container">
     <h1>{{ item.title }}</h1>
     <div v-html="item.content" />
   </article>

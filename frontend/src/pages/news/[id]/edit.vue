@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <input-field
       id="title"
       v-model="item.title"
@@ -7,10 +7,12 @@
       label="Title" />
     <custom-editor v-model="item.content" />
     <button
-      class="btn"
+      class="btn btn-primary"
+      :disabled="saving"
       @click="onSave">
       {{ !item.id ? 'Create' : 'Save' }}
     </button>
+    <pre v-if="saving">Saving...</pre>
   </div>
 </template>
 
@@ -41,18 +43,25 @@ if (items.value?.length) {
   item = items.value[0];
 }
 
+const saving = ref(false);
+
 async function onSave () {
-  if (item.id) {
-    await updateItem<NewsItem>({
-      collection: "news",
-      id: String(item.id),
-      item
-    });
-  } else {
-    await createItems<NewsItem>({
-      collection: "news",
-      items: [item]
-    });
+  saving.value = true;
+  try {
+    if (item.id) {
+      await updateItem<NewsItem>({
+        collection: "news",
+        id: String(item.id),
+        item
+      });
+    } else {
+      await createItems<NewsItem>({
+        collection: "news",
+        items: [item]
+      });
+    }
+  } finally {
+    saving.value = false;
   }
 }
 
