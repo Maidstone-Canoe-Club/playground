@@ -1,26 +1,6 @@
 <template>
   <div>
-    <div>
-      <nuxt-link to="/">
-        Home
-      </nuxt-link>
-      <nuxt-link to="/news">
-        News
-      </nuxt-link>
-      <div v-if="user">
-        <nuxt-link to="/profile">
-          Profile
-        </nuxt-link>
-        <button @click="onLogout">
-          Logout
-        </button>
-      </div>
-      <div v-else>
-        <nuxt-link :to="loginUrl">
-          Login
-        </nuxt-link>
-      </div>
-    </div>
+    <page-header />
     <div class="container">
       <slot />
     </div>
