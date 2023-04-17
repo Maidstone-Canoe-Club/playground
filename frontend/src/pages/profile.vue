@@ -1,5 +1,5 @@
 <template>
-  <div class="profile">
+  <div class="profile container">
     <user-avatar
       :user="user"
       :size="150" />

@@ -20,15 +20,6 @@
     <div class="container">
       <p>foo</p>
     </div>
-
-    <!--    <p>Home</p>-->
-    <!--    <button class="btn btn-primary">-->
-    <!--      Click me-->
-    <!--    </button>-->
-    <!--    <br>-->
-    <!--    <button class="btn btn-outline">-->
-    <!--      Or click me?-->
-    <!--    </button>-->
   </div>
 </template>
 
@@ -80,6 +71,10 @@ if (home.value.header_image) {
       flex-direction: column;
       justify-content: flex-end;
       color: #fff;
+
+      @media ( max-width: 767px ) {
+        padding: 3rem 1rem;
+      }
 
       .btn {
         align-self: flex-start;

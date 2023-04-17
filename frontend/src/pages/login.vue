@@ -1,7 +1,5 @@
 <template>
   <div class="container">
-    <h1>Login Page</h1>
-
     <div class="login-container">
       <NuxtErrorBoundary>
         <login-form :redirect="redirect" />
@@ -17,16 +15,21 @@
 <script setup lang="ts">
 const route = useRoute();
 
-const redirect = route.query.redirect;
+const redirect = route.query.redirect as string;
 
 </script>
 
 <style lang="scss" scoped>
 .login-container {
-  width: 300px;
-  margin: 0 auto;
+  max-width: 350px;
+  margin: 2rem auto;
   border: 1px solid lightgray;
   border-radius: .5rem;
   padding: 1rem;
+
+  @media ( max-width: 767px ) {
+    max-width: 100%;
+    border: none;
+  }
 }
 </style>
