@@ -2,72 +2,30 @@
 export default defineNuxtConfig({
   srcDir: "src/",
 
-  // app: {
-  //   head: {
-  //     meta: [
-  //       { name: "apple-mobile-web-app-title", content: "Maidstone Canoe Club" },
-  //       { name: "application-name", content: "Maidstone Canoe Club" },
-  //       { name: "msapplication-TileColor", content: "#cbeeff" },
-  //       { name: "theme-color", content: "#cdeeff" }
-  //     ],
-  //     link: [
-  //       { rel: "apple-touch-icon", sizes: "180x180", href: "/apple-touch-icon.png" },
-  //       { rel: "icon", type: "image/png", sizes: "32x32", href: "/favicon-32x32.png" },
-  //       { rel: "icon", type: "image/png", sizes: "16x16", href: "/favicon-16x16.png" },
-  //       { rel: "manifest", href: "/site.webmanifest" },
-  //       { rel: "mask-icon", href: "/safari-pinned-tab.svg", color: "#40a7e0" }
-  //     ]
-  //   }
-  // },
+  app: {
+    head: {
+      meta: [
+        { name: "apple-mobile-web-app-title", content: "Maidstone Canoe Club" },
+        { name: "application-name", content: "Maidstone Canoe Club" },
+        { name: "msapplication-TileColor", content: "#cbeeff" },
+        { name: "theme-color", content: "#cdeeff" }
+      ],
+      link: [
+        { rel: "apple-touch-icon", sizes: "180x180", href: "/apple-touch-icon.png" },
+        { rel: "icon", type: "image/png", sizes: "32x32", href: "/favicon-32x32.png" },
+        { rel: "icon", type: "image/png", sizes: "16x16", href: "/favicon-16x16.png" },
+        { rel: "manifest", href: "/site.webmanifest" },
+        { rel: "mask-icon", href: "/safari-pinned-tab.svg", color: "#40a7e0" }
+      ]
+    }
+  },
 
   modules: [
     "nuxt-directus",
     "@nuxtjs/google-fonts",
     "@pinia/nuxt",
-    "@vite-pwa/nuxt"
+    "nuxt-icon"
   ],
-
-  pwa: {
-    registerType: "autoUpdate",
-    manifest: {
-      name: "Maidstone Canoe Club",
-      short_name: "MCC",
-      theme_color: "#0000ff",
-      icons: [
-        {
-          src: "/pwa-512x512.png",
-          sizes: "512x512",
-          type: "image/png"
-        },
-        {
-          src: "/pwa-192x192.png",
-          sizes: "192x192",
-          type: "image/png"
-        },
-        {
-          src: "/apple-touch-icon.png",
-          sizes: "180x180",
-          type: "image/png"
-        },
-        {
-          src: "pwa-512x512.png",
-          sizes: "512x512",
-          type: "image/png",
-          purpose: "any maskable"
-        }
-      ]
-    },
-    client: {
-      installPrompt: true,
-      // you don't need to include this: only for testing purposes
-      // if enabling periodic sync for update use 1 hour or so (periodicSyncForUpdates: 3600)
-      periodicSyncForUpdates: 20
-    },
-    devOptions: {
-      enabled: true,
-      type: "module"
-    }
-  },
 
   googleFonts: {
     families: {

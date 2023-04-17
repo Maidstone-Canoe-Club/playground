@@ -19,9 +19,17 @@
     color: #fff;
     box-shadow: 0 0 0 0 $primary-color;
    
-
+    &:disabled {
+      background-color: lightgray;
+    }
+    
     &:hover {
       background-color: lighten($primary-color, 10%);
+      
+      &:disabled {
+        background-color: lightgray;
+        cursor: not-allowed;
+      }
     }
     
     &:focus {

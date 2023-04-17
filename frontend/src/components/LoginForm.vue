@@ -78,7 +78,7 @@ const onSubmit = async () => {
       if (res) {
         appStore.accessTokenExpiry = Date.now() + res.expires;
         if (props.redirect) {
-          navigateTo(props.redirect);
+          await navigateTo(props.redirect);
         }
       }
     } catch (e: any) {

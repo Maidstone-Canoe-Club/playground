@@ -29,25 +29,25 @@
             Logout
           </button>
         </li>
-        <!--        <li v-if="user">-->
-        <!--          <nuxt-link-->
-        <!--            to="/profile"-->
-        <!--            class="page-header__profile-link">-->
-        <!--            <user-dropdown :user="user" />-->
-        <!--          </nuxt-link>-->
-        <!--          <button-->
-        <!--            class="btn btn-primary"-->
-        <!--            @click="onLogout">-->
-        <!--            Logout-->
-        <!--          </button>-->
-        <!--        </li>-->
-        <!--        <li v-else>-->
-        <!--          <nuxt-link-->
-        <!--            :to="loginUrl"-->
-        <!--            class="btn btn-primary">-->
-        <!--            Login-->
-        <!--          </nuxt-link>-->
-        <!--        </li>-->
+        <li v-if="user">
+          <nuxt-link
+            to="/profile"
+            class="page-header__profile-link">
+            <user-dropdown :user="user" />
+          </nuxt-link>
+          <button
+            class="btn btn-primary"
+            @click="onLogout">
+            Logout
+          </button>
+        </li>
+        <li v-else>
+          <nuxt-link
+            :to="loginUrl"
+            class="btn btn-primary">
+            Login
+          </nuxt-link>
+        </li>
       </ul>
       <div
         class="page-header__menu-button"
@@ -81,6 +81,7 @@ const loginUrl = "/login?redirect=" + route.fullPath;
 const links = ref([
   { url: "/", name: "Home" },
   { url: "/news", name: "News" },
+  { url: "/gallery", name: "Gallery" },
   { url: "/profile", name: "Profile", hide: !user.value }
 ]);
 
@@ -88,10 +89,13 @@ function isActive (url) {
   return url === route.path;
 }
 
+const cookie = useCookie("directus_refresh_token");
+
 const onLogout = async () => {
-  const res = await logout();
+  await logout();
   appStore.accessTokenExpiry = 0;
-  navigateTo("/");
+  cookie.value = null;
+  await navigateTo("/");
 };
 
 </script>

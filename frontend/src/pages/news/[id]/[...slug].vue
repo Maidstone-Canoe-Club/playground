@@ -45,7 +45,7 @@ if (!route.params.slug && item.value.slug) {
   }
 
   redirect += item.value.slug;
-  navigateTo(redirect);
+  await navigateTo(redirect);
 }
 
 </script>
