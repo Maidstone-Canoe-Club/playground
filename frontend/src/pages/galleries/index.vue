@@ -11,7 +11,9 @@
       <li
         v-for="(gallery, index) in galleries.data"
         :key="index">
-        {{ gallery.name }}
+        <nuxt-link :to="'/galleries/' + gallery.id">
+          {{ gallery.name }}
+        </nuxt-link>
       </li>
     </ul>
   </div>
