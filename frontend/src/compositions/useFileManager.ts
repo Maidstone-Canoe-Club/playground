@@ -14,14 +14,19 @@ export class UploadableFile {
   }
 }
 
-export const useFileManager = () => {
+export const useFileManager = (maxFiles?: number) => {
   const files: Ref<UploadableFile[]> = ref([]);
 
   function addFiles (newFiles: FileList) {
     const newUploadableFiles = [...newFiles]
       .map(file => new UploadableFile(file))
       .filter(file => !fileExists(file.id));
+
     files.value = files.value.concat(newUploadableFiles);
+
+    if (maxFiles && maxFiles > 0) {
+      files.value = files.value.splice(0, maxFiles);
+    }
   }
 
   function fileExists (otherId: string) {

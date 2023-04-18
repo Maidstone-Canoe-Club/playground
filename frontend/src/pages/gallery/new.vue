@@ -1,6 +1,13 @@
 ﻿<template>
   <div class="new-gallery container">
-    <h1>New Gallery</h1>
+    <div class="new-gallery__title-editor">
+      <input
+        v-model="galleryName"
+        type="text"
+        placeholder="Gallery name"
+        class="h1-input">
+      <small>Click to change the gallery name</small>
+    </div>
     <drop-zone
       v-slot="{dropZoneActive}"
       class="new-gallery__file-dropper"
@@ -13,10 +20,13 @@
           <small>to add them</small>
         </span>
         <span v-else>
-          <div>
+          <span class="new-gallery__file-dropper-info">
             <strong>Drag your files here</strong>
             <small>or <strong>click here</strong> to select files</small>
-          </div>
+            <small class="new-gallery__file-dropper-limits">
+              Max 100 images up to 8mb each
+            </small>
+          </span>
         </span>
         <input
           id="file-input"
@@ -25,7 +35,12 @@
           multiple
           @change="onInputChange">
       </label>
-      <div class="new-gallery__files-wrapper">
+      <div
+        v-if="files && files.length"
+        class="new-gallery__files-wrapper">
+        <div class="new-gallery__files-count">
+          {{ files.length }} / 100
+        </div>
         <ul class="new-gallery__files">
           <file-preview
             v-for="(file, index) in files"
@@ -51,7 +66,7 @@
 import { useFileManager } from "~/compositions/useFileManager";
 import { useFileUploader } from "~/compositions/useFileUploader";
 
-const { addFiles, removeFile, files } = useFileManager();
+const { addFiles, removeFile, files } = useFileManager(100);
 const { createFolder, uploadFiles } = useFileUploader();
 const { getSingletonItem } = useDirectusItems();
 
@@ -85,6 +100,20 @@ async function onUploadClick () {
 .new-gallery {
   padding: 0 1rem;
 
+  &__title-editor {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2rem;
+
+    .h1-input {
+      margin-bottom: 0;
+    }
+
+    small {
+      color: gray;
+    }
+  }
+
   &__file-dropper {
     width: 100%;
     border: 1px solid lightgray;
@@ -107,6 +136,18 @@ async function onUploadClick () {
       }
     }
 
+    &-info {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .25rem;
+    }
+
+    &-limits {
+      margin-top: .5rem;
+      color: gray;
+    }
+
     &-input {
       display: none;
     }
@@ -116,6 +157,13 @@ async function onUploadClick () {
     padding: 1rem;
   }
 
+  &__files-count {
+    color: gray;
+    font-weight: 700;
+    margin-bottom: .5rem;
+    text-align: right;
+  }
+
   &__files {
     list-style: none;
     margin: 0;
@@ -123,6 +171,10 @@ async function onUploadClick () {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
+  }
+
+  .btn {
+    margin-top: 1rem;
   }
 }
 </style>

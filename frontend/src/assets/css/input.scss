@@ -1,3 +1,5 @@
+@import "variables.scss";
+
 input {
     border: 1px solid lightgray;
     padding: .375rem .625rem;
@@ -9,6 +11,18 @@ input {
     transition: box-shadow .1s ease-out;
 
     &:focus-visible {
-      box-shadow: 0 0 0 2px blue;
+      box-shadow: 0 0 0 2px $primary-color;
     }
+}
+
+.h1-input {
+  padding: 0;
+  font-size: 2rem;
+  margin: 0.67em 0;
+  font-weight: 700;
+  border: none;
+  
+  &:focus-visible {
+    box-shadow: none;
+  }
 }
