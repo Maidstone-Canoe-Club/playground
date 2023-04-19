@@ -74,13 +74,14 @@ const { data: gallery } = await useAsyncData("gallery", () => {
   return getSingletonItem({ collection: "gallery" });
 });
 
+const parentFolderId = gallery.value.gallery_folder;
+
 function onInputChange (e) {
   addFiles(e.target.files);
   e.target.value = null;
 }
 
 const galleryName = ref("New Gallery");
-const parentFolderId = gallery.value.gallery_folder;
 
 const uploadLabel = computed(() => {
   return "Upload " + files.value.length + " images";
