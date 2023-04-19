@@ -1,18 +1,19 @@
 ﻿<template>
   <div class="container photo-gallery">
-    <h1>A Gallery!</h1>
-    <masonry-wall
-      v-slot="{ item }"
-      :items="imageUrls"
-      :column-width="400"
-      :gap="16">
-      <nuxt-img
-        class="photo-gallery__image"
-        :placeholder="true"
-        :src="item.url"
-        :alt="item.altText"
-        loading="lazy" />
-    </masonry-wall>
+    <div class="container">
+      <h1>A Gallery!</h1>
+      <masonry-wall
+        v-slot="{ item }"
+        :items="imageUrls"
+        :column-width="400"
+        :gap="16">
+        <nuxt-img
+          class="photo-gallery__image"
+          :placeholder="true"
+          :src="item.url"
+          :alt="item.altText" />
+      </masonry-wall>
+    </div>
   </div>
 </template>
 
@@ -54,6 +55,10 @@ const imageUrls = computed(() => {
 
 <style lang="scss" scoped>
 .photo-gallery {
+  .container {
+    padding: 0 1rem;
+  }
+
   &__image {
     width: 100%;
     height: 100%;

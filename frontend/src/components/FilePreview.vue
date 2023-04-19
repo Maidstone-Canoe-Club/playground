@@ -8,7 +8,7 @@
       <button
         class="btn file-preview__remove"
         aria-label="Remove"
-        @click="$emit('remove', file)">
+        @click="onRemove">
         <Icon name="ri:delete-bin-5-line" />
         Remove
       </button>
@@ -41,22 +41,25 @@
 <script setup lang="ts">
 import { UploadableFile } from "~/compositions/useFileManager";
 
-defineEmits(["remove"]);
+const emits = defineEmits(["remove"]);
 
-defineProps<{
+const props = defineProps<{
   file: UploadableFile,
   tag?: string
 }>();
 
+function onRemove () {
+  emits("remove", props.file);
+}
+
 </script>
 
 <style lang="scss" scoped>
-$image-size: 250px;
 
 .file-preview {
   position: relative;
-  height: 250px;
-  flex-grow: 1;
+  //height: 200px;
+  //flex-grow: 1;
 
   &__remove {
     margin: 0;

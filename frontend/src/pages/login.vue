@@ -13,6 +13,7 @@
 </template>
 
 <script setup lang="ts">
+useHead({ title: "Login" });
 const route = useRoute();
 
 const redirect = route.query.redirect as string;

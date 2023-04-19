@@ -3,15 +3,49 @@
 export class UploadableFile {
   file: File;
   id: string;
-  url: string;
+  url: Ref<string | null>;
   status: string | null;
 
   constructor (file: File) {
     this.file = file;
     this.id = `${file.name}-${file.size}-${file.lastModified}-${file.type}`;
-    this.url = URL.createObjectURL(file);
+    this.url = ref(null);
     this.status = null;
+    resizeImage(file, this);
   }
+}
+
+function resizeImage (file: File, uploadableFile: UploadableFile) {
+  const reader = new FileReader();
+  reader.onload = function (e) {
+    const img = document.createElement("img");
+    img.onload = function (event) {
+      const canvas = document.createElement("canvas");
+      const MAX_WIDTH = 600;
+      const MAX_HEIGHT = 300;
+
+      let width = img.width;
+      let height = img.height;
+      if (width > height) {
+        if (width > MAX_WIDTH) {
+          height = Math.round((height * MAX_WIDTH) / width);
+          width = MAX_WIDTH;
+        }
+      } else if (height > MAX_HEIGHT) {
+        width = Math.round((width * MAX_HEIGHT) / height);
+        height = MAX_HEIGHT;
+      }
+      canvas.width = width;
+      canvas.height = height;
+
+      const ctx = canvas.getContext("2d");
+      ctx?.drawImage(img, 0, 0, width, height);
+
+      uploadableFile.url.value = canvas.toDataURL(file.type);
+    };
+    img.src = e.target?.result as string;
+  };
+  reader.readAsDataURL(file);
 }
 
 export const useFileManager = (maxFiles?: number) => {
@@ -34,10 +68,13 @@ export const useFileManager = (maxFiles?: number) => {
   }
 
   function removeFile (file: UploadableFile) {
-    const index = files.value.indexOf(file);
+    const newFiles = [...files.value];
+    const index = newFiles.indexOf(file);
     if (index > -1) {
-      files.value.splice(index, 1);
+      newFiles.splice(index, 1);
     }
+
+    files.value = newFiles;
   }
 
   return {
