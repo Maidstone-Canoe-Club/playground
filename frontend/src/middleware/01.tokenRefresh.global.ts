@@ -22,6 +22,8 @@ export default defineNuxtRouteMiddleware(async (_to, _from) => {
       const refreshCookie = useCookie("directus_refresh_token");
       if (!refreshCookie) {
         console.log("trying to refresh token without refresh token cookie!");
+      } else {
+        console.log("calling refresh WITH cookie");
       }
       const res = await refreshTokens();
       if (res) {

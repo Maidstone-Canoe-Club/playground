@@ -1,5 +1,3 @@
-
-
 export interface NewsItem {
   id: number | undefined,
   title: string,

@@ -71,7 +71,6 @@ const hasError = computed(() => {
 
   if (props.file.status) {
     result = props.file.status === "error" || props.file.status === "too large";
-    console.log("res", result);
   }
 
   return result;

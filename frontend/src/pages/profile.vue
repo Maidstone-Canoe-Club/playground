@@ -18,7 +18,13 @@ definePageMeta({
   middleware: ["auth"]
 });
 
-const user: Ref<DirectusUser> = useDirectusUser();
+let user: Ref<DirectusUser> = ref(null);
+
+try {
+  user = await useDirectusUser();
+} catch (err) {
+  console.log("error loading user on profile", err);
+}
 
 </script>
 

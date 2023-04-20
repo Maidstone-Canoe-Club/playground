@@ -24,7 +24,8 @@ export default defineNuxtConfig({
     "nuxt-directus",
     "@nuxtjs/google-fonts",
     "@pinia/nuxt",
-    "@nuxt/image-edge"
+    "@nuxt/image-edge",
+    "@vueuse/nuxt"
   ],
 
   googleFonts: {

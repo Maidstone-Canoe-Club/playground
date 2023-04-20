@@ -8,6 +8,7 @@
           class="page-header__logo">
       </nuxt-link>
       <ul
+        ref="sidebar"
         class="page-header__links"
         :class="{'page-header__links--open': open}">
         <li
@@ -57,6 +58,7 @@
 </template>
 
 <script setup lang="ts">
+import { onClickOutside } from "@vueuse/core";
 import { useAppStore } from "~/stores/app";
 
 const route = useRoute();
@@ -93,6 +95,12 @@ const onLogout = async () => {
   cookie.value = null;
   await navigateTo("/");
 };
+
+const sidebar = ref(null);
+
+onClickOutside(sidebar, () => {
+  open.value = false;
+});
 
 </script>
 

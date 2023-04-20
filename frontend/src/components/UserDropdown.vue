@@ -1,6 +1,7 @@
 ﻿<template>
   <div class="wrapper">
     <div
+      ref="caret"
       class="user-dropdown"
       :class="{'user-dropdown--open': open}"
       @click="open = !open">
@@ -20,6 +21,7 @@
       </div>
     </div>
     <Collapse
+      ref="collapsible"
       :when="open"
       class="v-collapse dropdown">
       <div>
@@ -42,9 +44,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
 import { Collapse } from "vue-collapsed";
 import { DirectusUser } from "nuxt-directus/dist/runtime/types";
+import { onClickOutside } from "@vueuse/core";
 import { useAppStore } from "~/stores/app";
 
 const { logout } = useDirectusAuth();
@@ -58,7 +60,9 @@ const props = defineProps<{
 const avatarUrl = ref(null);
 if (props.user.avatar) {
   const directusUrl = useDirectusUrl();
-  avatarUrl.value = directusUrl + "/assets/" + props.user.avatar;
+  if (props.user.avatar) {
+    avatarUrl.value = directusUrl + "/assets/" + props.user.avatar;
+  }
 }
 
 const fullName = ref(props.user.first_name + " " + props.user.last_name);
@@ -74,6 +78,15 @@ const onLogout = async () => {
   cookie.value = null;
   await navigateTo("/");
 };
+
+const collapsible = ref(null);
+const caret = ref(null);
+
+onClickOutside(collapsible, (e) => {
+  open.value = false;
+}, {
+  ignore: [caret]
+});
 
 </script>
 
@@ -135,6 +148,7 @@ const onLogout = async () => {
   border-radius: .5rem;
   box-shadow: 0 3px 6px -1px lightgray;
   overflow: hidden;
+  z-index: 10000;
 
   ul {
     list-style: none;
