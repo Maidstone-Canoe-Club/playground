@@ -39,26 +39,25 @@
         <div
           v-if="files && files.length"
           class="new-gallery__files-wrapper">
-          <!--          <ul class="new-gallery__files">-->
-          <!--            <file-preview-->
-          <!--              v-for="(file, index) in files"-->
-          <!--              :key="index"-->
-          <!--              :file="file"-->
-          <!--              @remove="removeFile">-->
-          <!--              {{ file.file.name }}-->
-          <!--            </file-preview>-->
-          <!--          </ul>-->
-          <masonry-wall
-            v-slot="{ item }"
-            :items="files"
-            :column-width="175"
-            :ssr-columns="3"
-            :gap="16">
-            <file-preview
-              tag="div"
-              :file="item"
-              @remove="removeFile" />
-          </masonry-wall>
+          <div v-show="imagesLoaded.size >= files.length || !firstLoad">
+            <masonry-wall
+              v-slot="{ item }"
+              :items="files"
+              :column-width="175"
+              :ssr-columns="3"
+              :gap="16">
+              <file-preview
+                tag="div"
+                :file="item"
+                @remove="removeFile"
+                @load="imageLoaded" />
+            </masonry-wall>
+          </div>
+          <div
+            v-show="imagesLoaded.size < files.length && firstLoad"
+            class="new-gallery__files-loader">
+            <fa-icon icon="fa-solid fa-spinner" spin />
+          </div>
         </div>
       </drop-zone>
     </div>
@@ -68,12 +67,12 @@
           <span class="new-gallery__files-count">
             {{ files.length }} / 100 photos
           </span>
-          <button
+          <processing-button
             class="btn btn-primary"
-            :disabled="files.length === 0"
-            @click="onUploadClick">
+            :disabled="uploadButtonDisabled"
+            :action="onUploadClick">
             {{ uploadLabel }}
-          </button>
+          </processing-button>
         </div>
       </div>
     </div>
@@ -82,8 +81,14 @@
 
 <script setup lang="ts">
 
-import { useFileManager } from "~/compositions/useFileManager";
-import { useFileUploader } from "~/compositions/useFileUploader";
+import { useFileManager } from "~/composables/useFileManager";
+import { useFileUploader } from "~/composables/useFileUploader";
+
+definePageMeta({
+  middleware: [
+    "auth"
+  ]
+});
 
 const { addFiles, removeFile, files } = useFileManager(100);
 const { createFolder, uploadFiles } = useFileUploader();
@@ -103,8 +108,8 @@ function onInputChange (e) {
 const galleryName = ref("New Gallery");
 
 const uploadLabel = computed(() => {
-  let result = `Upload ${files.value.length}`;
-  result += files.value.length === 1 ? " image" : " images";
+  let result = `Upload ${imagesLoaded.value.size}`;
+  result += imagesLoaded.value.size === 1 ? " image" : " images";
   return result;
 });
 
@@ -114,6 +119,21 @@ async function onUploadClick () {
     throw new Error("Could not create gallery");
   }
   await uploadFiles(files.value, folderId);
+  await navigateTo("/galleries/" + folderId);
+}
+
+const imagesLoaded = ref(new Set());
+const firstLoad = ref(true);
+
+const uploadButtonDisabled = computed(() => {
+  return files.value.length === 0 || firstLoad.value;
+});
+
+function imageLoaded (id: string) {
+  imagesLoaded.value.add(id);
+  if (imagesLoaded.value.size >= files.value.length) {
+    firstLoad.value = false;
+  }
 }
 
 </script>
@@ -207,6 +227,12 @@ async function onUploadClick () {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
+
+    &-loader {
+      color: lightgray;
+      font-size: 3rem;
+      padding: 2rem;
+    }
   }
 
   &__footer {

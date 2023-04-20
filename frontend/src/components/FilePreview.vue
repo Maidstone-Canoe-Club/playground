@@ -9,7 +9,7 @@
         class="btn file-preview__remove"
         aria-label="Remove"
         @click="onRemove">
-        <Icon name="ri:delete-bin-5-line" />
+        <fa-icon icon="fa-solid fa-trash-can" />
         Remove
       </button>
     </div>
@@ -19,37 +19,42 @@
     <img
       :src="file.url"
       :alt="file.file.name"
-      :title="file.file.name">
+      :title="file.file.name"
+      @load="onLoaded">
     <span
       v-show="file.status === 'loading'"
       class="file-preview__status file-preview__status--spin">
-      <Icon name="svg-spinners:270-ring-with-bg" />
+      <fa-icon icon="fa-solid fa-spinner" spin />
     </span>
     <span
       v-show="file.status === 'ok'"
       class="file-preview__status">
-      <Icon name="ri:check-fill" />
+      <fa-icon icon="fa-solid fa-check" />
     </span>
     <span
       v-show="file.status === 'error'"
       class="file-preview__status file-preview__status--error">
-      <Icon name="ri:error-warning-fill" />
+      <fa-icon icon="fa-solid fa-circle-exclamation" />
     </span>
   </component>
 </template>
 
 <script setup lang="ts">
-import { UploadableFile } from "~/compositions/useFileManager";
+import { UploadableFile } from "~/composables/useFileManager";
 
-const emits = defineEmits(["remove"]);
+const emit = defineEmits(["remove", "load"]);
 
 const props = defineProps<{
   file: UploadableFile,
   tag?: string
 }>();
 
+function onLoaded () {
+  emit("load", props.file.id);
+}
+
 function onRemove () {
-  emits("remove", props.file);
+  emit("remove", props.file);
 }
 
 </script>

@@ -24,7 +24,6 @@ export default defineNuxtConfig({
     "nuxt-directus",
     "@nuxtjs/google-fonts",
     "@pinia/nuxt",
-    "nuxt-icon",
     "@nuxt/image-edge"
   ],
 
@@ -48,6 +47,7 @@ export default defineNuxtConfig({
     "~/assets/css/variables.scss",
     "~/assets/css/main.scss",
     "~/assets/css/button.scss",
-    "~/assets/css/input.scss"
+    "~/assets/css/input.scss",
+    "@fortawesome/fontawesome-svg-core/styles.css"
   ]
 });

@@ -1,5 +1,5 @@
 ﻿import axios from "axios";
-import { UploadableFile } from "~/compositions/useFileManager";
+import { UploadableFile } from "~/composables/useFileManager";
 
 export const useFileUploader = () => {
   const directusUrl = useDirectusUrl();

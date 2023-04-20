@@ -30,7 +30,7 @@
 
 <script setup lang="ts">
 
-import { useDirectusFolders } from "~/compositions/useDirectusFolders";
+import { useDirectusFolders } from "~/composables/useDirectusFolders";
 
 const { getItems, getSingletonItem } = useDirectusItems();
 const { getFolders } = useDirectusFolders();

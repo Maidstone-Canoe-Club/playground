@@ -18,7 +18,7 @@
     </div>
 
     <div class="container">
-      <p>foo</p>
+      <p>foo</p> <fa-icon icon="fa-solid fa-check" />
     </div>
   </div>
 </template>
