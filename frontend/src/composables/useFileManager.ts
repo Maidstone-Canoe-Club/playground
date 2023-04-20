@@ -20,12 +20,18 @@ function resizeImage (file: File, uploadableFile: UploadableFile) {
   reader.onload = function (e) {
     const img = document.createElement("img");
     img.onload = function (event) {
-      const canvas = document.createElement("canvas");
+      const MAX_UPLOAD_DIMENSION = 6000;
       const MAX_WIDTH = 600;
       const MAX_HEIGHT = 300;
 
       let width = img.width;
       let height = img.height;
+
+      if (width > MAX_UPLOAD_DIMENSION || height > MAX_UPLOAD_DIMENSION) {
+        uploadableFile.status = "too large";
+        console.warn(" Image dimensions too large");
+      }
+
       if (width > height) {
         if (width > MAX_WIDTH) {
           height = Math.round((height * MAX_WIDTH) / width);
@@ -35,6 +41,8 @@ function resizeImage (file: File, uploadableFile: UploadableFile) {
         width = Math.round((width * MAX_HEIGHT) / height);
         height = MAX_HEIGHT;
       }
+
+      const canvas = document.createElement("canvas");
       canvas.width = width;
       canvas.height = height;
 

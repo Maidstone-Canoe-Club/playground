@@ -1,7 +1,8 @@
 ﻿<template>
   <component
     :is="tag ?? 'li'"
-    class="file-preview">
+    class="file-preview"
+    :class="{'file-preview--error': hasError}">
     <div
       v-if="!file.status"
       class="file-preview__remove-container">
@@ -21,21 +22,29 @@
       :alt="file.file.name"
       :title="file.file.name"
       @load="onLoaded">
-    <span
-      v-show="file.status === 'loading'"
-      class="file-preview__status file-preview__status--spin">
-      <fa-icon icon="fa-solid fa-spinner" spin />
-    </span>
-    <span
-      v-show="file.status === 'ok'"
-      class="file-preview__status">
-      <fa-icon icon="fa-solid fa-check" />
-    </span>
-    <span
-      v-show="file.status === 'error'"
-      class="file-preview__status file-preview__status--error">
-      <fa-icon icon="fa-solid fa-circle-exclamation" />
-    </span>
+    <template v-if="file.status">
+      <span
+        v-show="file.status === 'loading'"
+        class="file-preview__status file-preview__status--spin">
+        <fa-icon icon="fa-solid fa-spinner" spin />
+      </span>
+      <span
+        v-show="file.status === 'ok'"
+        class="file-preview__status">
+        <fa-icon icon="fa-solid fa-check" />
+      </span>
+      <span
+        v-show="file.status === 'error'"
+        class="file-preview__status file-preview__status--error">
+        <fa-icon icon="fa-solid fa-circle-exclamation" />
+      </span>
+      <span
+        v-show="file.status === 'too large'"
+        class="file-preview__status file-preview__status--error">
+        Too large
+        <fa-icon icon="fa-solid fa-circle-exclamation" />
+      </span>
+    </template>
   </component>
 </template>
 
@@ -57,6 +66,17 @@ function onRemove () {
   emit("remove", props.file);
 }
 
+const hasError = computed(() => {
+  let result = false;
+
+  if (props.file.status) {
+    result = props.file.status === "error" || props.file.status === "too large";
+    console.log("res", result);
+  }
+
+  return result;
+});
+
 </script>
 
 <style lang="scss" scoped>
@@ -65,6 +85,15 @@ function onRemove () {
   position: relative;
   //height: 200px;
   //flex-grow: 1;
+
+  &--error {
+    box-shadow: 0 0 0 3px rgba(255, 0, 0, 0.49);
+    border-radius: .25rem;
+
+    img {
+      filter: grayscale(100%);
+    }
+  }
 
   &__remove {
     margin: 0;
@@ -122,6 +151,11 @@ function onRemove () {
       opacity: 1;
       outline: 2px solid red;
     }
+  }
+
+  &__image--error {
+    box-shadow: 0 5px 5px 2px red;
+    outline: 1px solid red;
   }
 
   img {

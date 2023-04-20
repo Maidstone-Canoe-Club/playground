@@ -22,6 +22,11 @@ export const useFileUploader = () => {
   }
 
   async function uploadFile (file: UploadableFile, folderId: string) {
+    if (file.status === "too large") {
+      console.warn("Not uploading image, dimensions too large");
+      return;
+    }
+
     const formData = new FormData();
     formData.append("title", file.file.name);
     formData.append("folder", folderId);
@@ -48,8 +53,9 @@ export const useFileUploader = () => {
     return response;
   }
 
-  function uploadFiles (files: UploadableFile[], folderId: string) {
-    return Promise.all(files.map(file => uploadFile(file, folderId)));
+  async function uploadFiles (files: UploadableFile[], folderId: string) {
+    const uploadBatchSize = 5;
+    await promiseAllInBatches((file: UploadableFile) => uploadFile(file, folderId), files, uploadBatchSize);
   }
 
   return {
