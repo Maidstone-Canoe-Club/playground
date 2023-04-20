@@ -5,13 +5,15 @@ import {
   faCheck,
   faSpinner,
   faCircleExclamation,
-  faTrashCan
+  faTrashCan,
+  faAngleUp
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(faCheck);
 library.add(faSpinner);
 library.add(faCircleExclamation);
 library.add(faTrashCan);
+library.add(faAngleUp);
 
 config.autoAddCss = false;
 

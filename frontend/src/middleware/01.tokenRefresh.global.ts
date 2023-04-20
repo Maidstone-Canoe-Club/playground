@@ -19,6 +19,10 @@ export default defineNuxtRouteMiddleware(async (_to, _from) => {
     appStore.accessTokenExpiry === 0 ||
     Date.now() >= appStore.accessTokenExpiry - 10000) {
     try {
+      const refreshCookie = useCookie("directus_refresh_token");
+      if (!refreshCookie) {
+        console.log("trying to refresh token without refresh token cookie!");
+      }
       const res = await refreshTokens();
       if (res) {
         appStore.accessTokenExpiry = Date.now() + res.expires;

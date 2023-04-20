@@ -1,5 +1,7 @@
 <template>
-  <div class="profile container">
+  <div
+    v-if="user"
+    class="profile container">
     <user-avatar
       :user="user"
       :size="150" />

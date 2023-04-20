@@ -1,21 +1,55 @@
 ﻿<template>
-  <div
-    class="user-dropdown"
-    :class="{'user-dropdown--open': open}">
-    <div class="user-dropdown__top">
-      <user-avatar
-        :user="user"
-        :size="50" />
-      <div class="user-dropdown__info">
-        <strong class="user-dropdown__info-name">{{ fullName }}</strong>
-        <span class="user-dropdown__info-email">{{ user.email }}</span>
+  <div class="wrapper">
+    <div
+      class="user-dropdown"
+      :class="{'user-dropdown--open': open}"
+      @click="open = !open">
+      <div class="user-dropdown__top">
+        <user-avatar
+          :user="user"
+          :size="50" />
+        <div class="user-dropdown__info">
+          <strong class="user-dropdown__info-name">{{ fullName }}</strong>
+          <span class="user-dropdown__info-email">{{ user.email }}</span>
+        </div>
+        <div>
+          <fa-icon
+            icon="fa-solid fa-angle-up"
+            :rotation="iconRotation" />
+        </div>
       </div>
     </div>
+    <Collapse
+      :when="open"
+      class="v-collapse dropdown">
+      <div>
+        <ul>
+          <li>
+            <nuxt-link to="/">
+              Foo
+            </nuxt-link>
+          </li>
+          <li>
+            <button
+              @click="onLogout">
+              Logout
+            </button>
+          </li>
+        </ul>
+      </div>
+    </Collapse>
   </div>
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue";
+import { Collapse } from "vue-collapsed";
 import { DirectusUser } from "nuxt-directus/dist/runtime/types";
+import { useAppStore } from "~/stores/app";
+
+const { logout } = useDirectusAuth();
+const appStore = useAppStore();
+const cookie = useCookie("directus_refresh_token");
 
 const props = defineProps<{
   user: DirectusUser
@@ -30,9 +64,24 @@ if (props.user.avatar) {
 const fullName = ref(props.user.first_name + " " + props.user.last_name);
 
 const open = ref(false);
+const iconRotation = computed(() => {
+  return open.value ? "180" : undefined;
+});
+
+const onLogout = async () => {
+  await logout();
+  appStore.accessTokenExpiry = 0;
+  cookie.value = null;
+  await navigateTo("/");
+};
+
 </script>
 
 <style lang="scss" scoped>
+.wrapper {
+  position: relative;
+}
+
 .user-dropdown {
   box-shadow: 0 3px 6px -1px lightgray;
   border-radius: .5rem;
@@ -72,4 +121,46 @@ const open = ref(false);
   &__items {
   }
 }
+
+.v-collapse {
+  transition: height 300ms cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.dropdown {
+  position: absolute;
+  background: #fff;
+  top: calc(100% + .5rem);
+  right: 0;
+  left: 0;
+  border-radius: .5rem;
+  box-shadow: 0 3px 6px -1px lightgray;
+  overflow: hidden;
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  li {
+    a, button {
+      background: #fff;
+      border: none;
+      width: 100%;
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      padding: 1rem;
+      text-align: left;
+
+      &:hover {
+        cursor: pointer;
+        background-color: #f5f5f5;
+      }
+    }
+  }
+}
+
 </style>

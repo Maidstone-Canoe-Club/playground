@@ -22,24 +22,20 @@
             {{ link.name }}
           </nuxt-link>
         </li>
-        <li
-          v-if="user"
-          class="page-header__link page-header__logout">
-          <button @click="onLogout">
-            Logout
-          </button>
-        </li>
+        <!--        <li-->
+        <!--          v-if="user"-->
+        <!--          class="page-header__link page-header__logout">-->
+        <!--          <button @click="onLogout">-->
+        <!--            Logout-->
+        <!--          </button>-->
+        <!--        </li>-->
         <li v-if="user">
-          <nuxt-link
-            to="/profile"
-            class="page-header__profile-link">
-            <user-dropdown :user="user" />
-          </nuxt-link>
-          <button
-            class="btn btn-primary"
-            @click="onLogout">
-            Logout
-          </button>
+          <user-dropdown :user="user" />
+          <!--          <button-->
+          <!--            class="btn btn-primary"-->
+          <!--            @click="onLogout">-->
+          <!--            Logout-->
+          <!--          </button>-->
         </li>
         <li v-else>
           <nuxt-link
