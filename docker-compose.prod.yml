@@ -31,7 +31,9 @@ services:
       
       PUBLIC_URL: 'https://mccdev.co.uk/cms'
       
-      MAX_PAYLOAD_SIZE: '10mb'
+      MAX_PAYLOAD_SIZE: '8mb'
+      ASSETS_TRANSFORM_MAX_CONCURRENT: 5
+      ASSETS_CACHE_TTL: '1y'
   
   frontend:
     image: ghcr.io/maidstone-canoe-club/playground-frontend:latest
