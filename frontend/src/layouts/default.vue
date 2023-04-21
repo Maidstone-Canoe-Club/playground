@@ -22,7 +22,8 @@ useHead({
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 100vh;
+  max-height: 100vh;
+  overflow-y: scroll;
 
   &__page {
     flex-grow: 1;

@@ -6,7 +6,7 @@
       v-if="avatarUrl"
       :src="avatarUrl"
       :style="sizeStyle"
-      :alt="user.first_name + ' avatar'"
+      :alt="user?.first_name + ' avatar'"
       class="user-avatar__image">
     <div
       v-else
@@ -25,7 +25,7 @@ const props = defineProps<{
 }>();
 
 const avatarUrl = ref(null);
-if (props.user.avatar) {
+if (props.user?.avatar) {
   const directusUrl = useDirectusUrl();
   avatarUrl.value = `${directusUrl}/assets/${props.user.avatar}?width=${props.size}&height=${props.size}&fit=cover`;
 }

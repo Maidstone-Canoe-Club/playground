@@ -1,43 +1,73 @@
 ﻿<template>
-  <div class="image-viewer">
+  <div
+    class="image-viewer"
+    :class="{'image-viewer--open': open}">
     <div class="image-viewer__container">
-      <div
+      <img
         ref="image"
-        class="image-viewer__image-wrapper">
-        <img
-          class="image-viewer__image"
-          :src="constrainedUrl"
-          :alt="alt">
-      </div>
+        class="image-viewer__image"
+        :src="constrainedUrl"
+        :alt="alt ?? 'Photo gallery image'">
     </div>
+    <button
+      class="image-viewer__close-button"
+      @click="emits('close')">
+      <fa-icon icon="fa-solid fa-xmark" />
+    </button>
+    <button
+      v-show="showPrev"
+      ref="prev"
+      class="image-viewer__navigation image-viewer__navigation--left"
+      @click.prevent="emits('prev')">
+      <fa-icon icon="fa-solid fa-angle-left" />
+    </button>
+    <button
+      v-show="showNext"
+      ref="next"
+      class="image-viewer__navigation image-viewer__navigation--right"
+      @click.prevent="emits('next')">
+      <fa-icon icon="fa-solid fa-angle-right" />
+    </button>
   </div>
 </template>
 
 <script setup lang="ts">
-import { onClickOutside } from "@vueuse/core";
+import { onKeyStroke, onClickOutside } from "@vueuse/core";
 
 const props = defineProps<{
   src?: string,
-  alt?: string
+  alt?: string,
+  open: boolean,
+  showPrev: boolean,
+  showNext: boolean
 }>();
 
-const emits = defineEmits(["close"]);
+const emits = defineEmits(["close", "prev", "next"]);
 
-const maxWidth = ref(window.innerWidth);
-const maxHeight = ref(window.innerHeight);
+onKeyStroke("Escape", (e) => {
+  e.preventDefault();
+  emits("close");
+});
 
-const constrainedUrl = computed(() => `${props.src}&width=${maxWidth.value}`);
+const maxWidth = window.innerWidth;
+const maxHeight = window.innerHeight;
+
+const constrainedUrl = computed(() => `${props.src}&width=${maxWidth}&height=${maxHeight}&fit=inside`);
 
 const image = ref(null);
+const next = ref(null);
+const prev = ref(null);
 
 onClickOutside(image, (e) => {
   emits("close");
+}, {
+  ignore: [next, prev]
 });
 
 </script>
 
 <style lang="scss" scoped>
-.image-viewer{
+.image-viewer {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -45,6 +75,15 @@ onClickOutside(image, (e) => {
   right: 0;
   background-color: #0000007d;
   backdrop-filter: blur(3px) brightness(75%);
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity .2s ease-out;
+  pointer-events: none;
+
+  &--open {
+    opacity: 1;
+    pointer-events: all;
+  }
 
   &__container {
     height: 100%;
@@ -52,18 +91,81 @@ onClickOutside(image, (e) => {
     justify-content: center;
     align-items: center;
     padding: 3rem;
-  }
 
-  &__image-wrapper {
-    //width: 100%;
-    //height: 100%;
+    @media ( max-width: 767px ) {
+      padding: 1rem;
+    }
   }
-
   &__image {
     display: block;
-    width: 100%;
-    height: 100%;
     object-fit: contain;
+    max-height: 100%;
+    max-width: 100%;
+  }
+
+  &__close-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 2rem;
+    padding: 1rem;
+    margin: 0;
+    width: 84px;
+    height: 84px;
+    color: #fff;
+    background: transparent;
+    border: none;
+    border-radius: .5rem;
+    transition: font-size .1s ease-out;
+    filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.53));
+
+    &:hover {
+      cursor: pointer;
+      font-size: 2.25rem;
+    }
+  }
+
+  &__navigation {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 1rem;
+    width: 162px;
+    height: calc(100% - 168px);
+    font-size: 2rem;
+    color: #fff;
+    background: transparent;
+    border: none;
+    border-radius: .5rem;
+    transition: font-size .1s ease-out,
+  opacity .1s ease-out;
+    filter: drop-shadow(0 0 5px #000);
+    opacity: 0.7;
+
+    &--left {
+      left: 0;
+    }
+
+    &--right {
+      right: 0;
+    }
+
+    @media ( max-width: 767px ) {
+      padding: 1.5rem;
+
+      &--left {
+        text-align: left;
+      }
+      &--right {
+        text-align: right;
+      }
+    }
+
+    &:hover {
+      cursor: pointer;
+      font-size: 2.25rem;
+      opacity: 1;
+    }
   }
 }
 </style>

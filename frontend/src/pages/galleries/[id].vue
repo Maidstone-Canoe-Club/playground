@@ -1,37 +1,16 @@
 ﻿<template>
-  <div class="container photo-gallery">
-    <div class="container">
-      <h1>A Gallery!</h1>
-      <masonry-wall
-        v-slot="{ item }"
-        :items="imageUrls"
-        :column-width="400"
-        :gap="16">
-        <nuxt-img
-          class="photo-gallery__image"
-          :placeholder="true"
-          :src="item.url"
-          :alt="item.altText"
-          @click="selectedImage = item" />
-      </masonry-wall>
-    </div>
-    <client-only>
-      <image-viewer
-        :class="{'image-viewer--open': !!selectedImage}"
-        :src="selectedImage?.fullUrl"
-        :alt="selectedImage?.altText"
-        @close="selectedImage = null" />
-    </client-only>
+  <div class="photo-gallery">
+    :name="galleryName"
+    :images="images" />
   </div>
 </template>
 
 <script setup lang="ts">
+import { GalleryImage } from "~/types";
 import { useDirectusFiles } from "#imports";
 
 const route = useRoute();
 const id = route.params.id;
-
-const selectedImage = ref(null);
 
 const { getFiles } = useDirectusFiles();
 
@@ -46,15 +25,17 @@ const { data: files } = await useAsyncData("files-" + id, () => {
   });
 });
 
+const galleryName: string = ref("The gallery name");
+
 const directusUrl = useDirectusUrl();
 
-const imageUrls = computed(() => {
-  const result = [];
+const images = computed(() => {
+  const result: GalleryImage[] = [];
 
   files.value?.forEach((f) => {
     result.push({
       fullUrl: directusUrl + "/assets/" + f.id + "?format=webp&quality=80",
-      url: directusUrl + "/assets/" + f.id + "?width=500&format=webp&quality=80",
+      thumbnailUrl: directusUrl + "/assets/" + f.id + "?width=500&format=webp&quality=80",
       altText: f.title
     });
   });
@@ -82,15 +63,5 @@ const imageUrls = computed(() => {
     }
   }
 
-  ::v-deep(.image-viewer){
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity .2s ease-out;
-  }
-
-  ::v-deep(.image-viewer--open){
-    opacity: 1;
-    pointer-events: all;
-  }
 }
 </style>

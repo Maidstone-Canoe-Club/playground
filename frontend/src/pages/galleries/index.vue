@@ -60,6 +60,7 @@ const { data: galleries } = await useAsyncData("gallery-folders", () => {
 
 <style lang="scss" scoped>
 .galleries-page {
+
   &__galleries {
     list-style: none;
     padding: 0;

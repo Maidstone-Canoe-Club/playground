@@ -1,52 +1,54 @@
 ﻿<template>
-  <nav class="page-header">
-    <div class="page-header__content">
-      <nuxt-link to="/">
-        <img
-          src="/images/logo.svg"
-          alt="Maidstone Canoe Club logo"
-          class="page-header__logo">
-      </nuxt-link>
-      <div
-        class="page-header__overlay"
-        :class="{'page-header__overlay--open': open}" />
-      <ul
-        ref="sidebar"
-        class="page-header__links"
-        :class="{'page-header__links--open': open}">
-        <li
-          v-for="(link, index) in links"
-          v-show="!link.hide"
-          :key="index"
-          class="page-header__link"
-          :class="{'page-header__link--active': isActive(link.url)}">
-          <nuxt-link
-            :to="link.url"
-            @click="open = false">
-            {{ link.name }}
-          </nuxt-link>
-        </li>
-      </ul>
-      <div class="page-header__menu-controls">
-        <div v-if="user">
-          <user-dropdown :user="user" />
+  <header class="page-header">
+    <div class="container">
+      <nav class="page-header__nav">
+        <nuxt-link to="/">
+          <img
+            src="/images/logo-no-text.svg"
+            alt="Maidstone Canoe Club logo"
+            class="page-header__logo">
+        </nuxt-link>
+        <div
+          class="page-header__overlay"
+          :class="{'page-header__overlay--open': open}" />
+        <ul
+          ref="sidebar"
+          class="page-header__links"
+          :class="{'page-header__links--open': open}">
+          <li
+            v-for="(link, index) in links"
+            v-show="!link.hide"
+            :key="index"
+            class="page-header__link"
+            :class="{'page-header__link--active': isActive(link.url)}">
+            <nuxt-link
+              :to="link.url"
+              @click="open = false">
+              {{ link.name }}
+            </nuxt-link>
+          </li>
+        </ul>
+        <div class="page-header__menu-controls">
+          <div v-if="user">
+            <user-dropdown :user="user" />
+          </div>
+          <div v-else>
+            <nuxt-link
+              :to="loginUrl"
+              class="btn btn-primary">
+              Login
+            </nuxt-link>
+          </div>
         </div>
-        <div v-else>
-          <nuxt-link
-            :to="loginUrl"
-            class="btn btn-primary">
-            Login
-          </nuxt-link>
-        </div>
-      </div>
-      <button
-        class="page-header__menu-button"
-        @click="open = !open">
-        Menu
-        <fa-icon icon="fa-solid fa-bars" />
-      </button>
+        <button
+          class="page-header__menu-button"
+          @click="open = !open">
+          Menu
+          <fa-icon icon="fa-solid fa-bars" />
+        </button>
+      </nav>
     </div>
-  </nav>
+  </header>
 </template>
 
 <script setup lang="ts">
@@ -100,7 +102,6 @@ onClickOutside(sidebar, () => {
 
 .page-header {
   width: 100%;
-  height: 120px;
   padding: 1rem 0;
 
   &__overlay {
@@ -121,17 +122,14 @@ onClickOutside(sidebar, () => {
     }
   }
 
-  &__content {
+  &__nav {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    max-width: 1300px;
-    padding: 0 1rem;
-    margin: 0 auto;
+    justify-content: space-between;
   }
 
   &__logo {
-    height: 120px;
+    height: 100px;
   }
 
   &__links {

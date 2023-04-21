@@ -10,7 +10,14 @@ html {
   color: $black;
 }
 
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
 .container {
   max-width: 1300px;
   margin: 0 auto;
+  padding: 0 1rem;
 }
