@@ -28,13 +28,18 @@
         <ul
           @click="open = false">
           <li>
-            <nuxt-link to="/profile">
+            <nuxt-link
+              to="/profile"
+              class="user-dropdown__list-item">
+              <fa-icon icon="fa-regular fa-user" />
               Profile
             </nuxt-link>
           </li>
           <li>
             <button
+              class="user-dropdown__list-item"
               @click="onLogout">
+              <fa-icon icon="fa-solid fa-arrow-right-to-bracket" />
               Logout
             </button>
           </li>
@@ -92,6 +97,8 @@ onClickOutside(collapsible, (e) => {
 </script>
 
 <style lang="scss" scoped>
+@import "@/assets/css/variables.scss";
+
 .wrapper {
   position: relative;
 }
@@ -134,6 +141,7 @@ onClickOutside(collapsible, (e) => {
 
   &__items {
   }
+
 }
 
 .icon-container {
@@ -171,13 +179,17 @@ onClickOutside(collapsible, (e) => {
       background: #fff;
       border: none;
       width: 100%;
-      display: block;
+      display: flex;
+      gap: .5rem;
+      align-items: center;
       text-decoration: none;
-      color: inherit;
       padding: 1rem;
       text-align: left;
+      color: #4f4f4f;
+      transition: color .1s ease-out, background-color .1s ease-out;
 
       &:hover {
+        color: $black;
         cursor: pointer;
         background-color: #f5f5f5;
       }

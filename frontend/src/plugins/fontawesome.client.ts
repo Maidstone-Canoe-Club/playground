@@ -7,8 +7,12 @@ import {
   faCircleExclamation,
   faTrashCan,
   faAngleUp,
-  faBars
+  faBars,
+  faArrowRightToBracket
 } from "@fortawesome/free-solid-svg-icons";
+import {
+  faUser
+} from "@fortawesome/free-regular-svg-icons";
 
 library.add(faCheck);
 library.add(faSpinner);
@@ -16,6 +20,9 @@ library.add(faCircleExclamation);
 library.add(faTrashCan);
 library.add(faAngleUp);
 library.add(faBars);
+library.add(faArrowRightToBracket);
+
+library.add(faUser);
 
 config.autoAddCss = false;
 
