@@ -1,7 +1,8 @@
 ﻿<template>
   <div class="photo-gallery">
-    :name="galleryName"
-    :images="images" />
+    <image-gallery
+      :name="galleryName"
+      :images="images" />
   </div>
 </template>
 
