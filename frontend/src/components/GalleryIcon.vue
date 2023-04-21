@@ -1,31 +1,57 @@
 ﻿<template>
   <div class="gallery-icon">
     <div class="images">
-      <div class="preview">
-        <nuxt-img
-          src="https://images.unsplash.com/photo-1571989237340-98fb838eeef1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=225&q=80" />
+      <div
+        v-for="(preview, index) in files"
+        :key="index"
+        class="preview">
+        <nuxt-img :src="getUrl(preview)" />
       </div>
-      <div class="preview">
-        <nuxt-img
-          src="https://images.unsplash.com/photo-1546882588-d9bd63f85a7e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=225&q=80" />
-      </div>
-      <div class="preview">
-        <nuxt-img
-          src="https://images.unsplash.com/photo-1566141828450-84ea7ee7d634?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=225&q=80" />
-      </div>
-      <div class="images-count">
-        56
-        <!--        <font-awesome-icon :icon="['fas', 'images']" />-->
-      </div>
+      <div class="images-count" />
     </div>
     <div class="content">
-      <strong>Waterfalls</strong>
-      <small>July 2023</small>
+      <strong>{{ name }}</strong>
+      <small>{{ dateLabel }}</small>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { useDateFormat } from "@vueuse/core";
+import { useDirectusFiles } from "#imports";
+import { buildQuery } from "~/utils/queryBuilder";
+
+const { getFiles } = useDirectusFiles();
+const directusUrl = useDirectusUrl();
+
+const props = defineProps<{
+  name: string,
+  date: string,
+  folderId: string,
+}>();
+
+const dateLabel = useDateFormat(new Date(props.date), "MMMM YYYY");
+
+const { data: files } = await useAsyncData("files-" + props.folderId, () => {
+  return getFiles({
+    params: {
+      limit: 3,
+      filter: {
+        folder: props.folderId
+      }
+    }
+  });
+});
+
+function getUrl (image) {
+  return buildQuery(directusUrl + "/assets/" + image.id, {
+    width: 255,
+    height: 255,
+    format: "webp",
+    quality: 80
+  });
+}
+
 </script>
 
 <style lang="scss" scoped>
@@ -35,22 +61,22 @@
   overflow: hidden;
   transition: transform .2s ease-out,
   box-shadow .2s ease-out;
-  box-shadow: 0px 0.2px 0.1px rgba(0, 0, 0, 0.02),
-  0px 0.5px 0.3px rgba(0, 0, 0, 0.028),
-  0px 0.9px 0.6px rgba(0, 0, 0, 0.035),
-  0px 1.6px 1.1px rgba(0, 0, 0, 0.042),
-  0px 2.9px 2.1px rgba(0, 0, 0, 0.05),
-  0px 7px 5px rgba(0, 0, 0, 0.07);
+  box-shadow: 0 0.2px 0.1px rgba(0, 0, 0, 0.02),
+  0 0.5px 0.3px rgba(0, 0, 0, 0.028),
+  0 0.9px 0.6px rgba(0, 0, 0, 0.035),
+  0 1.6px 1.1px rgba(0, 0, 0, 0.042),
+  0 2.9px 2.1px rgba(0, 0, 0, 0.05),
+  0 7px 5px rgba(0, 0, 0, 0.07);
 
   &:hover {
     transform: translateY(-3px);
     cursor: pointer;
-    box-shadow: 0px 0.3px 0.1px rgba(0, 0, 0, 0.02),
-    0px 0.7px 0.3px rgba(0, 0, 0, 0.028),
-    0px 1.3px 0.6px rgba(0, 0, 0, 0.035),
-    0px 2.2px 1.1px rgba(0, 0, 0, 0.042),
-    0px 4.2px 2.1px rgba(0, 0, 0, 0.05),
-    0px 10px 5px rgba(0, 0, 0, 0.07);
+    box-shadow: 0 0.3px 0.1px rgba(0, 0, 0, 0.02),
+    0 0.7px 0.3px rgba(0, 0, 0, 0.028),
+    0 1.3px 0.6px rgba(0, 0, 0, 0.035),
+    0 2.2px 1.1px rgba(0, 0, 0, 0.042),
+    0 4.2px 2.1px rgba(0, 0, 0, 0.05),
+    0 10px 5px rgba(0, 0, 0, 0.07);
 
     .images {
       filter: brightness(115%) saturate(105%);
@@ -98,7 +124,7 @@
     object-fit: cover;
     height: 100%;
     width: 100%;
-    transform: scale(150%);
+    //transform: scale(150%);
   }
 }
 

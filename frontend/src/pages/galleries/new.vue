@@ -83,6 +83,7 @@
 
 import { useFileManager } from "~/composables/useFileManager";
 import { useFileUploader } from "~/composables/useFileUploader";
+import { PhotoGallery } from "~/types";
 
 definePageMeta({
   middleware: [
@@ -92,7 +93,7 @@ definePageMeta({
 
 const { addFiles, removeFile, files } = useFileManager(100);
 const { createFolder, uploadFiles } = useFileUploader();
-const { getSingletonItem } = useDirectusItems();
+const { getSingletonItem, createItems } = useDirectusItems();
 
 const { data: gallery } = await useAsyncData("gallery", () => {
   return getSingletonItem({ collection: "gallery" });
@@ -118,6 +119,20 @@ async function onUploadClick () {
   if (!folderId) {
     throw new Error("Could not create gallery");
   }
+
+  const items: PhotoGallery[] = [{
+    name: galleryName.value,
+    description: "Description here",
+    location: "Location here",
+    gallery_folder: folderId
+  }];
+
+  const data: PhotoGallery[] = await createItems<PhotoGallery>({
+    collection: "photo_gallery",
+    items
+  });
+  const galleryId = data[0].id;
+
   await uploadFiles(files.value, folderId);
   await navigateTo("/galleries/" + folderId);
 }
