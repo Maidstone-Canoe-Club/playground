@@ -4,6 +4,7 @@
     :class="{'image-viewer--open': open}">
     <div class="image-viewer__container">
       <img
+        v-if="src"
         ref="image"
         class="image-viewer__image"
         :src="constrainedUrl"
@@ -23,6 +24,7 @@
     <button
       v-show="showPrev"
       ref="prev"
+      :disabled="!loaded"
       class="image-viewer__navigation image-viewer__navigation--left"
       @click.prevent="emits('prev')">
       <fa-icon icon="fa-solid fa-angle-left" />
@@ -30,6 +32,7 @@
     <button
       v-show="showNext"
       ref="next"
+      :disabled="!loaded"
       class="image-viewer__navigation image-viewer__navigation--right"
       @click.prevent="emits('next')">
       <fa-icon icon="fa-solid fa-angle-right" />
@@ -192,7 +195,7 @@ onClickOutside(image, (e) => {
       }
     }
 
-    &:hover {
+    &:hover:not(:disabled) {
       cursor: pointer;
       font-size: 2.25rem;
       opacity: 1;

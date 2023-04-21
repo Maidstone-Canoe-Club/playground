@@ -23,8 +23,18 @@
 </template>
 
 <script setup lang="ts">
-import { zxcvbnAsync, debounce, ZxcvbnResult } from "@zxcvbn-ts/core";
+import { zxcvbnOptions, zxcvbnAsync, debounce, ZxcvbnResult } from "@zxcvbn-ts/core";
+import zxcvbnCommonPackage from "@zxcvbn-ts/language-common";
 import { Validation } from "@vuelidate/core";
+import { Ref } from "vue";
+
+const options = {
+  dictionary: {
+    ...zxcvbnCommonPackage.dictionary
+  },
+  graphs: zxcvbnCommonPackage.adjacencyGraphs
+};
+zxcvbnOptions.setOptions(options);
 
 const props = defineProps<{
     modelValue?: string,

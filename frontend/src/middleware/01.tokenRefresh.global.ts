@@ -1,4 +1,5 @@
 ﻿import { useAppStore } from "~/stores/app";
+import { useCustomRefresh } from "~/composables/useCustomRefresh";
 
 export default defineNuxtRouteMiddleware(async (_to, _from) => {
   const appStore = useAppStore();
@@ -13,7 +14,7 @@ export default defineNuxtRouteMiddleware(async (_to, _from) => {
 
   const {
     refreshTokens
-  } = useDirectusToken();
+  } = useCustomRefresh();
 
   if (!appStore.accessTokenExpiry ||
     appStore.accessTokenExpiry === 0 ||
@@ -30,7 +31,7 @@ export default defineNuxtRouteMiddleware(async (_to, _from) => {
         appStore.accessTokenExpiry = Date.now() + res.expires;
       }
     } catch (err) {
-      console.log("Error refreshing tokens!", err);
+      console.log("Error refreshing tokens!", JSON.stringify(err));
     }
   }
 });

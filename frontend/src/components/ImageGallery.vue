@@ -59,7 +59,7 @@ const showPrev = computed(() => {
 });
 
 const showNext = computed(() => {
-  return selectedIndex.value !== null ? selectedIndex.value < props.images.length : false;
+  return selectedIndex.value !== null ? selectedIndex.value < props.images.length - 1 : false;
 });
 
 function selectPrevImage () {
@@ -69,7 +69,7 @@ function selectPrevImage () {
 }
 
 function selectNextImage () {
-  if (selectedIndex.value !== null && selectedIndex.value < props.images.length) {
+  if (selectedIndex.value !== null && selectedIndex.value < props.images.length - 1) {
     selectedIndex.value += 1;
   }
 }

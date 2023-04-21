@@ -1,32 +1,44 @@
 ﻿<template>
   <div class="photo-gallery">
     <image-gallery
-      :name="galleryName"
+      v-if="images"
+      :name="gallery.name"
       :images="images" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { GalleryImage } from "~/types";
-import { useDirectusFiles } from "#imports";
+import { useDirectusFiles, useDirectusItems } from "#imports";
 
 const route = useRoute();
 const id = route.params.id;
 
 const { getFiles } = useDirectusFiles();
+const { getItems } = useDirectusItems();
 
-const { data: files } = await useAsyncData("files-" + id, () => {
-  return getFiles({
+const data = await useAsyncData("galleries", () => {
+  return getItems({
+    collection: "photo_gallery",
     params: {
-
       filter: {
-        folder: id
+        id
       }
     }
   });
 });
 
-const galleryName: string = ref("The gallery name");
+const gallery = data.data.value[0];
+
+const { data: files } = await useAsyncData("files-" + id, () => {
+  return getFiles({
+    params: {
+      filter: {
+        folder: gallery.gallery_folder
+      }
+    }
+  });
+});
 
 const directusUrl = useDirectusUrl();
 
