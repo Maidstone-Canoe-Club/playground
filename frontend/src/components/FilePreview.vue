@@ -4,7 +4,7 @@
     class="file-preview"
     :class="{'file-preview--error': hasError}">
     <div
-      v-if="!file.status"
+      v-if="!file.status || file.status === 'too large'"
       class="file-preview__remove-container">
       <button
         class="btn file-preview__remove"
@@ -16,7 +16,7 @@
     </div>
     <div
       class="file-preview__gradient"
-      :class="{'file-preview__gradient--show': !!file.status}" />
+      :class="{'file-preview__gradient--show': (file.status && file.status !== 'too large')}" />
     <img
       :src="file.url"
       :alt="file.file.name"
@@ -41,7 +41,6 @@
       <span
         v-show="file.status === 'too large'"
         class="file-preview__status file-preview__status--error">
-        Too large
         <fa-icon icon="fa-solid fa-circle-exclamation" />
       </span>
     </template>
@@ -170,14 +169,19 @@ const hasError = computed(() => {
     position: absolute;
     bottom: 1rem;
     right: 1rem;
-    font-size: 1.5rem;
     display: flex;
     justify-content: center;
     align-items: center;
     filter: drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.93));
 
-    &--error {
-      color: #dc3545;
+    ::v-deep(.icon) {
+      font-size: 1.5rem;
+    }
+
+    &--error  {
+      ::v-deep(.icon) {
+        color: #dc3545;
+      }
     }
   }
 

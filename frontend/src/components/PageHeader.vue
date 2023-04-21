@@ -7,6 +7,9 @@
           alt="Maidstone Canoe Club logo"
           class="page-header__logo">
       </nuxt-link>
+      <div
+        class="page-header__overlay"
+        :class="{'page-header__overlay--open': open}" />
       <ul
         ref="sidebar"
         class="page-header__links"
@@ -23,36 +26,25 @@
             {{ link.name }}
           </nuxt-link>
         </li>
-        <!--        <li-->
-        <!--          v-if="user"-->
-        <!--          class="page-header__link page-header__logout">-->
-        <!--          <button @click="onLogout">-->
-        <!--            Logout-->
-        <!--          </button>-->
-        <!--        </li>-->
-        <li v-if="user">
+      </ul>
+      <div class="page-header__menu-controls">
+        <div v-if="user">
           <user-dropdown :user="user" />
-          <!--          <button-->
-          <!--            class="btn btn-primary"-->
-          <!--            @click="onLogout">-->
-          <!--            Logout-->
-          <!--          </button>-->
-        </li>
-        <li v-else>
+        </div>
+        <div v-else>
           <nuxt-link
             :to="loginUrl"
             class="btn btn-primary">
             Login
           </nuxt-link>
-        </li>
-      </ul>
-      <div
+        </div>
+      </div>
+      <button
         class="page-header__menu-button"
         @click="open = !open">
-        <div class="page-header__menu-button-line" />
-        <div class="page-header__menu-button-line" />
-        <div class="page-header__menu-button-line" />
-      </div>
+        Menu
+        <fa-icon icon="fa-solid fa-bars" />
+      </button>
     </div>
   </nav>
 </template>
@@ -79,8 +71,7 @@ const loginUrl = "/login?redirect=" + route.fullPath;
 const links = ref([
   { url: "/", name: "Home" },
   { url: "/news", name: "News" },
-  { url: "/galleries", name: "Galleries" },
-  { url: "/profile", name: "Profile", hide: !user.value }
+  { url: "/galleries", name: "Galleries" }
 ]);
 
 function isActive (url) {
@@ -112,8 +103,27 @@ onClickOutside(sidebar, () => {
   height: 120px;
   padding: 1rem 0;
 
+  &__overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #0000007d;
+    z-index: 999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s ease-out;
+
+    &--open {
+      opacity: 1;
+      pointer-events: all;
+    }
+  }
+
   &__content {
     display: flex;
+    justify-content: space-between;
     align-items: center;
     max-width: 1300px;
     padding: 0 1rem;
@@ -205,26 +215,29 @@ onClickOutside(sidebar, () => {
     color: $black;
   }
 
-  &__menu-button {
-    display: none;
-    width: 22px;
-    height: 19px;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: .25rem;
+  &__menu-controls {
+    margin-left: 2rem;
+    @media ( max-width: 767px ) {
+      display: none;
+    }
+  }
 
-    @media (max-width: 767px) {
-      display: flex;
+  &__menu-button {
+    padding: 1rem;
+    border: none;
+    display: flex;
+    gap: .5rem;
+    align-items: center;
+    font-size: 1.5rem;
+    background-color: #fff;
+    border-radius: .5rem;
+
+    @media ( min-width: 768px ) {
+      display: none;
     }
 
     &:hover {
       cursor: pointer;
-    }
-
-    &-line {
-      width: 100%;
-      height: 3px;
-      background: red;
     }
   }
 }

@@ -13,7 +13,7 @@
           <strong class="user-dropdown__info-name">{{ fullName }}</strong>
           <span class="user-dropdown__info-email">{{ user.email }}</span>
         </div>
-        <div>
+        <div class="icon-container">
           <fa-icon
             icon="fa-solid fa-angle-up"
             :rotation="iconRotation" />
@@ -25,10 +25,11 @@
       :when="open"
       class="v-collapse dropdown">
       <div>
-        <ul>
+        <ul
+          @click="open = false">
           <li>
-            <nuxt-link to="/">
-              Foo
+            <nuxt-link to="/profile">
+              Profile
             </nuxt-link>
           </li>
           <li>
@@ -133,6 +134,13 @@ onClickOutside(collapsible, (e) => {
 
   &__items {
   }
+}
+
+.icon-container {
+  width: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .v-collapse {
