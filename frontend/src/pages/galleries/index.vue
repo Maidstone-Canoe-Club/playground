@@ -64,6 +64,10 @@ const { data: galleries } = await useAsyncData("gallery-folders", () => {
     list-style: none;
     padding: 0;
     margin: 0;
+
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
   }
 
   &__gallery-link {

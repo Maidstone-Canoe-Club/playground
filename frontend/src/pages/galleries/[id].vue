@@ -11,9 +11,17 @@
           class="photo-gallery__image"
           :placeholder="true"
           :src="item.url"
-          :alt="item.altText" />
+          :alt="item.altText"
+          @click="selectedImage = item" />
       </masonry-wall>
     </div>
+    <client-only>
+      <image-viewer
+        :class="{'image-viewer--open': !!selectedImage}"
+        :src="selectedImage?.fullUrl"
+        :alt="selectedImage?.altText"
+        @close="selectedImage = null" />
+    </client-only>
   </div>
 </template>
 
@@ -22,6 +30,8 @@ import { useDirectusFiles } from "#imports";
 
 const route = useRoute();
 const id = route.params.id;
+
+const selectedImage = ref(null);
 
 const { getFiles } = useDirectusFiles();
 
@@ -43,6 +53,7 @@ const imageUrls = computed(() => {
 
   files.value?.forEach((f) => {
     result.push({
+      fullUrl: directusUrl + "/assets/" + f.id + "?format=webp&quality=80",
       url: directusUrl + "/assets/" + f.id + "?width=500&format=webp&quality=80",
       altText: f.title
     });
@@ -69,6 +80,17 @@ const imageUrls = computed(() => {
       cursor: pointer;
       transform: scale(103%);
     }
+  }
+
+  ::v-deep(.image-viewer){
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s ease-out;
+  }
+
+  ::v-deep(.image-viewer--open){
+    opacity: 1;
+    pointer-events: all;
   }
 }
 </style>
