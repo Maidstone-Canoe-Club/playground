@@ -1,6 +1,8 @@
 ﻿<template>
   <button
+    ref="button"
     :class="buttonClass"
+    :style="{ 'width': width }"
     :disabled="buttonDisabled"
     @click="onClick">
     <template v-if="loading">
@@ -27,6 +29,13 @@ const buttonClass = ref(props.class);
 
 const loading = ref(false);
 
+const button = ref(null);
+const width = ref(null);
+
+onMounted(() => {
+  width.value = `${button.value.clientWidth + 1}px`;
+});
+
 async function onClick () {
   loading.value = true;
 
@@ -39,6 +48,14 @@ async function onClick () {
 
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
 
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
 </style>
