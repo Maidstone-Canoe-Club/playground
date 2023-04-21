@@ -7,7 +7,13 @@
         ref="image"
         class="image-viewer__image"
         :src="constrainedUrl"
-        :alt="alt ?? 'Photo gallery image'">
+        :alt="alt ?? 'Photo gallery image'"
+        @load="loaded = true">
+      <div
+        v-if="!loaded"
+        class="image-viewer__loading">
+        <fa-icon icon="fa-solid fa-spinner" spin />
+      </div>
     </div>
     <button
       class="image-viewer__close-button"
@@ -54,6 +60,12 @@ const maxHeight = window.innerHeight;
 
 const constrainedUrl = computed(() => `${props.src}&width=${maxWidth}&height=${maxHeight}&fit=inside`);
 
+watch(() => props.src, () => {
+  loaded.value = false;
+});
+
+const loaded = ref(false);
+
 const image = ref(null);
 const next = ref(null);
 const prev = ref(null);
@@ -80,6 +92,21 @@ onClickOutside(image, (e) => {
   transition: opacity .2s ease-out;
   pointer-events: none;
 
+  &__loading {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 4rem;
+    color: #fff;
+    opacity: .7;
+    z-index: 99;
+  }
+
   &--open {
     opacity: 1;
     pointer-events: all;
@@ -96,7 +123,9 @@ onClickOutside(image, (e) => {
       padding: 1rem;
     }
   }
+
   &__image {
+    z-index: 100;
     display: block;
     object-fit: contain;
     max-height: 100%;
@@ -118,6 +147,7 @@ onClickOutside(image, (e) => {
     border-radius: .5rem;
     transition: font-size .1s ease-out;
     filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.53));
+    z-index: 101;
 
     &:hover {
       cursor: pointer;
@@ -141,6 +171,7 @@ onClickOutside(image, (e) => {
   opacity .1s ease-out;
     filter: drop-shadow(0 0 5px #000);
     opacity: 0.7;
+    z-index: 101;
 
     &--left {
       left: 0;
