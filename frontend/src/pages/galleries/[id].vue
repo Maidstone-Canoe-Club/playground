@@ -3,12 +3,13 @@
     <image-gallery
       v-if="images"
       :name="gallery.name"
+      :author="author"
       :images="images" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { GalleryImage } from "~/types";
+import { GalleryImage, PhotoGallery } from "~/types";
 import { useDirectusFiles, useDirectusItems } from "#imports";
 
 const route = useRoute();
@@ -17,18 +18,23 @@ const id = route.params.id;
 const { getFiles } = useDirectusFiles();
 const { getItems } = useDirectusItems();
 
-const data = await useAsyncData("galleries", () => {
-  return getItems({
+const data = await useAsyncData(`gallery${id}`, () => {
+  return getItems<PhotoGallery>({
     collection: "photo_gallery",
     params: {
+      fields: [
+        "*,user_created.first_name,user_created.last_name"
+      ],
       filter: {
         id
       }
+
     }
   });
 });
 
-const gallery = data.data.value[0];
+const gallery: PhotoGallery = data.data.value[0];
+const author = `${gallery.user_created?.first_name} ${gallery.user_created?.last_name}`;
 
 const { data: files } = await useAsyncData("files-" + id, () => {
   return getFiles({

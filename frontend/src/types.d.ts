@@ -1,7 +1,7 @@
 export interface GalleryImage {
   fullUrl: string,
   thumbnailUrl: string,
-  altText: string
+  altText: string,
 }
 
 export interface PhotoGallery {
@@ -11,7 +11,10 @@ export interface PhotoGallery {
   location?: string,
   gallery_folder?: string
   date_created?: string,
-  user_created?: string
+  user_created?: {
+    first_name: string
+    last_name: string
+  }
 }
 
 export interface NewsItem {

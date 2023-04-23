@@ -2,7 +2,7 @@
   <div class="image-gallery">
     <div class="container">
       <h1>{{ name }}</h1>
-      <small>By Name Here</small>
+      <small>By {{ author }}</small>
       <masonry-wall
         v-slot="{item, index}"
         :items="images"
@@ -34,7 +34,8 @@ import { onKeyStroke } from "@vueuse/core";
 import { GalleryImage } from "~/types";
 
 const props = defineProps<{
-  name: string
+  name: string,
+  author: string,
   images: GalleryImage[]
 }>();
 
