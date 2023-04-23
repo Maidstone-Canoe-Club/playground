@@ -11,6 +11,7 @@
       </div>
       <drop-zone
         v-slot="{dropZoneActive}"
+        type="image/"
         class="new-gallery__file-dropper"
         @files-dropped="addFiles">
         <label
@@ -33,6 +34,7 @@
             id="file-input"
             class="new-gallery__file-dropper-input"
             type="file"
+            accept="image/*"
             multiple
             @change="onInputChange">
         </label>

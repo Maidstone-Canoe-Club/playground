@@ -12,6 +12,10 @@
 <script setup lang="ts">
 const emit = defineEmits(["files-dropped"]);
 
+const props = defineProps<{
+  type?: string
+}>();
+
 const active = ref(false);
 let inactiveTimeout = null;
 
@@ -28,7 +32,12 @@ function setInactive () {
 
 function onDrop (e) {
   setInactive();
-  emit("files-dropped", [...e.dataTransfer.files]);
+  let files = [...e.dataTransfer.files];
+  if (props.type) {
+    files = files.filter(f => f.type.includes(props.type));
+  }
+
+  emit("files-dropped", files);
 }
 
 function preventDefaults (e) {
