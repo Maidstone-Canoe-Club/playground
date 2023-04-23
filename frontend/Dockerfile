@@ -29,8 +29,8 @@ COPY ./src ./src
 COPY ./nuxt.config.ts ./
 COPY ./tsconfig.json ./
 
-ARG DIRECTUS_URL
-ENV DIRECTUS_URL ${DIRECTUS_URL}
+ARG NUXT_DIRECTUS_URL
+ENV NUXT_DIRECTUS_URL ${NUXT_DIRECTUS_URL}
 
 RUN npm run build
 
