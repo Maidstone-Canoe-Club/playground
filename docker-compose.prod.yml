@@ -39,9 +39,9 @@ services:
     image: ghcr.io/maidstone-canoe-club/playground-frontend:latest
     build:
       args:
-        DIRECTUS_URL: https://mccdev.co.uk/cms
+        NUXT_DIRECTUS_URL: https://mccdev.co.uk/cms
     environment:
-      DIRECTUS_URL: 'https://mccdev.co.uk/cms'
+      NUXT_DIRECTUS_URL: 'https://mccdev.co.uk/cms'
     depends_on:
       - directus
     container_name: mcc-frontend-playground
