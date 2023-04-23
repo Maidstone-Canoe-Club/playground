@@ -75,6 +75,31 @@ function selectNextImage () {
   }
 }
 
+const router = useRouter();
+const route = useRoute();
+watch(selectedIndex, (value) => {
+  const path = route.path;
+  if (value !== null && value !== undefined) {
+    router.push({
+      path,
+      query: {
+        img: Number(value) + 1
+      }
+    });
+  } else {
+    router.push({
+      path
+    });
+  }
+});
+
+const urlId = ref(route.query.img);
+watch(urlId, (val) => {
+  if (val && !isNaN(val)) {
+    selectedIndex.value = Number(val - 1);
+  }
+}, { immediate: true });
+
 </script>
 
 <style lang="scss" scoped>
