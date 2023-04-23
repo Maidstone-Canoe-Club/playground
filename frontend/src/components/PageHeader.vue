@@ -53,11 +53,8 @@
 
 <script setup lang="ts">
 import { onClickOutside } from "@vueuse/core";
-import { useAppStore } from "~/stores/app";
 
 const route = useRoute();
-const appStore = useAppStore();
-const { logout } = useDirectusAuth();
 
 let user;
 try {
@@ -79,15 +76,6 @@ const links = ref([
 function isActive (url) {
   return url === route.path;
 }
-
-const cookie = useCookie("directus_refresh_token");
-
-const onLogout = async () => {
-  await logout();
-  appStore.accessTokenExpiry = 0;
-  cookie.value = null;
-  await navigateTo("/");
-};
 
 const sidebar = ref(null);
 

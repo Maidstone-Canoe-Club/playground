@@ -53,11 +53,7 @@
 import { Collapse } from "vue-collapsed";
 import { DirectusUser } from "nuxt-directus/dist/runtime/types";
 import { onClickOutside } from "@vueuse/core";
-import { useAppStore } from "~/stores/app";
-
-const { logout } = useDirectusAuth();
-const appStore = useAppStore();
-const cookie = useCookie("directus_refresh_token");
+import { logout } from "~/utils/auth";
 
 const props = defineProps<{
   user: DirectusUser
@@ -80,8 +76,6 @@ const iconRotation = computed(() => {
 
 const onLogout = async () => {
   await logout();
-  appStore.accessTokenExpiry = 0;
-  cookie.value = null;
   await navigateTo("/");
 };
 

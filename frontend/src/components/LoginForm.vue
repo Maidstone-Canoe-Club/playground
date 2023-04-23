@@ -34,7 +34,7 @@
 import { useVuelidate, Validation } from "@vuelidate/core";
 import { minLength, required, email as emailValidator } from "@vuelidate/validators";
 import { Ref } from "vue";
-import { useAppStore } from "~/stores/app";
+import { login } from "~/utils/auth";
 
 const props = defineProps<{
   redirect?: string
@@ -45,8 +45,6 @@ const email = ref("admin@example.com");
 const password = ref("password");
 
 const error : any = ref(null);
-
-const { login } = useDirectusAuth();
 
 const rules = {
   email: {
@@ -61,8 +59,6 @@ const rules = {
 
 const v$: Ref<Validation> = useVuelidate(rules, { email, password });
 
-const appStore = useAppStore();
-
 const onSubmit = async () => {
   v$.value.$touch();
 
@@ -70,19 +66,11 @@ const onSubmit = async () => {
     error.value = null;
     loading.value = true;
     try {
-      const res = await login({
-        email: email.value,
-        password: password.value
-      });
-
-      if (res) {
-        appStore.accessTokenExpiry = Date.now() + res.expires;
-        if (props.redirect) {
-          await navigateTo(props.redirect);
-        }
+      const result = await login(email.value, password.value);
+      if (result && props.redirect) {
+        await navigateTo(props.redirect);
       }
     } catch (e: any) {
-      clearError();
       error.value = e.data;
     } finally {
       loading.value = false;

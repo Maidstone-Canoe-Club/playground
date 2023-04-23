@@ -27,7 +27,9 @@
       :disabled="!loaded"
       class="image-viewer__navigation image-viewer__navigation--left"
       @click.prevent="emits('prev')">
-      <fa-icon icon="fa-solid fa-angle-left" />
+      <span class="image-viewer__navigation-icon">
+        <fa-icon icon="fa-solid fa-angle-left" />
+      </span>
     </button>
     <button
       v-show="showNext"
@@ -35,7 +37,9 @@
       :disabled="!loaded"
       class="image-viewer__navigation image-viewer__navigation--right"
       @click.prevent="emits('next')">
-      <fa-icon icon="fa-solid fa-angle-right" />
+      <span class="image-viewer__navigation-icon">
+        <fa-icon icon="fa-solid fa-angle-right" />
+      </span>
     </button>
   </div>
 </template>
@@ -120,7 +124,7 @@ onClickOutside(image, (e) => {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 3rem;
+    //padding: 3rem;
 
     @media ( max-width: 767px ) {
       padding: 1rem;
@@ -170,11 +174,25 @@ onClickOutside(image, (e) => {
     background: transparent;
     border: none;
     border-radius: .5rem;
-    transition: font-size .1s ease-out,
-  opacity .1s ease-out;
     filter: drop-shadow(0 0 5px #000);
     opacity: 0.7;
     z-index: 101;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: font-size .1s ease-out,
+  opacity .1s ease-out;
+
+    &-icon {
+      background-color: transparent;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 100%;
+      transition: background-color .2s ease-out;
+    }
 
     &--left {
       left: 0;
@@ -187,11 +205,15 @@ onClickOutside(image, (e) => {
     @media ( max-width: 767px ) {
       padding: 1.5rem;
 
+      .image-viewer__navigation-icon{
+        background-color: rgba(0, 0, 0, 0.35);
+      }
+
       &--left {
-        text-align: left;
+        justify-content: flex-start;
       }
       &--right {
-        text-align: right;
+        justify-content: flex-end;
       }
     }
 
@@ -199,6 +221,10 @@ onClickOutside(image, (e) => {
       cursor: pointer;
       font-size: 2.25rem;
       opacity: 1;
+
+      .image-viewer__navigation-icon{
+        background-color: rgba(0, 0, 0, 0.55);
+      }
     }
   }
 }

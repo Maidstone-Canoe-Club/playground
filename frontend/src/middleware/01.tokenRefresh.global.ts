@@ -1,24 +1,25 @@
-﻿import { useAppStore } from "~/stores/app";
-import { useCustomRefresh } from "~/composables/useCustomRefresh";
+﻿import { useCustomRefresh } from "~/composables/useCustomRefresh";
 
 export default defineNuxtRouteMiddleware(async (_to, _from) => {
-  const appStore = useAppStore();
   const user = useDirectusUser();
   const { fetchUser } = useDirectusAuth();
 
-  if (appStore.firstRefresh) {
-    appStore.firstRefresh = false;
+  const firstRefresh = useState("first-refresh", () => false);
+
+  if (firstRefresh.value) {
+    firstRefresh.value = false;
   } else if (!user.value) {
     return;
   }
+  const accessTokenExpiry = useState<number | undefined>("access-token-expiry", () => 0);
 
   const {
     refreshTokens
   } = useCustomRefresh();
 
-  if (!appStore.accessTokenExpiry ||
-    appStore.accessTokenExpiry === 0 ||
-    Date.now() >= appStore.accessTokenExpiry - 10000) {
+  if (!accessTokenExpiry.value ||
+    accessTokenExpiry.value === 0 ||
+    Date.now() >= accessTokenExpiry.value - 10000) {
     try {
       const refreshCookie = useCookie("directus_refresh_token");
       if (!refreshCookie) {
@@ -28,10 +29,10 @@ export default defineNuxtRouteMiddleware(async (_to, _from) => {
       }
       const res = await refreshTokens();
       if (res) {
-        appStore.accessTokenExpiry = Date.now() + res.expires;
+        accessTokenExpiry.value = Date.now() + res.expires;
       }
     } catch (err) {
-      console.log("Error refreshing tokens!", JSON.stringify(err));
+      console.log("Error refreshing tokens!", err);
     }
   }
 });
