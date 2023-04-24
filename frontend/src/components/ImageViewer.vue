@@ -45,7 +45,7 @@
 </template>
 
 <script setup lang="ts">
-import { onKeyStroke, onClickOutside, useSwipe } from "@vueuse/core";
+import { onKeyStroke, onClickOutside } from "@vueuse/core";
 
 const props = defineProps<{
   src?: string,
@@ -76,16 +76,6 @@ const loaded = ref(false);
 const image = ref(null);
 const next = ref(null);
 const prev = ref(null);
-
-const { isSwiping, direction } = useSwipe(image);
-
-watch(isSwiping, () => {
-  if (direction.value === "left") {
-    emits("prev");
-  } else if (direction.value === "right") {
-    emits("next");
-  }
-});
 
 onClickOutside(image, (e) => {
   emits("close");
