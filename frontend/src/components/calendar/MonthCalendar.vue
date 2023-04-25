@@ -82,7 +82,7 @@ const events = [];
 addEvent({
   name: "The First Multi Day Event",
   startDate: new Date("2023-04-04"),
-  endDate: new Date("2023-04-19"),
+  endDate: new Date("2023-04-08"),
   color: "#ed6161"
 });
 
@@ -173,7 +173,7 @@ function getSpannedEventsForDate (date: Date) {
   for (let i = 0; i < events.length; i++) {
     const event = events[i];
 
-    if (date > event.startDate && date < event.endDate) {
+    if (date > event.startDate && date <= event.endDate) {
       const durationInDays = intervalToDuration({
         start: event.startDate,
         end: event.endDate
