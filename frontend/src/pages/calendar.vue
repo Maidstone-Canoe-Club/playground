@@ -3,9 +3,11 @@
     <div class="container">
       <div class="calendar-page__heading">
         <h1>{{ selectedMonthLabel }} {{ selectedYear }}</h1>
-        <month-calendar
-          :year="selectedYear"
-          :month="selectedMonth" />
+        <client-only>
+          <month-calendar
+            :year="selectedYear"
+            :month="selectedMonth" />
+        </client-only>
       </div>
     </div>
   </div>
