@@ -113,6 +113,13 @@ for (let i = 0; i < weeksInMonth; i++) {
 const events = [];
 
 addEvent({
+  name: "An event from last month",
+  startDate: new Date("2023-03-26"),
+  endDate: new Date("2023-04-01"),
+  color: "#ed6161"
+});
+
+addEvent({
   name: "The First Multi Day Event",
   startDate: new Date("2023-04-04"),
   endDate: new Date("2023-04-08"),
@@ -151,20 +158,31 @@ addEvent({
   color: "#ed61e8"
 });
 
+// addEvent({
+//   name: "Event into next month",
+//   startDate: new Date("2023-04-28"),
+//   endDate: new Date("2023-05-01"),
+//   color: "#ed61e8"
+// });
+
 function addEvent (eventData) {
   const spannedDays = getSpannedEventsForDate(eventData.startDate);
   events.push(eventData);
 
-  const startWeek = getWeekOfMonth(eventData.startDate);
+  let startWeek = getWeekOfMonth(eventData.startDate);
   const endWeek = getWeekOfMonth(eventData.endDate);
   const startDayOfWeek = getISODay(eventData.startDate) - 1;
   const endDayOfWeek = getISODay(eventData.endDate);
 
+  if (eventData.startDate.getMonth() < startDate.getMonth()) {
+    startWeek = startWeek - weeksInMonth + 1;
+  }
   const durationInDays = intervalToDuration({
     start: eventData.startDate,
     end: eventData.endDate
   }).days + 1;
 
+  // can be negative if end date spans into next month
   const weeksSpanned = (endWeek - startWeek) + 1;
 
   const hoverController = {
@@ -172,22 +190,26 @@ function addEvent (eventData) {
   };
 
   if (weeksSpanned > 1) {
-    weeks.value[startWeek - 1].days[startDayOfWeek].topPush = spannedDays;
-    weeks.value[startWeek - 1].days[startDayOfWeek].events.push({
-      label: eventData.name,
-      spanLength: 7 - startDayOfWeek,
-      color: eventData.color,
-      spanWrapsEnd: true,
-      hoverController
-    });
-
-    for (let i = 1; i < weeksSpanned - 1; i++) {
-      weeks.value[startWeek + i - 1].days[0].events.push({
-        label: `(cont) ${eventData.name}`,
-        spanLength: 7,
+    if (startWeek - 1 >= 0) {
+      weeks.value[startWeek - 1].days[startDayOfWeek].topPush = spannedDays;
+      weeks.value[startWeek - 1].days[startDayOfWeek].events.push({
+        label: eventData.name,
+        spanLength: 7 - startDayOfWeek,
         color: eventData.color,
+        spanWrapsEnd: true,
         hoverController
       });
+    }
+
+    for (let i = 1; i < weeksSpanned - 1; i++) {
+      if (startWeek + i - 1 >= 0) {
+        weeks.value[startWeek + i - 1].days[0].events.push({
+          label: `(cont) ${eventData.name}`,
+          spanLength: 7,
+          color: eventData.color,
+          hoverController
+        });
+      }
     }
 
     weeks.value[endWeek - 1].days[0].events.push({
@@ -197,7 +219,7 @@ function addEvent (eventData) {
       spanWrapsStart: true,
       hoverController
     });
-  } else {
+  } else if (startWeek - 1 >= 0) {
     weeks.value[startWeek - 1].days[startDayOfWeek].topPush = spannedDays;
     weeks.value[startWeek - 1].days[startDayOfWeek].events.push({
       label: eventData.name,
