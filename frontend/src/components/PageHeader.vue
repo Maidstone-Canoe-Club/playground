@@ -70,7 +70,6 @@ const loginUrl = "/login?redirect=" + route.fullPath;
 const links = ref([
   { url: "/", name: "Home" },
   { url: "/news", name: "News" },
-  { url: "/calendar", name: "Calendar" },
   { url: "/galleries", name: "Galleries" }
 ]);
 
