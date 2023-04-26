@@ -17,7 +17,7 @@
         :key="dayIndex"
         :class="{'day--today': day.isToday, 'day--last-month': day.lastMonth}"
         class="day">
-        <span>{{ day.label }}</span>
+        <span class="day__label">{{ day.label }}</span>
         <div
           v-if="day.events.length"
           class="day__events"
@@ -29,7 +29,15 @@
             :style="getSpanStyling(event)">
             <span
               class="day__event-item-label"
-              :style="getLabelStyling(event)">
+              :class="{
+                'day__event-item-label--hovering': event.hoverController.hovering,
+                'day__event-item-label--no-hovering': itemIsBeingHovered && !event.hoverController.hovering,
+                'day__event-item-label--wrap-start': event.spanWrapsStart,
+                'day__event-item-label--wrap-end': event.spanWrapsEnd
+              }"
+              :style="getLabelStyling(event)"
+              @mouseover="onItemMouseOver(event)"
+              @mouseleave="onItemMouseLeave(event)">
               {{ event.label }}
             </span>
           </div>
@@ -51,6 +59,7 @@ const props = defineProps<{
   year: number
 }>();
 
+const itemIsBeingHovered = ref(false);
 const weeks = ref([]);
 
 setDefaultOptions({
@@ -67,6 +76,16 @@ const monthLengthInDays = getDaysInMonth(props.month);
 const weeksInMonth = Math.ceil(monthLengthInDays / 7);
 const lastMonthDays = getDaysInMonth(addMonths(startDate, -1));
 
+function onItemMouseOver (event) {
+  itemIsBeingHovered.value = true;
+  event.hoverController.hovering = true;
+}
+
+function onItemMouseLeave (event) {
+  itemIsBeingHovered.value = false;
+  event.hoverController.hovering = false;
+}
+
 for (let i = 0; i < weeksInMonth; i++) {
   const weekData = {
     index: i,
@@ -78,8 +97,8 @@ for (let i = 0; i < weeksInMonth; i++) {
     weekData.days.push({
       index: j,
       label: dayOfMonth > 0
-        ? dayOfMonth + getDayOrdinal(dayOfMonth)
-        : (dayOfMonth + lastMonthDays) + getDayOrdinal(dayOfMonth + lastMonthDays),
+        ? dayOfMonth
+        : (dayOfMonth + lastMonthDays),
       topPush: 0,
       events: [],
       dayOfMonth,
@@ -113,20 +132,20 @@ addEvent({
   color: "#6199ed"
 });
 addEvent({
-  name: "single",
+  name: "Single day",
   startDate: new Date("2023-04-08"),
   endDate: new Date("2023-04-08"),
   color: "#ed61e8"
 });
 //
 addEvent({
-  name: "single",
+  name: "Single day",
   startDate: new Date("2023-04-22"),
   endDate: new Date("2023-04-22"),
   color: "#ed61e8"
 });
 addEvent({
-  name: "single",
+  name: "Single day",
   startDate: new Date("2023-04-22"),
   endDate: new Date("2023-04-22"),
   color: "#ed61e8"
@@ -148,33 +167,43 @@ function addEvent (eventData) {
 
   const weeksSpanned = (endWeek - startWeek) + 1;
 
+  const hoverController = {
+    hovering: false
+  };
+
   if (weeksSpanned > 1) {
     weeks.value[startWeek - 1].days[startDayOfWeek].topPush = spannedDays;
     weeks.value[startWeek - 1].days[startDayOfWeek].events.push({
       label: eventData.name,
       spanLength: 7 - startDayOfWeek,
-      color: eventData.color
+      color: eventData.color,
+      spanWrapsEnd: true,
+      hoverController
     });
 
     for (let i = 1; i < weeksSpanned - 1; i++) {
       weeks.value[startWeek + i - 1].days[0].events.push({
         label: `(cont) ${eventData.name}`,
         spanLength: 7,
-        color: eventData.color
+        color: eventData.color,
+        hoverController
       });
     }
 
     weeks.value[endWeek - 1].days[0].events.push({
       label: `(cont) ${eventData.name}`,
       spanLength: endDayOfWeek,
-      color: eventData.color
+      color: eventData.color,
+      spanWrapsStart: true,
+      hoverController
     });
   } else {
     weeks.value[startWeek - 1].days[startDayOfWeek].topPush = spannedDays;
     weeks.value[startWeek - 1].days[startDayOfWeek].events.push({
       label: eventData.name,
       spanLength: durationInDays,
-      color: eventData.color
+      color: eventData.color,
+      hoverController
     });
   }
 }
@@ -217,7 +246,8 @@ function getSpanStyling (event) {
 
   if (event.spanLength) {
     // item widths x double the item padding - 1 item padding
-    result.width = `calc(${100 * event.spanLength}% + ${event.spanLength}rem - 1rem)`;
+    const dayItemPadding = 0.5;
+    result.width = `calc(${100 * event.spanLength}% + ${event.spanLength * dayItemPadding}rem - ${dayItemPadding}rem)`;
   }
 
   return result;
@@ -229,14 +259,35 @@ function getLabelStyling (event) {
     // borderLeftColor: `darken(${event.color}, 10%)`
   };
 }
-
 </script>
 
 <style lang="scss" scoped>
+@import "@/assets/css/variables.scss";
+
 .calendar {
   .week {
     display: grid;
     grid-template-columns: repeat(7, calc(100% / 7));
+
+    &:nth-child(2) {
+      & > .day:nth-child(1) {
+        border-top-left-radius: .5rem;
+      }
+
+      & > .day:nth-child(7) {
+        border-top-right-radius: .5rem;
+      }
+    }
+
+    &:nth-child(6) {
+      & > .day:nth-child(1) {
+        border-bottom-left-radius: .5rem;
+      }
+
+      & > .day:nth-child(7) {
+        border-bottom-right-radius: .5rem;
+      }
+    }
   }
 
   .day-column {
@@ -252,7 +303,8 @@ function getLabelStyling (event) {
     width: 100%;
     min-height: 100px;
     background-color: #fff;
-    padding: .25rem .5rem .5rem;
+    padding: .25rem .25rem .5rem;
+    font-weight: 700;
 
     &--today {
       background-color: #f3f3f3;
@@ -260,6 +312,13 @@ function getLabelStyling (event) {
 
     &--last-month {
       color: gray;
+      font-weight: inherit;
+    }
+
+    &__label {
+      display: block;
+      margin-bottom: .5rem;
+      padding-left: .5rem;
     }
 
     &__events {
@@ -272,7 +331,6 @@ function getLabelStyling (event) {
       display: flex;
       flex-direction: column;
       min-width: 0;
-      //padding: 0 .25rem;
 
       &-time {
         font-size: .7rem;
@@ -281,10 +339,9 @@ function getLabelStyling (event) {
       }
 
       &-label {
-        //background-color: #b1d5ff;
-        //border-left: 5px solid red;
-        border: 1px solid green;
-        border-radius: .5rem;
+        background-color: $primary-color;
+        color: #fff;
+        border-radius: .25rem;
         font-weight: 700;
         font-size: .7rem;
         padding: 0 .3rem;
@@ -292,9 +349,22 @@ function getLabelStyling (event) {
         white-space: nowrap;
         text-overflow: ellipsis;
         height: 21px;
-        //line-height: 15px;
         z-index: 10;
         transition: background-color .2s ease-out;
+
+        &--no-hovering {
+          background-color: lighten(desaturate($primary-color, 10%), 25%);
+        }
+
+        &--wrap-start {
+          border-top-left-radius: 0;
+          border-bottom-left-radius: 0;
+        }
+
+        &--wrap-end {
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
+        }
       }
 
       &:hover {
