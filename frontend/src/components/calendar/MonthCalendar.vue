@@ -111,7 +111,13 @@ for (let i = 0; i < weeksInMonth; i++) {
 }
 
 const events = [];
-
+// TODO: List of events should be ordered by startDate
+addEvent({
+  name: "Event into next month",
+  startDate: new Date("2023-01-20"),
+  endDate: new Date("2023-05-30"),
+  color: "#ed61e8"
+});
 addEvent({
   name: "An event from last month",
   startDate: new Date("2023-03-26"),
@@ -158,13 +164,6 @@ addEvent({
   color: "#ed61e8"
 });
 
-// addEvent({
-//   name: "Event into next month",
-//   startDate: new Date("2023-04-28"),
-//   endDate: new Date("2023-05-01"),
-//   color: "#ed61e8"
-// });
-
 function addEvent (eventData) {
   const spannedDays = getSpannedEventsForDate(eventData.startDate);
   events.push(eventData);
@@ -174,6 +173,7 @@ function addEvent (eventData) {
   const startDayOfWeek = getISODay(eventData.startDate) - 1;
   const endDayOfWeek = getISODay(eventData.endDate);
 
+  // rename startDate to current selected date/month
   if (eventData.startDate.getMonth() < startDate.getMonth()) {
     startWeek = startWeek - weeksInMonth + 1;
   }
@@ -182,7 +182,6 @@ function addEvent (eventData) {
     end: eventData.endDate
   }).days + 1;
 
-  // can be negative if end date spans into next month
   const weeksSpanned = (endWeek - startWeek) + 1;
 
   const hoverController = {
@@ -207,16 +206,34 @@ function addEvent (eventData) {
           label: `(cont) ${eventData.name}`,
           spanLength: 7,
           color: eventData.color,
-          hoverController
+          hoverController,
+          spanWrapsStart: true,
+          spanWrapsEnd: true
         });
       }
     }
 
+    let endWeekDuration = endDayOfWeek;
+    let spanWrapsEnd = false;
+    if (eventData.endDate.getMonth() > startDate.getMonth()) {
+      endWeekDuration = 7;
+      spanWrapsEnd = true;
+    }
+
     weeks.value[endWeek - 1].days[0].events.push({
       label: `(cont) ${eventData.name}`,
-      spanLength: endDayOfWeek,
+      spanLength: endWeekDuration,
       color: eventData.color,
       spanWrapsStart: true,
+      spanWrapsEnd,
+      hoverController
+    });
+  } else if (weeksSpanned < 0) {
+    weeks.value[startWeek - 1].days[startDayOfWeek].topPush = spannedDays;
+    weeks.value[startWeek - 1].days[startDayOfWeek].events.push({
+      label: eventData.name,
+      spanLength: 7 - startDayOfWeek,
+      color: eventData.color,
       hoverController
     });
   } else if (startWeek - 1 >= 0) {
