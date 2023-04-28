@@ -1,17 +1,16 @@
-<template>
+﻿<template>
   <div
-    class="input-field"
+    class="input-field input-field--text-area"
     :class="{'input-field--invalid': !isValid}">
-    <label
-      :for="id">
+    <label :for="id">
       {{ label }}
     </label>
-    <input
+    <textarea
       :id="id"
       v-model="internalValue"
       :required="required"
-      :type="type"
-      v-bind="$attrs">
+      :rows="rows"
+      v-bind="$attrs" />
     <span v-if="error">
       {{ error }}
     </span>
@@ -22,19 +21,18 @@
 import { Validation } from "@vuelidate/core";
 
 interface Props {
-    modelValue: string | null,
-    id: string,
-    type: string,
-    label: string,
-    required?: boolean,
-    v?: Validation | null
+  modelValue: string | null,
+  id: string,
+  label: string,
+  required?: boolean,
+  rows?: number,
+  v?: Validation | null
 }
 
 const emit = defineEmits(["update:modelValue"]);
-
 const props = withDefaults(defineProps<Props>(), {
-  type: "text",
   required: false,
+  rows: null,
   v: null
 });
 
@@ -57,7 +55,7 @@ const internalValue = computed<string | null>({
 
 </script>
 
-<style lang="scss">
+<style  lang="scss" scoped>
 .input-field {
   display: flex;
   flex-direction: column;

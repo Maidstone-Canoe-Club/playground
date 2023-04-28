@@ -30,6 +30,7 @@
             <span
               class="day__event-item-label"
               :class="{
+                'day__event-item-label--in-past': event.inThePast && !event.hoverController.hovering,
                 'day__event-item-label--hovering': event.hoverController.hovering,
                 'day__event-item-label--no-hovering': itemIsBeingHovered && !event.hoverController.hovering,
                 'day__event-item-label--wrap-start': event.spanWrapsStart,
@@ -114,53 +115,53 @@ const events = [];
 // TODO: List of events should be ordered by startDate
 addEvent({
   name: "Event into next month",
-  startDate: new Date("2023-01-20"),
-  endDate: new Date("2023-05-30"),
+  startDateTime: new Date("2023-01-20"),
+  endDateTime: new Date("2023-05-30"),
   color: "#ed61e8"
 });
 addEvent({
   name: "An event from last month",
-  startDate: new Date("2023-03-26"),
-  endDate: new Date("2023-04-01"),
+  startDateTime: new Date("2023-03-26"),
+  endDateTime: new Date("2023-04-01"),
   color: "#ed6161"
 });
 
 addEvent({
   name: "The First Multi Day Event",
-  startDate: new Date("2023-04-04"),
-  endDate: new Date("2023-04-08"),
+  startDateTime: new Date("2023-04-04"),
+  endDateTime: new Date("2023-04-08"),
   color: "#ed6161"
 });
 addEvent({
   name: "The First Multi Day Event",
-  startDate: new Date("2023-04-05"),
-  endDate: new Date("2023-04-11"),
+  startDateTime: new Date("2023-04-05"),
+  endDateTime: new Date("2023-04-11"),
   color: "#9ded61"
 });
 //
 addEvent({
   name: "A second multi day event",
-  startDate: new Date("2023-04-06"),
-  endDate: new Date("2023-04-10"),
+  startDateTime: new Date("2023-04-06"),
+  endDateTime: new Date("2023-04-10"),
   color: "#6199ed"
 });
 addEvent({
   name: "Single day",
-  startDate: new Date("2023-04-08"),
-  endDate: new Date("2023-04-08"),
+  startDateTime: new Date("2023-04-08"),
+  endDateTime: new Date("2023-04-08"),
   color: "#ed61e8"
 });
 //
 addEvent({
   name: "Single day",
-  startDate: new Date("2023-04-22"),
-  endDate: new Date("2023-04-22"),
+  startDateTime: new Date("2023-04-22"),
+  endDateTime: new Date("2023-04-22"),
   color: "#ed61e8"
 });
 addEvent({
   name: "Single day",
-  startDate: new Date("2023-04-22"),
-  endDate: new Date("2023-04-22"),
+  startDateTime: new Date("2023-04-22"),
+  endDateTime: new Date("2023-04-22"),
   color: "#ed61e8"
 });
 
@@ -172,6 +173,7 @@ function addEvent (eventData) {
   const endWeek = getWeekOfMonth(eventData.endDate);
   const startDayOfWeek = getISODay(eventData.startDate) - 1;
   const endDayOfWeek = getISODay(eventData.endDate);
+  const inThePast = eventData.endDate < Date.now();
 
   // rename startDate to current selected date/month
   if (eventData.startDate.getMonth() < startDate.getMonth()) {
@@ -196,7 +198,8 @@ function addEvent (eventData) {
         spanLength: 7 - startDayOfWeek,
         color: eventData.color,
         spanWrapsEnd: true,
-        hoverController
+        hoverController,
+        inThePast
       });
     }
 
@@ -208,7 +211,8 @@ function addEvent (eventData) {
           color: eventData.color,
           hoverController,
           spanWrapsStart: true,
-          spanWrapsEnd: true
+          spanWrapsEnd: true,
+          inThePast
         });
       }
     }
@@ -226,7 +230,8 @@ function addEvent (eventData) {
       color: eventData.color,
       spanWrapsStart: true,
       spanWrapsEnd,
-      hoverController
+      hoverController,
+      inThePast
     });
   } else if (weeksSpanned < 0) {
     weeks.value[startWeek - 1].days[startDayOfWeek].topPush = spannedDays;
@@ -234,7 +239,8 @@ function addEvent (eventData) {
       label: eventData.name,
       spanLength: 7 - startDayOfWeek,
       color: eventData.color,
-      hoverController
+      hoverController,
+      inThePast
     });
   } else if (startWeek - 1 >= 0) {
     weeks.value[startWeek - 1].days[startDayOfWeek].topPush = spannedDays;
@@ -242,7 +248,8 @@ function addEvent (eventData) {
       label: eventData.name,
       spanLength: durationInDays,
       color: eventData.color,
-      hoverController
+      hoverController,
+      inThePast
     });
   }
 }
@@ -390,6 +397,10 @@ function getLabelStyling (event) {
         height: 21px;
         z-index: 10;
         transition: background-color .2s ease-out;
+
+        &--in-past {
+          background-color: lighten(desaturate($primary-color, 10%), 25%);
+        }
 
         &--no-hovering {
           background-color: lighten(desaturate($primary-color, 10%), 25%);

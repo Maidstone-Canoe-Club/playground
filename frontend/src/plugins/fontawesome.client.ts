@@ -11,7 +11,8 @@ import {
   faArrowRightToBracket,
   faXmark,
   faAngleLeft,
-  faAngleRight
+  faAngleRight,
+  faPlus
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faUser
@@ -27,6 +28,7 @@ library.add(faArrowRightToBracket);
 library.add(faXmark);
 library.add(faAngleLeft);
 library.add(faAngleRight);
+library.add(faPlus);
 
 library.add(faUser);
 

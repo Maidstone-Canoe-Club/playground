@@ -20,11 +20,19 @@ export default defineNuxtConfig({
     }
   },
 
+  components: [
+    {
+      path: "~/components",
+      pathPrefix: false
+    }
+  ],
+
   modules: [
     "nuxt-directus",
     "@nuxtjs/google-fonts",
     "@nuxt/image-edge",
-    "@vueuse/nuxt"
+    "@vueuse/nuxt",
+    "@nuxt/devtools"
   ],
 
   googleFonts: {

@@ -3,12 +3,19 @@
     <div class="container">
       <div class="calendar-page__heading">
         <h1>{{ selectedMonthLabel }} {{ selectedYear }}</h1>
-        <client-only>
-          <month-calendar
-            :year="selectedYear"
-            :month="selectedMonth" />
-        </client-only>
+        <nuxt-link
+          class="btn btn-outline"
+          to="/events/new">
+          <fa-icon icon="fa-solid fa-plus" />
+          New event
+        </nuxt-link>
       </div>
+
+      <client-only>
+        <month-calendar
+          :year="selectedYear"
+          :month="selectedMonth" />
+      </client-only>
     </div>
   </div>
 </template>
@@ -16,7 +23,6 @@
 <script setup lang="ts">
 import { Ref } from "vue";
 import { getMonthFromIndex } from "~/utils/date";
-import MonthCalendar from "~/components/calendar/MonthCalendar.vue";
 
 const now = new Date();
 
@@ -31,7 +37,10 @@ const selectedMonthLabel = getMonthFromIndex(selectedMonth.value);
 .calendar-page {
   &__heading {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    align-items: center;
+
+    justify-content: space-between;
   }
 }
 </style>

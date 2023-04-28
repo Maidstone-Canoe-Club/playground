@@ -1,13 +1,17 @@
 @import "variables.scss";
 
 .btn {
-  display: inline-block;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
   border: none;
+  gap: .5rem;
   padding: .625rem 1.25rem;
   border-radius: .5rem;
-  font-weight: 700;
+  font-weight: 400;
   text-decoration: none;
   transition: background-color .1s ease-out,
+    color .1s ease-out,
     box-shadow .1s ease-out,
     outline .1s ease-out;
   
@@ -46,12 +50,12 @@
     
     &:hover {
       color: lighten($primary-color, 20%);
-      outline: 3px solid lighten($primary-color, 20%);
+      outline: 4px solid lighten($primary-color, 20%);
     }
     
     &:focus {
       color: $primary-color;
-      outline: 3px solid lighten($primary-color, 20%);
+      outline: 4px solid lighten($primary-color, 20%);
     }
   }
 }

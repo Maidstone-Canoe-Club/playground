@@ -3,6 +3,7 @@
 export default defineNuxtRouteMiddleware(async (_to, _from) => {
   const user = useDirectusUser();
   const { fetchUser } = useDirectusAuth();
+  const { refreshTokens } = useDirectusToken();
 
   const firstRefresh = useState("first-refresh", () => false);
 
@@ -13,9 +14,9 @@ export default defineNuxtRouteMiddleware(async (_to, _from) => {
   }
   const accessTokenExpiry = useState<number | undefined>("access-token-expiry", () => 0);
 
-  const {
-    refreshTokens
-  } = useCustomRefresh();
+  // const {
+  //   refreshTokens
+  // } = useCustomRefresh();
 
   if (!accessTokenExpiry.value ||
     accessTokenExpiry.value === 0 ||

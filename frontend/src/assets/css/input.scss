@@ -1,18 +1,27 @@
 @import "variables.scss";
 
+textarea,
 input {
     border: 1px solid lightgray;
     padding: .375rem .625rem;
     border-radius: .375rem;
-    font-size: .875rem;
-    line-height: 1.5;
     outline: none;
     box-shadow: 0 0 0 0 blue;
-    transition: box-shadow .1s ease-out;
+    transition: box-shadow .1s ease-out,
+    border .1s ease-out;
 
     &:focus-visible {
+      border-color: transparent;
       box-shadow: 0 0 0 2px $primary-color;
     }
+}
+
+select {
+  border: 1px solid lightgray;
+  background-color: #fff;
+  padding: .375rem .625rem;
+  border-radius: .375rem;
+  outline: none;
 }
 
 .h1-input {
