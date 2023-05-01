@@ -52,7 +52,6 @@ export default defineNuxtConfig({
 
   css: [
     "~/assets/css/normalize.css",
-    "~/assets/css/variables.scss",
     "~/assets/css/main.scss",
     "~/assets/css/button.scss",
     "~/assets/css/input.scss",

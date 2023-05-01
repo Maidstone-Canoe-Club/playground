@@ -23,6 +23,7 @@ useHead({
   flex-direction: column;
   justify-content: space-between;
   max-height: 100vh;
+  height: 100vh;
   overflow-y: scroll;
 
   &__page {

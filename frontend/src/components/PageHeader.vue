@@ -86,8 +86,6 @@ onClickOutside(sidebar, () => {
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/css/variables.scss";
-
 .page-header {
   width: 100%;
   padding: 1rem 0;
@@ -169,7 +167,7 @@ onClickOutside(sidebar, () => {
     & > a {
       font-weight: 700;
       text-decoration: none;
-      color: $black;
+      color: var(--text-color);
     }
 
     &--active > a {
@@ -198,7 +196,7 @@ onClickOutside(sidebar, () => {
 
   &__profile-link {
     text-decoration: none;
-    color: $black;
+    color: var(--text-color);
   }
 
   &__menu-controls {

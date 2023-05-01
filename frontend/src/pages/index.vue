@@ -11,7 +11,7 @@
           Join us
         </h1>
         <p>Words go here</p>
-        <button class="btn btn-outline">
+        <button class="btn btn-outline-primary">
           Click here to do something
         </button>
       </div>

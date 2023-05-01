@@ -1,0 +1,16 @@
+﻿
+$black: #000;
+$white: #fff;
+
+$text-color: #111;
+$primary-color: #2D327D;
+$gray: #abbcd5;
+
+$min-contrast-ratio: 4.5;
+$color-contrast-dark: $black;
+$color-contrast-light: $white;
+
+$color-variants: (
+  "primary": $primary-color,
+  "gray": $gray
+)

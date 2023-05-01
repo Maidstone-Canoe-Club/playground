@@ -1,4 +1,20 @@
-@import "variables.scss"; 
+@use "variables" as *;
+@use "mixins" as *;
+
+:root {
+  --black: $black;
+  --white: $white;
+  --text-color: $text-color;
+  
+  --color-danger: #df4759;
+  --color-warning: #ffc107;
+  --color-success: #42ba96;
+  --color-info: #467fd0;
+  
+  @each $name, $color in $color-variants {
+    @include generate-color-variants($name, $color);
+  }
+}
 
 * {
   box-sizing: border-box;
@@ -8,7 +24,7 @@
 html {
   font-family: 'Lato', sans-serif;
   font-size: 1rem;
-  color: $black;
+  color: var(--text-color);
 }
 
 html, body #__nuxt{
@@ -29,4 +45,10 @@ p, h1, h2, h3, h4, h5, h6 {
   max-width: 1300px;
   margin: 0 auto;
   padding: 0 1rem;
+}
+
+button {
+  &:hover {
+    cursor: pointer;
+  }
 }
