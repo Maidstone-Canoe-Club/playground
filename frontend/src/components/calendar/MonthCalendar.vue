@@ -115,53 +115,53 @@ const events = [];
 // TODO: List of events should be ordered by startDate
 addEvent({
   name: "Event into next month",
-  startDateTime: new Date("2023-01-20"),
-  endDateTime: new Date("2023-05-30"),
+  startDate: new Date("2023-01-20"),
+  endDate: new Date("2023-05-30"),
   color: "#ed61e8"
 });
 addEvent({
   name: "An event from last month",
-  startDateTime: new Date("2023-03-26"),
-  endDateTime: new Date("2023-04-01"),
+  startDate: new Date("2023-03-26"),
+  endDate: new Date("2023-04-01"),
   color: "#ed6161"
 });
 
 addEvent({
   name: "The First Multi Day Event",
-  startDateTime: new Date("2023-04-04"),
-  endDateTime: new Date("2023-04-08"),
+  startDate: new Date("2023-04-04"),
+  endDate: new Date("2023-04-08"),
   color: "#ed6161"
 });
 addEvent({
   name: "The First Multi Day Event",
-  startDateTime: new Date("2023-04-05"),
-  endDateTime: new Date("2023-04-11"),
+  startDate: new Date("2023-04-05"),
+  endDate: new Date("2023-04-11"),
   color: "#9ded61"
 });
 //
 addEvent({
   name: "A second multi day event",
-  startDateTime: new Date("2023-04-06"),
-  endDateTime: new Date("2023-04-10"),
+  startDate: new Date("2023-04-06"),
+  endDate: new Date("2023-04-10"),
   color: "#6199ed"
 });
 addEvent({
   name: "Single day",
-  startDateTime: new Date("2023-04-08"),
-  endDateTime: new Date("2023-04-08"),
+  startDate: new Date("2023-04-08"),
+  endDate: new Date("2023-04-08"),
   color: "#ed61e8"
 });
 //
 addEvent({
   name: "Single day",
-  startDateTime: new Date("2023-04-22"),
-  endDateTime: new Date("2023-04-22"),
+  startDate: new Date("2023-04-22"),
+  endDate: new Date("2023-04-22"),
   color: "#ed61e8"
 });
 addEvent({
   name: "Single day",
-  startDateTime: new Date("2023-04-22"),
-  endDateTime: new Date("2023-04-22"),
+  startDate: new Date("2023-04-22"),
+  endDate: new Date("2023-04-22"),
   color: "#ed61e8"
 });
 
