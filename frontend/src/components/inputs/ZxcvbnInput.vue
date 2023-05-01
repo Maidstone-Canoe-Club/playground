@@ -23,16 +23,18 @@
 </template>
 
 <script setup lang="ts">
-import { zxcvbnOptions, zxcvbnAsync, debounce, ZxcvbnResult } from "@zxcvbn-ts/core";
-import zxcvbnCommonPackage from "@zxcvbn-ts/language-common";
+import { ZxcvbnResult } from "@zxcvbn-ts/core";
 import { Validation } from "@vuelidate/core";
 import { Ref } from "vue";
 
+const { zxcvbnOptions, zxcvbnAsync, debounce } = await import("@zxcvbn-ts/core");
+const zxcvbnCommonPackage = await import("@zxcvbn-ts/language-common");
+
 const options = {
   dictionary: {
-    ...zxcvbnCommonPackage.dictionary
+    ...zxcvbnCommonPackage.default.dictionary
   },
-  graphs: zxcvbnCommonPackage.adjacencyGraphs
+  graphs: zxcvbnCommonPackage.default.adjacencyGraphs
 };
 zxcvbnOptions.setOptions(options);
 
