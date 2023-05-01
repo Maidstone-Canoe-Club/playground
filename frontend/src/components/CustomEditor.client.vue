@@ -6,14 +6,15 @@
     toolbar="full" />
 </template>
 
-<script setup>
+<script setup lang="ts">
+// @ts-ignore
 import ImageUploader from "quill-image-uploader";
 import axios from "axios";
 
 const emit = defineEmits(["update:modelValue"]);
-const props = defineProps({
-  modelValue: String
-});
+const props = defineProps<{
+  modelValue?: string
+}>();
 
 const directusUrl = useDirectusUrl();
 const { token } = useDirectusToken();
