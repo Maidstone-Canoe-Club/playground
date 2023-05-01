@@ -12,10 +12,11 @@ import {
   faXmark,
   faAngleLeft,
   faAngleRight,
-  faPlus
+  faPlus,
+  faUser
 } from "@fortawesome/free-solid-svg-icons";
 import {
-  faUser
+  faUser as farUser
 } from "@fortawesome/free-regular-svg-icons";
 
 library.add(faCheck);
@@ -29,8 +30,9 @@ library.add(faXmark);
 library.add(faAngleLeft);
 library.add(faAngleRight);
 library.add(faPlus);
-
 library.add(faUser);
+
+library.add(farUser);
 
 config.autoAddCss = false;
 
