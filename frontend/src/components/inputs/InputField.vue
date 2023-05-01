@@ -3,6 +3,7 @@
     class="input-field"
     :class="{'input-field--invalid': !isValid}">
     <label
+      v-if="label"
       :for="id">
       {{ label }}
     </label>
@@ -22,10 +23,10 @@
 import { Validation } from "@vuelidate/core";
 
 interface Props {
-    modelValue: string | null,
+    modelValue: string | number | null,
     id: string,
     type: string,
-    label: string,
+    label?: string,
     required?: boolean,
     v?: Validation | null
 }
@@ -34,6 +35,7 @@ const emits = defineEmits(["update:modelValue"]);
 
 const props = withDefaults(defineProps<Props>(), {
   type: "text",
+  label: null,
   required: false,
   v: null
 });
@@ -46,7 +48,7 @@ const error = computed(() => {
 
 const isValid = computed(() => !props.v?.$invalid ?? true);
 
-const internalValue = computed<string | null>({
+const internalValue = computed<string | number | null>({
   get () {
     return props.modelValue;
   },
