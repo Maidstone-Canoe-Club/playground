@@ -11,7 +11,7 @@
     <div
       v-else
       class="user-avatar__missing">
-      ?
+      <fa-icon icon="fa-solid fa-user" />
     </div>
   </div>
 </template>
@@ -54,7 +54,6 @@ const sizeStyle = reactive({
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 3rem;
     font-weight: 700;
   }
 }
