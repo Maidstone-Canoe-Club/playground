@@ -10,8 +10,9 @@
       v-model="selected">
       <option
         v-for="(option, index) in options"
-        :key="index">
-        {{ option }}
+        :key="index"
+        :value="getValue(option)">
+        {{ getLabel(option) }}
       </option>
     </select>
   </div>
@@ -24,8 +25,10 @@ const emits = defineEmits(["update:modelValue"]);
 const props = defineProps<{
   id: string,
   label?: string,
-  options: string[]
-  modelValue: string
+  options: string[] | any
+  modelValue: any,
+  labelKey?: string,
+  valueKey?: string
 }>();
 
 const selected = computed({
@@ -36,6 +39,26 @@ const selected = computed({
     emits("update:modelValue", val);
   }
 });
+
+function getLabel (option) {
+  let result = option;
+
+  if (props.labelKey) {
+    result = option[props.labelKey];
+  }
+
+  return result;
+}
+
+function getValue (option) {
+  let result = option;
+
+  if (props.valueKey) {
+    result = option[props.valueKey];
+  }
+
+  return result;
+}
 
 </script>
 
