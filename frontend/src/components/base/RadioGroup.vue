@@ -1,7 +1,5 @@
 ﻿<template>
-  <div class="event-wizard">
-    <user-select allow-multiple />
-  </div>
+  <div class="radio-group" />
 </template>
 
 <script setup lang="ts">

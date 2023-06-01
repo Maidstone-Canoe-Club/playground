@@ -1,7 +1,7 @@
 ﻿<template>
   <div class="new-event">
     <div class="container">
-      <h1>New Event</h1>
+      <h1>New event</h1>
       <event-wizard />
       <!--      <div>-->
       <!--        <user-search />-->

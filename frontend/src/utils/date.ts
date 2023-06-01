@@ -1,4 +1,6 @@
-﻿export const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+﻿import { format } from "date-fns";
+
+export const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 export function getMonthFromIndex (monthIndex: number): string {
@@ -28,4 +30,18 @@ export function getDayOrdinal (day: number): string {
   default:
     return "th";
   }
+}
+
+export function formatDate (date: Date, formatTime: boolean) {
+  if (!date) {
+    return null;
+  }
+
+  let formatter = "do MMMM yyyy";
+
+  if (formatTime) {
+    formatter += " h:mmaaa";
+  }
+
+  return format(date, formatter);
 }

@@ -27,6 +27,10 @@ export default defineNuxtConfig({
     }
   ],
 
+  build: {
+    transpile: ["@vuepic/vue-datepicker"]
+  },
+
   modules: [
     "nuxt-directus",
     "@nuxtjs/google-fonts",
@@ -37,7 +41,7 @@ export default defineNuxtConfig({
 
   googleFonts: {
     families: {
-      Lato: [400, 700]
+      Roboto: [400, 700]
     }
   },
 

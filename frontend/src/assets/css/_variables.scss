@@ -12,5 +12,9 @@ $color-contrast-light: $white;
 
 $color-variants: (
   "primary": $primary-color,
-  "gray": $gray
+  "gray": $gray,
+  "danger": #df4759,
+  "warning": #ffc107,
+  "success": #42ba96,
+  "info": #467fd0
 )

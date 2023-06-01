@@ -70,7 +70,8 @@ const loginUrl = "/login?redirect=" + route.fullPath;
 const links = ref([
   { url: "/", name: "Home" },
   { url: "/news", name: "News" },
-  { url: "/galleries", name: "Galleries" }
+  { url: "/galleries", name: "Galleries" },
+  { url: "/calendar", name: "Calendar" }
 ]);
 
 function isActive (url) {

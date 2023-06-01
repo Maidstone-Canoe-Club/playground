@@ -22,6 +22,8 @@ export interface EventItem {
   recurringPattern: RecurringEventPattern,
   user_created?: string,
   date_created?: string,
+  
+  maxAttendees?: number,
   price?: number
 }
 

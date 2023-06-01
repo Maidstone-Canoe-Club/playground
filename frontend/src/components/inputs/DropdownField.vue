@@ -63,12 +63,5 @@ function getValue (option) {
 </script>
 
 <style lang="scss" scoped>
-.input-field {
-  display: flex;
-  flex-direction: column;
 
-  label {
-    margin-bottom: .5rem;
-  }
-}
 </style>

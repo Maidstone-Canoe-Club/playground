@@ -13,10 +13,21 @@ import {
   faAngleLeft,
   faAngleRight,
   faPlus,
-  faUser
+  faUser,
+  faCalendarDay,
+  faCalendarDays,
+  faRepeat,
+  faTriangleExclamation,
+  faLocationDot,
+  faUsers,
+  faSterlingSign
 } from "@fortawesome/free-solid-svg-icons";
 import {
-  faUser as farUser
+  faUser as farUser,
+  faCircleLeft as farCircleLeft,
+  faCircleRight as farCircleRight,
+  faClock as farClock,
+  faCalendar as farCalendar
 } from "@fortawesome/free-regular-svg-icons";
 
 library.add(faCheck);
@@ -31,8 +42,19 @@ library.add(faAngleLeft);
 library.add(faAngleRight);
 library.add(faPlus);
 library.add(faUser);
+library.add(faCalendarDay);
+library.add(faCalendarDays);
+library.add(faRepeat);
+library.add(faTriangleExclamation);
+library.add(faLocationDot);
+library.add(faUsers);
+library.add(faSterlingSign);
 
 library.add(farUser);
+library.add(farCircleLeft);
+library.add(farCircleRight);
+library.add(farClock);
+library.add(farCalendar);
 
 config.autoAddCss = false;
 

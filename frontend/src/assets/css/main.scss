@@ -6,25 +6,16 @@
   --white: $white;
   --text-color: $text-color;
   
-  --color-danger: #df4759;
-  --color-warning: #ffc107;
-  --color-success: #42ba96;
-  --color-info: #467fd0;
-  
   @each $name, $color in $color-variants {
     @include generate-color-variants($name, $color);
   }
-}
-
-* {
-  box-sizing: border-box;
-  line-height: calc(1em + 0.5rem);
 }
 
 html {
   font-family: 'Lato', sans-serif;
   font-size: 1rem;
   color: var(--text-color);
+  background-color: #F9FBFC;
 }
 
 html, body #__nuxt{
@@ -51,4 +42,10 @@ button {
   &:hover {
     cursor: pointer;
   }
+}
+
+hr {
+  border: none;
+  border-top: 1px solid lightgray;
+  margin: 2rem 0;
 }

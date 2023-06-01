@@ -1,18 +1,23 @@
-<template>
+﻿<template>
   <div
-    class="input-field"
+    class="input-field input-date-picker"
     :class="{'input-field--invalid': !isValid}">
     <label
       v-if="label"
       :for="id">
       {{ label }}
     </label>
-    <input
+    <!--    <input-->
+    <!--      :id="id"-->
+    <!--      v-model="internalValue"-->
+    <!--      :required="required"-->
+    <!--      :type="type"-->
+    <!--      v-bind="$attrs">-->
+    <date-picker
       :id="id"
       v-model="internalValue"
-      :required="required"
-      :type="type"
-      v-bind="$attrs">
+      :enable-time-picker="enableTimePicker"
+      v-bind="$attrs" />
     <span v-if="error">
       {{ error }}
     </span>
@@ -23,18 +28,17 @@
 import { Validation } from "@vuelidate/core";
 
 interface Props {
-    modelValue: string | number | null,
-    id: string,
-    type: string,
-    label?: string,
-    required?: boolean,
-    v?: Validation | null
+  modelValue: Date | number | null,
+  id: string,
+  label?: string,
+  required?: boolean,
+  enableTimePicker?: boolean,
+  v?: Validation | null
 }
 
 const emits = defineEmits(["update:modelValue"]);
 
 const props = withDefaults(defineProps<Props>(), {
-  type: "text",
   label: null,
   required: false,
   v: null
@@ -48,7 +52,7 @@ const error = computed(() => {
 
 const isValid = computed(() => !props.v?.$invalid ?? true);
 
-const internalValue = computed<string | number | null>({
+const internalValue = computed<Date | number | null>({
   get () {
     return props.modelValue;
   },

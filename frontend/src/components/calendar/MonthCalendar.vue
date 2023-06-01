@@ -15,7 +15,7 @@
       <div
         v-for="(day, dayIndex) in week.days"
         :key="dayIndex"
-        :class="{'day--today': day.isToday, 'day--last-month': day.lastMonth}"
+        :class="{'day--today': day.isToday, 'day--last-month': !day.isThisMonth}"
         class="day">
         <span class="day__label">{{ day.label }}</span>
         <div
@@ -56,12 +56,13 @@ import {
 import { dayOfWeekLabel, getDayOrdinal, days } from "~/utils/date";
 
 const props = defineProps<{
+  date: Date,
   month: number,
   year: number
 }>();
 
 const itemIsBeingHovered = ref(false);
-const weeks = ref([]);
+// const weeks = ref([]);
 
 setDefaultOptions({
   locale: {
@@ -70,12 +71,14 @@ setDefaultOptions({
   weekStartsOn: 1
 });
 
-const startDate = startOfMonth(new Date());
-const startDayOfTheWeek = getISODay(startDate) - 1;
+const now = new Date();
 
-const monthLengthInDays = getDaysInMonth(props.month);
-const weeksInMonth = Math.ceil(monthLengthInDays / 7);
-const lastMonthDays = getDaysInMonth(addMonths(startDate, -1));
+const startDate = computed(() => startOfMonth(props.date));
+const startDayOfTheWeek = computed(() => getISODay(startDate.value) - 1);
+
+const monthLengthInDays = computed(() => getDaysInMonth(props.month));
+const weeksInMonth = computed(() => Math.ceil(monthLengthInDays.value / 7));
+const lastMonthDays = computed(() => getDaysInMonth(addMonths(startDate.value, -1)));
 
 function onItemMouseOver (event) {
   itemIsBeingHovered.value = true;
@@ -87,29 +90,38 @@ function onItemMouseLeave (event) {
   event.hoverController.hovering = false;
 }
 
-for (let i = 0; i < weeksInMonth; i++) {
-  const weekData = {
-    index: i,
-    days: []
-  };
+const weeks = computed(() => {
+  const result = [];
 
-  for (let j = 0; j < 7; j++) {
-    const dayOfMonth = (i * 7) + j + 1 - startDayOfTheWeek;
-    weekData.days.push({
-      index: j,
-      label: dayOfMonth > 0
-        ? dayOfMonth
-        : (dayOfMonth + lastMonthDays),
-      topPush: 0,
-      events: [],
-      dayOfMonth,
-      lastMonth: dayOfMonth < 1,
-      isToday: dayOfMonth === new Date().getDate()
-    });
+  const daysInMonth = getDaysInMonth(startDate.value);
+  const sameMonthAndYear = now.getMonth() === props.month && now.getFullYear() === props.year;
+
+  for (let i = 0; i < weeksInMonth.value; i++) {
+    const weekData = {
+      index: i,
+      days: []
+    };
+
+    for (let j = 0; j < 7; j++) {
+      const dayOfMonth = (i * 7) + j + 1 - startDayOfTheWeek.value;
+
+      weekData.days.push({
+        index: j,
+        label: dayOfMonth > 0
+          ? (dayOfMonth > daysInMonth ? dayOfMonth - daysInMonth : dayOfMonth)
+          : (dayOfMonth + lastMonthDays.value),
+        topPush: 0,
+        events: [],
+        dayOfMonth,
+        isThisMonth: dayOfMonth >= 1 && dayOfMonth <= daysInMonth,
+        isToday: sameMonthAndYear && dayOfMonth === new Date().getDate()
+      });
+    }
+
+    result.push(weekData);
   }
-
-  weeks.value.push(weekData);
-}
+  return result;
+});
 
 const events = [];
 // TODO: List of events should be ordered by startDate
@@ -161,7 +173,7 @@ addEvent({
 addEvent({
   name: "Single day",
   startDate: new Date("2023-04-22"),
-  endDate: new Date("2023-04-22"),
+  endDate: new Date("2023-06-22"),
   color: "#ed61e8"
 });
 
@@ -170,14 +182,26 @@ function addEvent (eventData) {
   events.push(eventData);
 
   let startWeek = getWeekOfMonth(eventData.startDate);
+  const startMonth = eventData.startDate.getMonth();
+  const startYear = eventData.startDate.getFullYear();
   const endWeek = getWeekOfMonth(eventData.endDate);
+  const endMonth = eventData.endDate.getMonth();
+  const endYear = eventData.endDate.getFullYear();
   const startDayOfWeek = getISODay(eventData.startDate) - 1;
   const endDayOfWeek = getISODay(eventData.endDate);
   const inThePast = eventData.endDate < Date.now();
 
+  if (endMonth < props.month || endYear < props.year) {
+    return;
+  }
+
+  if (startMonth > props.month || startYear > props.year) {
+    return;
+  }
+
   // rename startDate to current selected date/month
-  if (eventData.startDate.getMonth() < startDate.getMonth()) {
-    startWeek = startWeek - weeksInMonth + 1;
+  if (eventData.startDate.getMonth() < startDate.value.getMonth()) {
+    startWeek = startWeek - weeksInMonth.value + 1;
   }
   const durationInDays = intervalToDuration({
     start: eventData.startDate,
@@ -219,7 +243,7 @@ function addEvent (eventData) {
 
     let endWeekDuration = endDayOfWeek;
     let spanWrapsEnd = false;
-    if (eventData.endDate.getMonth() > startDate.getMonth()) {
+    if (eventData.endDate.getMonth() > startDate.value.getMonth()) {
       endWeekDuration = 7;
       spanWrapsEnd = true;
     }
@@ -311,6 +335,8 @@ function getLabelStyling (event) {
 @import "@/assets/css/variables.scss";
 
 .calendar {
+  user-select: none;
+
   .week {
     display: grid;
     grid-template-columns: repeat(7, calc(100% / 7));

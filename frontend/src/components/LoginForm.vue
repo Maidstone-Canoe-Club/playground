@@ -6,9 +6,11 @@
       type="email"
       label="Email"
       required
+      autocomplete="email"
       :v="v$.email" />
     <zxcvbn-input
       v-model="password"
+      autocomplete="current-password"
       :v="v$.password" />
     <button
       class="btn btn-primary"
