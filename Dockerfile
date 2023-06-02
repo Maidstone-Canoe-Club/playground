@@ -8,7 +8,7 @@ COPY snapshots/ snapshots/
 
 RUN npm ci && npm run build
 
-FROM directus/directus:latest
+FROM directus/directus:9.23.3
 
 USER node
 WORKDIR /directus
