@@ -1,5 +1,5 @@
 version: 1
-directus: 10.1.0
+directus: 11.0.1
 vendor: sqlite
 collections:
   - collection: Events
@@ -17,6 +17,7 @@ collections:
       icon: calendar_month
       item_duplication_fields: null
       note: null
+      preview_url: null
       singleton: false
       sort: 1
       sort_field: null
@@ -37,6 +38,7 @@ collections:
       icon: event
       item_duplication_fields: null
       note: null
+      preview_url: null
       singleton: false
       sort: 1
       sort_field: sort
@@ -59,6 +61,7 @@ collections:
       icon: null
       item_duplication_fields: null
       note: null
+      preview_url: null
       singleton: true
       sort: 2
       sort_field: null
@@ -81,6 +84,7 @@ collections:
       icon: house
       item_duplication_fields: null
       note: null
+      preview_url: null
       singleton: true
       sort: 3
       sort_field: null
@@ -103,6 +107,7 @@ collections:
       icon: newspaper
       item_duplication_fields: null
       note: null
+      preview_url: null
       singleton: false
       sort: 4
       sort_field: sort
@@ -125,6 +130,7 @@ collections:
       icon: photo_library
       item_duplication_fields: null
       note: null
+      preview_url: null
       singleton: false
       sort: 5
       sort_field: sort
@@ -147,6 +153,7 @@ collections:
       icon: event_repeat
       item_duplication_fields: null
       note: null
+      preview_url: null
       singleton: false
       sort: 2
       sort_field: null
@@ -169,6 +176,7 @@ collections:
       icon: type_specimen
       item_duplication_fields: null
       note: null
+      preview_url: null
       singleton: false
       sort: 3
       sort_field: null
