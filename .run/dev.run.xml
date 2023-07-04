@@ -3,7 +3,7 @@
     <deployment type="docker-compose.yml">
       <settings>
         <option name="buildKitEnabledForCompose" value="true" />
-        <option name="envFilePath" value="" />
+        <option name="envFilePath" value="E:\Projects\mcc\playground\.env" />
         <option name="secondarySourceFiles">
           <list>
             <option value="docker-compose.override.yml" />
