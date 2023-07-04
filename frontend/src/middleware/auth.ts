@@ -1,7 +1,11 @@
-
 export default defineNuxtRouteMiddleware(async (to, _from) => {
   try {
     const user = useDirectusUser();
+    const { fetchUser } = useDirectusAuth();
+    if (!user.value) {
+      await fetchUser();
+    }
+
     if (!user.value) {
       return navigateTo("/login?redirect=" + to.fullPath);
     }

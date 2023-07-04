@@ -34,7 +34,7 @@ export default defineNuxtConfig({
   modules: [
     "nuxt-directus",
     "@nuxtjs/google-fonts",
-    "@nuxt/image-edge",
+    "@nuxt/image",
     "@vueuse/nuxt",
     "@nuxt/devtools"
   ],
