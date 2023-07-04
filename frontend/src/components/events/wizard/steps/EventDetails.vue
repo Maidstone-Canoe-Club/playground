@@ -7,24 +7,6 @@
         label="Name"
         type="text" />
 
-      <div class="input-row">
-        <input-date
-          id="start-date"
-          v-model="internalValue.startDate"
-          enable-time-picker
-          label="Start date" />
-
-        <input-date
-          id="end-date"
-          v-model="internalValue.endDate"
-          enable-time-picker
-          label="End date" />
-      </div>
-    </div>
-
-    <hr>
-
-    <div class="input-group">
       <input-field
         id="location"
         v-model="internalValue.location"
@@ -33,7 +15,7 @@
 
       <input-field
         id="max-attendeed"
-        v-model="internalValue.maxAttendees"
+        v-model="internalValue.max_attendees"
         type="number"
         label="Max attendees" />
 
@@ -81,26 +63,17 @@ watch(internalValue, (val) => {
   emits("update:modelValue", val);
 }, { deep: true });
 
-// const name = ref(null);
-// const startDate = ref<Date>(null);
-// const endDate = ref(null);
-// const description = ref(null);
+// watch([() => internalValue.value.startDate, () => internalValue.value.endDate], validateDates);
 //
-// const location = ref(null);
-// const maxAttendees = ref(null);
-// const price = ref(1000);
-
-watch([internalValue.value.startDate, internalValue.value.endDate], validateDates);
-
-function validateDates () {
-  if (!internalValue.value.startDate || !internalValue.value.endDate) {
-    return;
-  }
-
-  if (internalValue.value.startDate > internalValue.value.endDate) {
-    console.warn("Start date must be before end date");
-  }
-}
+// function validateDates () {
+//   if (!internalValue.value.startDate || !internalValue.value.endDate) {
+//     return;
+//   }
+//
+//   if (internalValue.value.startDate > internalValue.value.endDate) {
+//     console.warn("Start date must be before end date");
+//   }
+// }
 
 </script>
 

@@ -30,7 +30,6 @@
 </template>
 
 <script setup lang="ts">
-import { Ref } from "vue";
 import { add, sub } from "date-fns";
 import { getMonthFromIndex } from "~/utils/date";
 
@@ -59,6 +58,10 @@ function nextMonth () {
     months: 1
   });
 }
+
+const res = await useFetch(`/api/events?month=${selectedMonth.value}`, {
+  method: "GET"
+});
 
 </script>
 

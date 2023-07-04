@@ -24,7 +24,14 @@
         <state-wrapper name="default">
           <event-type-select
             v-model="eventType"
-            @selected="setState('details')" />
+            @selected="setState('date')" />
+        </state-wrapper>
+        <state-wrapper name="date">
+          <event-date-picker
+            v-model:eventItem="eventItem"
+            v-model:eventDates="eventDates"
+            :event-type="eventType"
+            @next="setState('details')" />
         </state-wrapper>
         <state-wrapper name="details">
           <div class="event-details-wrapper">
@@ -41,20 +48,68 @@
           @click="goBack()">
           Back
         </button>
+        <button
+          class="btn btn-primary"
+          @click="onSubmit">
+          Submit
+        </button>
       </div>
     </state-manager>
   </div>
 </template>
 
 <script setup lang="ts">
+import { addHours } from "date-fns";
 
 import { Ref } from "vue";
-import { EventItem } from "~/types";
+import { EventDates, EventItem } from "~/types";
 
-const eventType = ref("");
+const eventType: Ref<string> = ref<string>("");
 
-const eventItem : Ref<EventItem> = ref<EventItem>({
+const eventItem: Ref<EventItem> = ref<EventItem>({
+  title: "Beginners course",
+  location: "Maidstone Canoe Club",
+  description: "It's a beginners course!",
+  max_attendees: 8,
+  start_date: new Date(),
+  end_date: addHours(new Date(), 4),
+  price: 1000
 });
+
+const eventDates: Ref<EventDates> = ref<EventDates>({
+  multiple: [
+    {
+      id: 123,
+      start_date: new Date(),
+      end_date: addHours(new Date(), 5)
+    },
+    {
+      id: 456,
+      start_date: addHours(new Date(), 6),
+      end_date: addHours(new Date(), 11)
+    },
+    {
+      id: 789,
+      start_date: addHours(new Date(), 20),
+      end_date: addHours(new Date(), 24)
+    }
+  ],
+  recurring: {}
+});
+
+async function onSubmit () {
+  const body = {
+    eventItem: eventItem.value,
+    eventDates: eventDates.value
+  };
+
+  const res = await useFetch("/api/events", {
+    method: "POST",
+    watch: false,
+    body
+  });
+  console.log("res", res.data);
+}
 
 </script>
 
@@ -88,9 +143,9 @@ const eventItem : Ref<EventItem> = ref<EventItem>({
     display: flex;
     gap: 1rem;
 
-    .event-preview{
+    .event-preview {
       flex-basis: 50%;
-      @media ( max-width: 767px ) {
+      @media (max-width: 767px) {
         display: none;
       }
     }
@@ -98,7 +153,7 @@ const eventItem : Ref<EventItem> = ref<EventItem>({
     .event-details {
       flex-basis: 50%;
 
-      @media ( max-width: 767px ) {
+      @media (max-width: 767px) {
         flex-basis: 100%;
       }
     }
