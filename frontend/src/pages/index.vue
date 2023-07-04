@@ -18,7 +18,13 @@
     </div>
 
     <div class="container">
-      <p>foo</p> <fa-icon icon="fa-solid fa-check" />
+      <div class="home__activities">
+        <div>
+          <img :src="whiteWaterUrl" alt="white water">
+          <h2>White water</h2>
+          <p>A description of white water kayaking at the club</p>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -35,9 +41,13 @@ const { data: home } = await useAsyncData("home", () => {
 const heroImageUrl = ref(null);
 const heroImageSrcSet = ref(null);
 
+const whiteWaterUrl = ref(null);
+
 if (home.value.header_image) {
   heroImageUrl.value = directusUrl + "/assets/" + home.value.header_image + "?quality=80&format=webp";
   heroImageSrcSet.value = `${heroImageUrl.value}&width=1300 1300w, ${heroImageUrl.value}&width=600 600w`;
+
+  whiteWaterUrl.value = directusUrl + "/assets/" + home.value.white_water_image + "?quality=80&format=webp";
 }
 
 </script>

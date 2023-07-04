@@ -13,7 +13,9 @@
       :required="required"
       :type="type"
       v-bind="$attrs">
-    <span v-if="error">
+    <span
+      v-if="error"
+      class="input-field__validation-message">
       {{ error }}
     </span>
   </div>
@@ -46,7 +48,14 @@ const error = computed(() => {
   }
 });
 
-const isValid = computed(() => !props.v?.$invalid ?? true);
+const isValid = computed(() => {
+  if (props.v && props.v.$dirty) {
+    console.log("here", props.v.$dirty, props.v.$invalid);
+    return !props.v.$invalid;
+  }
+
+  return true;
+});
 
 const internalValue = computed<string | number | null>({
   get () {

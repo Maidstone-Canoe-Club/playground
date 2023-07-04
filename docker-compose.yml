@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  
+
   directus:
     container_name: mcc-backend-playground
     restart: unless-stopped
@@ -26,7 +26,16 @@ services:
 
       ADMIN_EMAIL: 'admin@example.com'
       ADMIN_PASSWORD: 'password'
-      
+
+      EMAIL_FROM: 'no-reply@mattclegg.dev'
+      EMAIL_TRANSPORT: 'smtp'
+      EMAIL_SMTP_HOST: 'smtp.postmarkapp.com'
+      EMAIL_SMTP_PORT: '25'
+      EMAIL_SMTP_USER: '1b3d733d-cd9b-46dd-b809-df17ded5554c'
+      EMAIL_SMTP_PASSWORD: '1b3d733d-cd9b-46dd-b809-df17ded5554c'
+
+      PASSWORD_RESET_URL_ALLOW_LIST: 'https://mccdev.co.uk/reset-password'
+
   frontend:
     depends_on:
       - directus
@@ -37,6 +46,6 @@ services:
     ports:
       - "3000:3000"
     command: ["/wait-for", "http://directus:8055/server/ping", "-t", "10", "--", "node", ".output/server/index.mjs"]
-  
+
 networks:
   directus:

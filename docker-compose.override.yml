@@ -11,7 +11,10 @@ services:
     environment:
       EXTENSIONS_AUTO_RELOAD: 'true'
       REFRESH_TOKEN_COOKIE_SAME_SITE: 'None'
+      PUBLIC_URL: 'http://localhost:3000/'
       # ACCESS_TOKEN_TTL: '2m'
+
+      PASSWORD_RESET_URL_ALLOW_LIST: 'http://localhost:3000/reset-password'
 
   frontend:
     build:

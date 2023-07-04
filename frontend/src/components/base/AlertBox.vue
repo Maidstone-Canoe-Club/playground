@@ -33,7 +33,12 @@ withDefaults(defineProps<{
     display: flex;
     flex-direction: row;
     gap: .5rem;
+  }
 
+  &--success {
+    color: var(--color-success-800);
+    background-color: var(--color-success-200);
+    border-color: var(--color-success-500);
   }
 
   &--warning {

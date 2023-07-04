@@ -9,10 +9,7 @@
         <user-avatar
           :user="user"
           :size="50" />
-        <div class="user-dropdown__info">
-          <strong class="user-dropdown__info-name">{{ fullName }}</strong>
-          <span class="user-dropdown__info-email">{{ user.email }}</span>
-        </div>
+
         <div class="icon-container">
           <fa-icon
             icon="fa-solid fa-angle-up"
@@ -25,6 +22,10 @@
       :when="open"
       class="v-collapse dropdown">
       <div>
+        <div class="user-dropdown__info">
+          <strong class="user-dropdown__info-name">{{ fullName }}</strong>
+          <span class="user-dropdown__info-email">{{ user.email }}</span>
+        </div>
         <ul
           @click="open = false">
           <li>
@@ -98,8 +99,6 @@ onClickOutside(collapsible, (e) => {
 }
 
 .user-dropdown {
-  box-shadow: 0 3px 6px -1px lightgray;
-  border-radius: .5rem;
   position: relative;
   padding: .5rem;
   overflow: hidden;
@@ -123,6 +122,8 @@ onClickOutside(collapsible, (e) => {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    padding: 1rem;
+    font-size: .9rem;
 
     &-email {
       color: gray;
@@ -154,16 +155,16 @@ onClickOutside(collapsible, (e) => {
   background: #fff;
   top: calc(100% + .5rem);
   right: 0;
-  left: 0;
   border-radius: .5rem;
   box-shadow: 0 3px 6px -1px lightgray;
   overflow: hidden;
   z-index: 10000;
+  border: 1px solid lightgray !important;
 
   ul {
     list-style: none;
-    padding: 0;
     margin: 0;
+    padding: 0;
     display: flex;
     flex-direction: column;
   }

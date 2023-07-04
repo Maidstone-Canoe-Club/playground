@@ -3,22 +3,25 @@
     <input-field
       id="password"
       v-model="password"
-      label="Password"
+      :label="label"
       type="password"
       :v="v" />
 
-    <div class="password-strength">
-      <div
+    <span
+      v-if="showStrength"
+      class="password-strength">
+      <span
         v-for="index in 4"
         :key="index"
         class="password-strength__bar"
         :class="getBarStyle(index)" />
-      <div
+      <span
+        v-if="passwordStrengthLabel"
         class="password-strength__label"
         :class="getLabelColor()">
         {{ passwordStrengthLabel }}
-      </div>
-    </div>
+      </span>
+    </span>
   </span>
 </template>
 
@@ -40,7 +43,9 @@ zxcvbnOptions.setOptions(options);
 
 const props = defineProps<{
     modelValue?: string,
-    v: Validation
+    label?: string
+    v: Validation,
+    showStrength?: boolean
 }>();
 
 const emit = defineEmits(["update:modelValue"]);
@@ -68,7 +73,7 @@ const useZxcvbn = async () => {
 const passwordStrengthLabel = computed(() => {
   const score: number = result.value?.score ?? 0;
   const labels: string[] = ["Very weak", "So-so", "Ok", "Great!"];
-  return labels[score - 1] ?? "Very weak";
+  return labels[score - 1] ?? null;
 });
 
 useZxcvbn();
@@ -108,19 +113,19 @@ function getLabelColor () {
     flex-grow: 1;
 
     &--red {
-      background-color: red;
+      background-color: var(--color-danger-500);
     }
 
     &--orange {
-      background-color: orange;
+      background-color: var(--color-warning-500);
     }
 
     &--lightgreen {
-      background-color: lightgreen;
+      background-color: var(--color-success-500);
     }
 
     &--green {
-      background-color: green;
+      background-color: var(--color-primary-500);
     }
   }
 
@@ -132,19 +137,19 @@ function getLabelColor () {
     margin-top: -.25rem;
 
     &--red {
-      color: red;
+      color: var(--color-danger-500);
     }
 
     &--orange {
-      color: orange;
+      color: var(--color-warning-600);
     }
 
     &--lightgreen {
-      color: lightgreen;
+      color: var(--color-success-600);
     }
 
     &--green {
-      color: green;
+      color: var(--color-primary-500);
     }
   }
 }

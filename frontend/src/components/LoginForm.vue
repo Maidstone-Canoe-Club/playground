@@ -10,15 +10,16 @@
       :v="v$.email" />
     <zxcvbn-input
       v-model="password"
+      label="Password"
       autocomplete="current-password"
       :v="v$.password" />
-    <button
+    <processing-button
       class="btn btn-primary"
       type="submit"
-      :disabled="loading"
-      @click="onSubmit">
+      :action="onSubmit">
       Login
-    </button>
+    </processing-button>
+    <small>Forgot your password? <nuxt-link to="/forgot-password">Click here to reset it</nuxt-link></small>
     <p v-if="loading">
       Loading...
     </p>
@@ -69,6 +70,7 @@ const onSubmit = async () => {
     loading.value = true;
     try {
       const result = await login(email.value, password.value);
+      console.log("logged in!");
       if (result && props.redirect) {
         await navigateTo(props.redirect);
       }

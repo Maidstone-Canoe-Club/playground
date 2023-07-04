@@ -1,6 +1,14 @@
 
+export enum RecurringType {
+  Daily = 0,
+  Weekly,
+  Monthly,
+  Yearly
+}
+
 export interface RecurringEventPattern{
-  type: number,
+  eventId?: number,
+  type: RecurringType,
   separationCount?: number,
   maxOccurrences?: number,
   dayOfWeek?: number,
@@ -10,21 +18,38 @@ export interface RecurringEventPattern{
 }
 
 export interface EventItem {
+  id: number,
   title: string,
   location?: string,
   description?: string,
-  startDate?: Date,
-  endDate?: Date,
-  startTime?: Date,
-  endTime?: Date,
-  isFullDay: boolean,
-  isRecurring: boolean
-  recurringPattern: RecurringEventPattern,
+  start_date: Date,
+  end_date?: Date,
+  is_full_day: boolean,
+  is_recurring: boolean
+  recurring_pattern: RecurringEventPattern,
+  parent_event_id?: number,
   user_created?: string,
   date_created?: string,
   
-  maxAttendees?: number,
+  max_attendees?: number,
   price?: number
+}
+
+export interface EventDate {
+  id: number,
+  start_date?: Date,
+  end_date?: Date,
+}
+
+export interface RecurringEvent {
+  startDate: Date,
+  recurringType: string,
+  maxOccurrences?: number
+}
+
+export interface EventDates {
+  multiple: EventDate[]
+  recurring: RecurringEvent
 }
 
 export interface GalleryImage {

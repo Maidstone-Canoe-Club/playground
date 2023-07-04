@@ -202,7 +202,7 @@ fields:
       options: null
       readonly: true
       required: false
-      sort: null
+      sort: 1
       special:
         - cast-timestamp
         - date-created
@@ -243,7 +243,7 @@ fields:
       options: null
       readonly: true
       required: false
-      sort: null
+      sort: 2
       special:
         - cast-timestamp
         - date-updated
@@ -283,7 +283,7 @@ fields:
       options: null
       readonly: false
       required: false
-      sort: null
+      sort: 5
       special: null
       translations: null
       validation: null
@@ -307,7 +307,7 @@ fields:
       foreign_key_column: null
   - collection: events
     field: end_date
-    type: date
+    type: dateTime
     meta:
       collection: events
       conditions: null
@@ -316,12 +316,12 @@ fields:
       field: end_date
       group: null
       hidden: false
-      interface: datetime
+      interface: null
       note: null
       options: null
       readonly: false
       required: false
-      sort: null
+      sort: 8
       special: null
       translations: null
       validation: null
@@ -330,54 +330,7 @@ fields:
     schema:
       name: end_date
       table: events
-      data_type: date
-      default_value: null
-      max_length: null
-      numeric_precision: null
-      numeric_scale: null
-      is_nullable: true
-      is_unique: false
-      is_primary_key: false
-      is_generated: false
-      generation_expression: null
-      has_auto_increment: false
-      foreign_key_table: null
-      foreign_key_column: null
-  - collection: events
-    field: end_time
-    type: time
-    meta:
-      collection: events
-      conditions:
-        - name: Hide if full day
-          rule:
-            _and:
-              - is_full_day:
-                  _eq: false
-          hidden: true
-          options:
-            includeSeconds: false
-            use24: true
-      display: null
-      display_options: null
-      field: end_time
-      group: null
-      hidden: false
-      interface: datetime
-      note: null
-      options: null
-      readonly: false
-      required: false
-      sort: null
-      special: null
-      translations: null
-      validation: null
-      validation_message: null
-      width: full
-    schema:
-      name: end_time
-      table: events
-      data_type: time
+      data_type: datetime
       default_value: null
       max_length: null
       numeric_precision: null
@@ -406,7 +359,7 @@ fields:
       options: null
       readonly: true
       required: false
-      sort: null
+      sort: 3
       special: null
       translations: null
       validation: null
@@ -444,7 +397,7 @@ fields:
       options: null
       readonly: false
       required: false
-      sort: null
+      sort: 10
       special:
         - cast-boolean
       translations: null
@@ -483,7 +436,7 @@ fields:
       options: null
       readonly: false
       required: false
-      sort: null
+      sort: 11
       special:
         - cast-boolean
       translations: null
@@ -523,7 +476,7 @@ fields:
         iconLeft: location_on
       readonly: false
       required: false
-      sort: null
+      sort: 6
       special: null
       translations: null
       validation: null
@@ -546,6 +499,45 @@ fields:
       foreign_key_table: null
       foreign_key_column: null
   - collection: events
+    field: parent_event
+    type: integer
+    meta:
+      collection: events
+      conditions: null
+      display: null
+      display_options: null
+      field: parent_event
+      group: null
+      hidden: false
+      interface: select-dropdown-m2o
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: null
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: parent_event
+      table: events
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: events
+      foreign_key_column: id
+  - collection: events
     field: price
     type: float
     meta:
@@ -562,7 +554,7 @@ fields:
         iconLeft: currency_pound
       readonly: false
       required: false
-      sort: null
+      sort: 9
       special: null
       translations: null
       validation: null
@@ -600,7 +592,7 @@ fields:
       options: null
       readonly: false
       required: false
-      sort: null
+      sort: 12
       special: null
       translations: null
       validation: null
@@ -624,7 +616,7 @@ fields:
       foreign_key_column: null
   - collection: events
     field: start_date
-    type: date
+    type: dateTime
     meta:
       collection: events
       conditions: null
@@ -633,12 +625,12 @@ fields:
       field: start_date
       group: null
       hidden: false
-      interface: datetime
+      interface: null
       note: null
       options: null
       readonly: false
-      required: false
-      sort: null
+      required: true
+      sort: 7
       special: null
       translations: null
       validation: null
@@ -647,59 +639,12 @@ fields:
     schema:
       name: start_date
       table: events
-      data_type: date
+      data_type: datetime
       default_value: null
       max_length: null
       numeric_precision: null
       numeric_scale: null
-      is_nullable: true
-      is_unique: false
-      is_primary_key: false
-      is_generated: false
-      generation_expression: null
-      has_auto_increment: false
-      foreign_key_table: null
-      foreign_key_column: null
-  - collection: events
-    field: start_time
-    type: time
-    meta:
-      collection: events
-      conditions:
-        - name: Hide time if full day
-          rule:
-            _and:
-              - is_full_day:
-                  _eq: false
-          hidden: true
-          options:
-            includeSeconds: false
-            use24: true
-      display: null
-      display_options: null
-      field: start_time
-      group: null
-      hidden: false
-      interface: datetime
-      note: null
-      options: null
-      readonly: false
-      required: false
-      sort: null
-      special: null
-      translations: null
-      validation: null
-      validation_message: null
-      width: full
-    schema:
-      name: start_time
-      table: events
-      data_type: time
-      default_value: null
-      max_length: null
-      numeric_precision: null
-      numeric_scale: null
-      is_nullable: true
+      is_nullable: false
       is_unique: false
       is_primary_key: false
       is_generated: false
@@ -744,7 +689,7 @@ fields:
             value: archived
       readonly: false
       required: false
-      sort: null
+      sort: 13
       special: null
       translations: null
       validation: null
@@ -782,7 +727,7 @@ fields:
       options: null
       readonly: false
       required: true
-      sort: null
+      sort: 4
       special: null
       translations: null
       validation: null
@@ -821,7 +766,7 @@ fields:
         template: '{{avatar.$thumbnail}} {{first_name}} {{last_name}}'
       readonly: true
       required: false
-      sort: null
+      sort: 14
       special:
         - user-created
       translations: null
@@ -861,7 +806,7 @@ fields:
         template: '{{avatar.$thumbnail}} {{first_name}} {{last_name}}'
       readonly: true
       required: false
-      sort: null
+      sort: 15
       special:
         - user-updated
       translations: null
@@ -2454,6 +2399,27 @@ fields:
       foreign_key_table: null
       foreign_key_column: null
 relations:
+  - collection: events
+    field: parent_event
+    related_collection: events
+    meta:
+      junction_field: null
+      many_collection: events
+      many_field: parent_event
+      one_allowed_collections: null
+      one_collection: events
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: events
+      column: parent_event
+      foreign_key_table: events
+      foreign_key_column: id
+      constraint_name: null
+      on_update: NO ACTION
+      on_delete: NO ACTION
   - collection: events
     field: user_created
     related_collection: directus_users

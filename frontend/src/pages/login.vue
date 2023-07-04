@@ -1,14 +1,14 @@
 <template>
-  <div class="container">
-    <div class="login-container">
-      <NuxtErrorBoundary>
-        <login-form :redirect="redirect" />
-        <template #error="{error}">
-          <p>There was an error</p>
-          <pre>{{ error }}</pre>
-        </template>
-      </NuxtErrorBoundary>
-    </div>
+  <div class="container container--md">
+    <!--    <div class="login-container">-->
+    <NuxtErrorBoundary>
+      <login-form :redirect="redirect" />
+      <template #error="{error}">
+        <p>There was an error</p>
+        <pre>{{ error }}</pre>
+      </template>
+    </NuxtErrorBoundary>
+    <!--    </div>-->
   </div>
 </template>
 
