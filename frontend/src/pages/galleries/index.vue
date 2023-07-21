@@ -1,6 +1,6 @@
 ﻿<template>
   <div class="galleries-page">
-    <div class="container ">
+    <div class="container">
       <div class="galleries-page__content">
         <div class="galleries-page__header">
           <h1>Photo Gallery</h1>

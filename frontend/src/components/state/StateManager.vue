@@ -9,11 +9,16 @@
 <script setup lang="ts">
 
 const props = withDefaults(defineProps<{
+  modelValue: string,
   rootTag?: string,
   defaultState?: string
 }>(), {
   rootTag: "div",
   defaultState: "default"
+});
+
+watch(() => props.modelValue, (val) => {
+  pushState(val);
 });
 
 const functionality = computed(() => ({

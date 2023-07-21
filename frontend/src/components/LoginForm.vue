@@ -20,9 +20,6 @@
       Login
     </processing-button>
     <small>Forgot your password? <nuxt-link to="/forgot-password">Click here to reset it</nuxt-link></small>
-    <p v-if="loading">
-      Loading...
-    </p>
     <div v-if="error">
       <p
         v-for="(e, index) in error.errors"
@@ -70,7 +67,6 @@ const onSubmit = async () => {
     loading.value = true;
     try {
       const result = await login(email.value, password.value);
-      console.log("logged in!");
       if (result && props.redirect) {
         await navigateTo(props.redirect);
       }

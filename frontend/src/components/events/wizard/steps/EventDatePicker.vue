@@ -81,7 +81,7 @@
     <div>
       <button
         class="btn btn-primary"
-        @click="emits('next')">
+        @click="onContinue">
         Next
       </button>
     </div>
@@ -127,7 +127,7 @@ function addDay () {
   eventDates.value.multiple.push(newDay());
 }
 
-function removeDay (index) {
+function removeDay (index: number) {
   nextTick(() => {
     eventDates.value.multiple.splice(index, 1);
   });
@@ -136,10 +136,16 @@ function removeDay (index) {
 function newDay (): EventDate {
   return {
     id: Math.floor(Math.random() * Number.MAX_SAFE_INTEGER),
-    startDate: null,
-    endDate: null
+    start_date: null,
+    end_date: null
   } as EventDate;
 }
+
+function onContinue () {
+  eventItem.value.is_recurring = props.eventType === "recurring";
+  emits("next");
+}
+
 </script>
 
 <style scoped lang="scss">

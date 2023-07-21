@@ -1,14 +1,13 @@
 <template>
-  <div class="container container--md">
-    <!--    <div class="login-container">-->
+  <div class="container login-page container--md">
     <NuxtErrorBoundary>
+      <h1>Login</h1>
       <login-form :redirect="redirect" />
       <template #error="{error}">
         <p>There was an error</p>
         <pre>{{ error }}</pre>
       </template>
     </NuxtErrorBoundary>
-    <!--    </div>-->
   </div>
 </template>
 
@@ -21,16 +20,19 @@ const redirect = route.query.redirect as string;
 </script>
 
 <style lang="scss" scoped>
-.login-container {
-  max-width: 350px;
-  margin: 2rem auto;
-  border: 1px solid lightgray;
-  border-radius: .5rem;
-  padding: 1rem;
+.login-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
 
-  @media ( max-width: 767px ) {
-    max-width: 100%;
-    border: none;
+  h1 {
+    margin-bottom: .5rem;
   }
+}
+
+.login-form {
+  width: 100%;
 }
 </style>

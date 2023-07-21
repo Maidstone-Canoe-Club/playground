@@ -12,7 +12,7 @@
 }
 
 html {
-  font-family: 'Lato', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 1rem;
   color: var(--text-color);
   background-color: #F9FBFC;
@@ -21,7 +21,7 @@ html {
 html, body #__nuxt{
   margin: 0;
   height: 100%;
-  overflow: hidden;
+  //overflow: hidden;
 }
 
 body {

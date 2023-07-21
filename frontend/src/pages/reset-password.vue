@@ -1,5 +1,5 @@
 ﻿<template>
-  <div class="reset-password container container--md">
+  <div class="container reset-password container--md">
     <h1>Set new password</h1>
     <div class="reset-password__form input-group">
       <zxcvbn-input

@@ -1,5 +1,4 @@
-﻿
-export async function login (email: string, password: string) : Promise<boolean> {
+﻿export async function login (email: string, password: string) : Promise<boolean> {
   const { login } = useDirectusAuth();
   const res = await login({
     email,

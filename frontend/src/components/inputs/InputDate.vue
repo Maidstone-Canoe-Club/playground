@@ -28,7 +28,7 @@
 import { Validation } from "@vuelidate/core";
 
 interface Props {
-  modelValue: Date | number | null,
+  modelValue: Date | number | null | undefined,
   id: string,
   label?: string,
   required?: boolean,

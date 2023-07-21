@@ -1,5 +1,5 @@
 version: 1
-directus: 11.0.1
+directus: 11.1.0
 vendor: sqlite
 collections:
   - collection: Events
@@ -344,6 +344,45 @@ fields:
       foreign_key_table: null
       foreign_key_column: null
   - collection: events
+    field: has_multiple
+    type: boolean
+    meta:
+      collection: events
+      conditions: null
+      display: null
+      display_options: null
+      field: has_multiple
+      group: null
+      hidden: false
+      interface: boolean
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 12
+      special:
+        - cast-boolean
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: has_multiple
+      table: events
+      data_type: boolean
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: events
     field: id
     type: integer
     meta:
@@ -514,7 +553,7 @@ fields:
       options: null
       readonly: false
       required: false
-      sort: null
+      sort: 17
       special:
         - m2o
       translations: null
@@ -592,7 +631,7 @@ fields:
       options: null
       readonly: false
       required: false
-      sort: 12
+      sort: 13
       special: null
       translations: null
       validation: null
@@ -689,7 +728,7 @@ fields:
             value: archived
       readonly: false
       required: false
-      sort: 13
+      sort: 14
       special: null
       translations: null
       validation: null
@@ -766,7 +805,7 @@ fields:
         template: '{{avatar.$thumbnail}} {{first_name}} {{last_name}}'
       readonly: true
       required: false
-      sort: 14
+      sort: 15
       special:
         - user-created
       translations: null
@@ -806,7 +845,7 @@ fields:
         template: '{{avatar.$thumbnail}} {{first_name}} {{last_name}}'
       readonly: true
       required: false
-      sort: 15
+      sort: 16
       special:
         - user-updated
       translations: null

@@ -32,6 +32,7 @@ services:
       - ./frontend/src:/opt/node_app/app/src
       - ./frontend/.npmrc:/opt/node_app/app/.npmrc
       - ./frontend/nuxt.config.ts:/opt/node_app/app/nuxt.config.ts
+      - ./frontend/tailwind.config.ts:/opt/node_app/app/tailwind.config.ts
       - ./frontend/tsconfig.json:/opt/node_app/app/tsconfig.json
       - ./frontend/package.json:/opt/node_app/app/package.json
       - ./frontend/package-lock.json:/opt/node_app/app/package-lock.json

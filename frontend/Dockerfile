@@ -15,6 +15,14 @@ FROM prebase AS base
 
 RUN npm install && npm cache clean --force
 
+ARG NUXT_DIRECTUS_URL
+ARG STRIPE_KEY
+ARG STRIPE_WEBHOOK_SECRET
+
+ENV NUXT_DIRECTUS_URL ${NUXT_DIRECTUS_URL}
+ENV STRIPE_KEY ${STRIPE_KEY}
+ENV STRIPE_WEBHOOK_SECRET ${STRIPE_WEBHOOK_SECRET}
+
 ENV PORT 3000
 ENV NITRO_PORT 3000
 ENV HOST 0.0.0.0
@@ -23,14 +31,11 @@ EXPOSE 3000
 FROM base AS build
 
 WORKDIR /opt/node_app/app
-COPY --from=base --chown=node:node /opt/node_app/app . 
- 
+COPY --from=base --chown=node:node /opt/node_app/app .
+
 COPY ./src ./src
 COPY ./nuxt.config.ts ./
 COPY ./tsconfig.json ./
-
-ARG NUXT_DIRECTUS_URL
-ENV NUXT_DIRECTUS_URL ${NUXT_DIRECTUS_URL}
 
 RUN npm run build
 

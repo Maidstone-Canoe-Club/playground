@@ -9,7 +9,7 @@
       </div>
     </div>
     <div
-      v-for="(week, weekIndex) in weeks"
+      v-for="(week, weekIndex) in weeksData"
       :key="weekIndex"
       class="week">
       <div
@@ -51,9 +51,11 @@
 <script setup lang="ts">
 import {
   getDaysInMonth, getISODay, startOfMonth, getWeekOfMonth, intervalToDuration,
-  setDefaultOptions, addMonths
+  setDefaultOptions, addMonths, endOfMonth, format
 } from "date-fns";
+import { enGB } from "date-fns/locale";
 import { dayOfWeekLabel, getDayOrdinal, days } from "~/utils/date";
+import { EventItem } from "~/types";
 
 const props = defineProps<{
   date: Date,
@@ -65,11 +67,12 @@ const itemIsBeingHovered = ref(false);
 // const weeks = ref([]);
 
 setDefaultOptions({
-  locale: {
-    code: "en-GB"
-  },
+  locale: enGB,
   weekStartsOn: 1
 });
+
+const events = ref<EventItem[]>([]);
+const weeksData = ref([]);
 
 const now = new Date();
 
@@ -90,7 +93,77 @@ function onItemMouseLeave (event) {
   event.hoverController.hovering = false;
 }
 
-const weeks = computed(() => {
+/**
+ * Loading Events
+ *
+ * Load events with a start and end date between the current date
+ * Or events with no end date and a start date before today
+ *
+ */
+
+const { getItems } = useDirectusItems();
+
+const thingEvents = ref(null);
+
+const fetchEvents = async () => {
+  try {
+    const filters = {
+      _and: [
+        {
+          start_date: { _lte: format(endOfMonth(props.date), "yyyy-MM-dd") }
+        },
+        {
+          _or: [
+            {
+              end_date: { _gt: format(startOfMonth(props.date), "yyyy-MM-dd") }
+            },
+            {
+              end_date: { _null: true }
+            },
+            {
+              is_recurring: { _eq: true }
+            }
+          ]
+        }
+      ]
+    };
+    return await getItems<EventItem>({
+      collection: "events",
+      params: { filter: filters }
+    });
+  } catch (e) {
+    console.error("error loading events", e);
+  }
+};
+
+watch(() => props.date, async (val) => {
+  console.log("month has changed", val);
+  events.value = [];
+  weeksData.value = generateWeekData();
+
+  const foundEvents: EventItem[] | undefined = await fetchEvents();
+
+  // const foundEvents = await useFetch("/api/events", {
+  //   query: {
+  //     start: format(startOfMonth(props.date), "yyyy-MM-dd"),
+  //     end: format(endOfMonth(props.date), "yyyy-MM-dd")
+  //   }
+  // });
+
+  console.log("loaded event data", events);
+  if (foundEvents && foundEvents.length) {
+    foundEvents.sort((a, b) => {
+      return new Date(b.start_date) - new Date(a.start_date);
+    }).forEach((e) => {
+      e.start_date = new Date(e.start_date);
+      e.end_date = new Date(e.end_date);
+      e.color = "red";
+      addEvent(e);
+    });
+  }
+}, { immediate: true });
+
+function generateWeekData () {
   const result = [];
 
   const daysInMonth = getDaysInMonth(startDate.value);
@@ -121,75 +194,108 @@ const weeks = computed(() => {
     result.push(weekData);
   }
   return result;
-});
+}
 
-const events = [];
+// const weeks = computed(() => {
+//   const result = [];
+//
+//   const daysInMonth = getDaysInMonth(startDate.value);
+//   const sameMonthAndYear = now.getMonth() === props.month && now.getFullYear() === props.year;
+//
+//   for (let i = 0; i < weeksInMonth.value; i++) {
+//     const weekData = {
+//       index: i,
+//       days: []
+//     };
+//
+//     for (let j = 0; j < 7; j++) {
+//       const dayOfMonth = (i * 7) + j + 1 - startDayOfTheWeek.value;
+//
+//       weekData.days.push({
+//         index: j,
+//         label: dayOfMonth > 0
+//           ? (dayOfMonth > daysInMonth ? dayOfMonth - daysInMonth : dayOfMonth)
+//           : (dayOfMonth + lastMonthDays.value),
+//         topPush: 0,
+//         events: [],
+//         dayOfMonth,
+//         isThisMonth: dayOfMonth >= 1 && dayOfMonth <= daysInMonth,
+//         isToday: sameMonthAndYear && dayOfMonth === new Date().getDate()
+//       });
+//     }
+//
+//     result.push(weekData);
+//   }
+//   return result;
+// });
+
 // TODO: List of events should be ordered by startDate
-addEvent({
-  name: "Event into next month",
-  startDate: new Date("2023-01-20"),
-  endDate: new Date("2023-05-30"),
-  color: "#ed61e8"
-});
-addEvent({
-  name: "An event from last month",
-  startDate: new Date("2023-03-26"),
-  endDate: new Date("2023-04-01"),
-  color: "#ed6161"
-});
-
-addEvent({
-  name: "The First Multi Day Event",
-  startDate: new Date("2023-04-04"),
-  endDate: new Date("2023-04-08"),
-  color: "#ed6161"
-});
-addEvent({
-  name: "The First Multi Day Event",
-  startDate: new Date("2023-04-05"),
-  endDate: new Date("2023-04-11"),
-  color: "#9ded61"
-});
+// addEvent({
+//   title: "Event into next month",
+//   start_date: new Date("2023-06-20"),
+//   end_date: new Date("2023-08-30"),
+//   color: "#ed61e8"
+// });
+// addEvent({
+//   title: "An event from last month",
+//   start_date: new Date("2023-006-26"),
+//   end_date: new Date("2023-07-01"),
+//   color: "#ed6161"
+// });
 //
-addEvent({
-  name: "A second multi day event",
-  startDate: new Date("2023-04-06"),
-  endDate: new Date("2023-04-10"),
-  color: "#6199ed"
-});
-addEvent({
-  name: "Single day",
-  startDate: new Date("2023-04-08"),
-  endDate: new Date("2023-04-08"),
-  color: "#ed61e8"
-});
-//
-addEvent({
-  name: "Single day",
-  startDate: new Date("2023-04-22"),
-  endDate: new Date("2023-04-22"),
-  color: "#ed61e8"
-});
-addEvent({
-  name: "Single day",
-  startDate: new Date("2023-04-22"),
-  endDate: new Date("2023-06-22"),
-  color: "#ed61e8"
-});
+// addEvent({
+//   title: "The First Multi Day Event",
+//   start_date: new Date("2023-07-04"),
+//   end_date: new Date("2023-07-08"),
+//   color: "#ed6161"
+// });
+// addEvent({
+//   title: "The First Multi Day Event",
+//   start_date: new Date("2023-07-05"),
+//   end_date: new Date("2023-07-11"),
+//   color: "#9ded61"
+// });
+// //
+// addEvent({
+//   title: "A second multi day event",
+//   start_date: new Date("2023-07-06"),
+//   end_date: new Date("2023-07-10"),
+//   color: "#6199ed"
+// });
+// addEvent({
+//   title: "Single day",
+//   start_date: new Date("2023-07-08"),
+//   end_date: new Date("2023-07-08"),
+//   color: "#ed61e8"
+// });
+// //
+// addEvent({
+//   title: "Single day",
+//   start_date: new Date("2023-07-22"),
+//   end_date: new Date("2023-07-22"),
+//   color: "#ed61e8"
+// });
+// addEvent({
+//   title: "Single day",
+//   start_date: new Date("2023-07-22"),
+//   end_date: new Date("2023-08-22"),
+//   color: "#ed61e8"
+// });
 
-function addEvent (eventData) {
-  const spannedDays = getSpannedEventsForDate(eventData.startDate);
-  events.push(eventData);
+function addEvent (eventData: EventItem) {
+  console.log("ADDING EVENT", eventData);
+  const spannedDays = getSpannedEventsForDate(eventData.start_date);
+  events.value.push(eventData);
 
-  let startWeek = getWeekOfMonth(eventData.startDate);
-  const startMonth = eventData.startDate.getMonth();
-  const startYear = eventData.startDate.getFullYear();
-  const endWeek = getWeekOfMonth(eventData.endDate);
-  const endMonth = eventData.endDate.getMonth();
-  const endYear = eventData.endDate.getFullYear();
-  const startDayOfWeek = getISODay(eventData.startDate) - 1;
-  const endDayOfWeek = getISODay(eventData.endDate);
-  const inThePast = eventData.endDate < Date.now();
+  let startWeek = getWeekOfMonth(eventData.start_date);
+  const startMonth = eventData.start_date.getMonth();
+  const startYear = eventData.start_date.getFullYear();
+  const endWeek = eventData.end_date ? getWeekOfMonth(eventData.end_date) : null;
+  const endMonth = eventData.end_date?.getMonth();
+  const endYear = eventData.end_date?.getFullYear();
+  let startDayOfWeek = getISODay(eventData.start_date) - 1;
+  const endDayOfWeek = eventData.end_date ? getISODay(eventData.end_date) : null;
+  const inThePast = eventData.end_date < Date.now();
 
   if (endMonth < props.month || endYear < props.year) {
     return;
@@ -199,14 +305,17 @@ function addEvent (eventData) {
     return;
   }
 
-  // rename startDate to current selected date/month
-  if (eventData.startDate.getMonth() < startDate.value.getMonth()) {
-    startWeek = startWeek - weeksInMonth.value + 1;
-  }
-  const durationInDays = intervalToDuration({
-    start: eventData.startDate,
-    end: eventData.endDate
+  let durationInDays = intervalToDuration({
+    start: eventData.start_date,
+    end: eventData.end_date
   }).days + 1;
+
+  // rename start_date to current selected date/month
+  if (eventData.start_date.getMonth() < startDate.value.getMonth()) {
+    startWeek = startWeek - weeksInMonth.value + 1;
+    startDayOfWeek = 0;
+    durationInDays = endDayOfWeek;
+  }
 
   const weeksSpanned = (endWeek - startWeek) + 1;
 
@@ -216,9 +325,9 @@ function addEvent (eventData) {
 
   if (weeksSpanned > 1) {
     if (startWeek - 1 >= 0) {
-      weeks.value[startWeek - 1].days[startDayOfWeek].topPush = spannedDays;
-      weeks.value[startWeek - 1].days[startDayOfWeek].events.push({
-        label: eventData.name,
+      weeksData.value[startWeek - 1].days[startDayOfWeek].topPush = spannedDays;
+      weeksData.value[startWeek - 1].days[startDayOfWeek].events.push({
+        label: eventData.title,
         spanLength: 7 - startDayOfWeek,
         color: eventData.color,
         spanWrapsEnd: true,
@@ -229,8 +338,8 @@ function addEvent (eventData) {
 
     for (let i = 1; i < weeksSpanned - 1; i++) {
       if (startWeek + i - 1 >= 0) {
-        weeks.value[startWeek + i - 1].days[0].events.push({
-          label: `(cont) ${eventData.name}`,
+        weeksData.value[startWeek + i - 1].days[0].events.push({
+          label: `(cont) ${eventData.title}`,
           spanLength: 7,
           color: eventData.color,
           hoverController,
@@ -243,13 +352,13 @@ function addEvent (eventData) {
 
     let endWeekDuration = endDayOfWeek;
     let spanWrapsEnd = false;
-    if (eventData.endDate.getMonth() > startDate.value.getMonth()) {
+    if (eventData.end_date.getMonth() > startDate.value.getMonth()) {
       endWeekDuration = 7;
       spanWrapsEnd = true;
     }
 
-    weeks.value[endWeek - 1].days[0].events.push({
-      label: `(cont) ${eventData.name}`,
+    weeksData.value[endWeek - 1].days[0].events.push({
+      label: `(cont) ${eventData.title}`,
       spanLength: endWeekDuration,
       color: eventData.color,
       spanWrapsStart: true,
@@ -258,18 +367,19 @@ function addEvent (eventData) {
       inThePast
     });
   } else if (weeksSpanned < 0) {
-    weeks.value[startWeek - 1].days[startDayOfWeek].topPush = spannedDays;
-    weeks.value[startWeek - 1].days[startDayOfWeek].events.push({
-      label: eventData.name,
+    weeksData.value[startWeek - 1].days[startDayOfWeek].topPush = spannedDays;
+    weeksData.value[startWeek - 1].days[startDayOfWeek].events.push({
+      label: eventData.title,
       spanLength: 7 - startDayOfWeek,
       color: eventData.color,
       hoverController,
       inThePast
     });
   } else if (startWeek - 1 >= 0) {
-    weeks.value[startWeek - 1].days[startDayOfWeek].topPush = spannedDays;
-    weeks.value[startWeek - 1].days[startDayOfWeek].events.push({
-      label: eventData.name,
+    console.log("adding event for week", startWeek - 1, "for day", startDayOfWeek, " for ", durationInDays, "days");
+    weeksData.value[startWeek - 1].days[startDayOfWeek].topPush = spannedDays;
+    weeksData.value[startWeek - 1].days[startDayOfWeek].events.push({
+      label: eventData.title,
       spanLength: durationInDays,
       color: eventData.color,
       hoverController,
@@ -280,13 +390,13 @@ function addEvent (eventData) {
 
 function getSpannedEventsForDate (date: Date) {
   let result = 0;
-  for (let i = 0; i < events.length; i++) {
-    const event = events[i];
+  for (let i = 0; i < events.value.length; i++) {
+    const event = events.value[i];
 
-    if (date > event.startDate && date <= event.endDate) {
+    if (date > event.start_date && date <= event.end_date) {
       const durationInDays = intervalToDuration({
-        start: event.startDate,
-        end: event.endDate
+        start: event.start_date,
+        end: event.end_date
       }).days;
 
       if (durationInDays > 1) {

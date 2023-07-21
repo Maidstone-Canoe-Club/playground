@@ -1,7 +1,9 @@
 <template>
-  <div class="default-layout">
+  <div class="flex min-h-full flex-col default-layout-foo">
     <page-header />
-    <div class="default-layout__page">
+    <div
+      classf="default-layout__page"
+      class="mx-auto w-full max-w-7xl flex-grow sm:px-6 lg:px-8">
       <slot />
     </div>
     <footer class="footer">

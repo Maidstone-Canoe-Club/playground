@@ -1,5 +1,5 @@
 ﻿<template>
-  <div class="request-password-reset container container--md">
+  <div class="container request-password-reset container--md">
     <template v-if="status === Status.Waiting">
       <h1>Forgot your password?</h1>
       <p>We'll send you reset instructions</p>

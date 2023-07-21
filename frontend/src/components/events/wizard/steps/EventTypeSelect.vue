@@ -70,7 +70,7 @@ watch(internalValue, (val) => {
   emits("selected");
 });
 
-function onClick (type) {
+function onClick (type: EventType) {
   internalValue.value = type;
   emits("selected");
 }

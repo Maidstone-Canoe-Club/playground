@@ -14,7 +14,7 @@ import { NewsItem } from "~/types";
 const { getItems } = useDirectusItems();
 const route = useRoute();
 
-const { data: items } = await useAsyncData("news-item", async () => {
+const { data: items } = await useAsyncData(`news-item-${route.params.id}`, async () => {
   return await getItems<NewsItem[]>({
     collection: "news",
     params: {

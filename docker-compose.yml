@@ -19,7 +19,9 @@ services:
 
       CACHE_ENABLED: 'true'
       CACHE_AUTO_PURGE: 'true'
+
       CORS_ENABLED: 'true'
+      CORS_ORIGIN: "*"
 
       DB_CLIENT: 'sqlite3'
       DB_FILENAME: './database/data.db'
@@ -40,6 +42,9 @@ services:
     depends_on:
       - directus
     container_name: mcc-frontend-playground
+    environment:
+      STRIPE_KEY: ${STRIPE_KEY}
+      STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET}
     networks:
       - directus
     restart: unless-stopped

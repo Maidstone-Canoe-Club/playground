@@ -1,5 +1,4 @@
-﻿
-export interface QueryBuilderOptions {
+﻿export interface QueryBuilderOptions {
   width?: number,
   height?: number,
   quality?: number,

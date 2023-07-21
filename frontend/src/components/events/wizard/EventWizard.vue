@@ -2,69 +2,69 @@
   <div class="event-wizard">
     <state-manager v-slot="{setState, currentState, goBack, canGoBack}">
       <div class="event-wizard__header">
-        <strong>
-          {{ currentState.value }}
-        </strong>
-
-        <div class="event-wizard__steps">
-          <div class="event-wizard__step">
-            Select event type
-          </div>
-          <div class="event-wizard__step-separator">
-            >
-          </div>
-          <div>Enter event details</div>
-          <div class="event-wizard__step-separator">
-            >
-          </div>
-          <div>Other details</div>
+        <nav aria-label="Progress">
+          <ol role="list" class="space-y-4 md:space-x-8 md:space-y-0 md:flex">
+            <li v-for="step in steps" :key="step.name" class="md:flex-1">
+              <a v-if="step.status === 'complete'" :href="step.href" class="flex flex-col border-l-4 border-indigo-600 py-2 pl-4 group hover:border-indigo-800 md:border-t-4 md:border-l-0 md:pt-4 md:pb-0 md:pl-0">
+                <span class="text-sm font-medium text-indigo-600 group-hover:text-indigo-800">{{ step.id }}</span>
+                <span class="text-sm font-medium">{{ step.name }}</span>
+              </a>
+              <a v-else-if="step.status === 'current'" :href="step.href" class="flex flex-col border-l-4 border-indigo-600 py-2 pl-4 md:border-t-4 md:border-l-0 md:pt-4 md:pb-0 md:pl-0" aria-current="step">
+                <span class="text-sm font-medium text-indigo-600">{{ step.id }}</span>
+                <span class="text-sm font-medium">{{ step.name }}</span>
+              </a>
+              <a v-else :href="step.href" class="flex flex-col border-l-4 border-gray-200 py-2 pl-4 group hover:border-gray-300 md:border-t-4 md:border-l-0 md:pt-4 md:pb-0 md:pl-0">
+                <span class="text-sm font-medium text-gray-500 group-hover:text-gray-700">{{ step.id }}</span>
+                <span class="text-sm font-medium">{{ step.name }}</span>
+              </a>
+            </li>
+          </ol>
+        </nav>
+        <div class="event-wizard__content">
+          <state-wrapper name="default">
+            <event-type-select
+              v-model="eventType"
+              @selected="setState('date')" />
+          </state-wrapper>
+          <state-wrapper name="date">
+            <event-date-picker
+              v-model:eventItem="eventItem"
+              v-model:eventDates="eventDates"
+              :event-type="eventType"
+              @next="setState('details')" />
+          </state-wrapper>
+          <state-wrapper name="details">
+            <div class="event-details-wrapper">
+              <event-details v-model="eventItem" />
+              <event-preview :event-item="eventItem" />
+            </div>
+          </state-wrapper>
         </div>
-      </div>
-      <div class="event-wizard__content">
-        <state-wrapper name="default">
-          <event-type-select
-            v-model="eventType"
-            @selected="setState('date')" />
-        </state-wrapper>
-        <state-wrapper name="date">
-          <event-date-picker
-            v-model:eventItem="eventItem"
-            v-model:eventDates="eventDates"
-            :event-type="eventType"
-            @next="setState('details')" />
-        </state-wrapper>
-        <state-wrapper name="details">
-          <div class="event-details-wrapper">
-            <event-details v-model="eventItem" />
-            <event-preview :event-item="eventItem" />
-          </div>
-        </state-wrapper>
-      </div>
-      <div
-        v-if="canGoBack"
-        class="event-wizard__footer">
-        <button
-          class="btn btn-primary"
-          @click="goBack()">
-          Back
-        </button>
-        <button
-          class="btn btn-primary"
-          @click="onSubmit">
-          Submit
-        </button>
+        <div
+          v-if="canGoBack"
+          class="event-wizard__footer">
+          <button
+            class="btn btn-primary"
+            @click="goBack()">
+            Back
+          </button>
+          <button
+            class="btn btn-primary"
+            @click="onSubmit">
+            Submit
+          </button>
+        </div>
       </div>
     </state-manager>
   </div>
 </template>
 
 <script setup lang="ts">
-import { addHours } from "date-fns";
-
 import { Ref } from "vue";
 import { EventDates, EventItem } from "~/types";
 
-const eventType: Ref<string> = ref<string>("");
+type EventType = "single" | "multi" | "recurring" | "";
+const eventType: Ref<EventType> = ref<EventType>("");
 
 const eventItem: Ref<EventItem> = ref<EventItem>({
   title: "Beginners course",
@@ -72,28 +72,20 @@ const eventItem: Ref<EventItem> = ref<EventItem>({
   description: "It's a beginners course!",
   max_attendees: 8,
   start_date: new Date(),
-  end_date: addHours(new Date(), 4),
+  is_recurring: false,
+  has_multiple: false,
+  is_full_day: false,
   price: 1000
 });
 
+const steps = [
+  { id: "Step 1", name: "Select event type", href: "#", status: "complete" },
+  { id: "Step 2", name: "Choose event dates", href: "#", status: "current" },
+  { id: "Step 3", name: "Event details", href: "#", status: "upcoming" }
+];
+
 const eventDates: Ref<EventDates> = ref<EventDates>({
-  multiple: [
-    {
-      id: 123,
-      start_date: new Date(),
-      end_date: addHours(new Date(), 5)
-    },
-    {
-      id: 456,
-      start_date: addHours(new Date(), 6),
-      end_date: addHours(new Date(), 11)
-    },
-    {
-      id: 789,
-      start_date: addHours(new Date(), 20),
-      end_date: addHours(new Date(), 24)
-    }
-  ],
+  multiple: [],
   recurring: {}
 });
 
@@ -110,6 +102,16 @@ async function onSubmit () {
   });
   console.log("res", res.data);
 }
+
+watch(eventType, (val) => {
+  eventItem.value.is_recurring = false;
+  eventItem.value.has_multiple = false;
+  if (val === "multi") {
+    eventItem.value.has_multiple = true;
+  } else if (val === "recurring") {
+    eventItem.value.is_recurring = true;
+  }
+});
 
 </script>
 

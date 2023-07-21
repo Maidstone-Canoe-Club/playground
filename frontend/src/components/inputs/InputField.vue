@@ -25,7 +25,7 @@
 import { Validation } from "@vuelidate/core";
 
 interface Props {
-    modelValue: string | number | null,
+    modelValue: string | number | null | undefined,
     id: string,
     type: string,
     label?: string,

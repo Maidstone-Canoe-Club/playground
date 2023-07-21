@@ -36,12 +36,15 @@ export default defineNuxtConfig({
     "@nuxtjs/google-fonts",
     "@nuxt/image",
     "@vueuse/nuxt",
-    "@nuxt/devtools"
+    "@nuxt/devtools",
+    "@pinia/nuxt",
+    "@nuxtjs/tailwindcss",
+    "nuxt-headlessui"
   ],
 
   googleFonts: {
     families: {
-      Roboto: [400, 700]
+      Inter: [400, 600, 700]
     }
   },
 

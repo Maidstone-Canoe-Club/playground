@@ -5,3 +5,13 @@
     <nuxt-page />
   </nuxt-layout>
 </template>
+<script setup>
+useHead({
+  htmlAttrs: {
+    class: "h-full"
+  },
+  bodyAttrs: {
+    class: "h-full"
+  }
+});
+</script>
