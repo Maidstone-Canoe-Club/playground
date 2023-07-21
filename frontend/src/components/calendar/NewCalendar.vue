@@ -82,12 +82,20 @@
             <HeadlessMenuItems class="absolute right-0 z-10 mt-3 w-36 origin-top-right overflow-hidden rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none">
               <div class="py-1">
                 <HeadlessMenuItem v-slot="{ active }">
-                  <a href="#" :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']">Create event</a>
+                  <nuxt-link to="/events/new" :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']">
+                    Add event
+                  </nuxt-link>
                 </HeadlessMenuItem>
               </div>
               <div class="py-1">
                 <HeadlessMenuItem v-slot="{ active }">
-                  <a href="#" :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']">Go to today</a>
+                  <button
+                    type="button"
+                    class="w-full text-left"
+                    :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']"
+                    @click="calendarStore.resetDate()">
+                    Go to today
+                  </button>
                 </HeadlessMenuItem>
               </div>
               <!--              <div class="py-1">-->
