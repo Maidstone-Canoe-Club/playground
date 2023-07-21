@@ -103,9 +103,9 @@
       </div>
       <div v-else>
         <div class="mt-3 space-y-1">
-          <nuxt-link to="/login" class="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800">
+          <DisclosureButton :as="NuxtLink" to="/login" class="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800">
             Login
-          </nuxt-link>
+          </DisclosureButton>
         </div>
       </div>
     </DisclosurePanel>
@@ -118,6 +118,8 @@ import { Disclosure, DisclosurePanel, DisclosureButton, Menu, MenuButton, MenuIt
 import { DirectusUser } from "nuxt-directus/dist/runtime/types";
 import { Ref } from "vue";
 import { logout } from "~/utils/auth";
+
+const NuxtLink = resolveComponent("nuxt-link");
 
 const route = useRoute();
 
