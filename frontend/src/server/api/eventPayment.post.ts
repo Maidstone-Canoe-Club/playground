@@ -9,10 +9,11 @@ const baseURL = process.env.NUXT_DIRECTUS_URL;
 const directus = new Directus<Types>(process.env.NUXT_DIRECTUS_URL!);
 const events = directus.items("events");
 
-const baseUrl = process.env.production ? "https://mccdev.co.uk" : "http://localhost:3000";
-
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);
+  const baseUrl = process.env.BASE_URL ?? "http://localhost:3000";
+
+  console.log("baseurl", baseUrl);
 
   console.log("loading event", query.eventId);
   try {

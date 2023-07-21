@@ -60,6 +60,7 @@ jobs:
           context: frontend/.
           build-args: |
             NUXT_DIRECTUS_URL=https://mccdev.co.uk/cms
+            BASE_URL=https://mccdev.co.uk
             STRIPE_KEY=${{ secrets.STRIPE_KEY }}
             STRIPE_WEBHOOK_SECRET=${{ secrets.STRIPE_WEBHOOK_SECRET }}
           push: ${{ github.ref == 'refs/heads/main' }}

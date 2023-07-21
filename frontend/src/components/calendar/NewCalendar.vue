@@ -142,8 +142,12 @@
         </div>
       </div>
       <div class="flex bg-gray-200 text-xs leading-6 text-gray-700 lg:flex-auto">
-        <div class="hidden w-full lg:grid lg:grid-cols-7 lg:grid-rows-6 lg:gap-px">
-          <div v-for="day in days" :key="day.date + '-day'" :class="[day.isCurrentMonth ? 'bg-white' : 'bg-gray-50 text-gray-500', 'relative px-3 py-2']">
+        <div class="hidden w-full lg:grid lg:grid-cols-7 lg:gap-px">
+          <div
+            v-for="day in days"
+            :key="day.date + '-day'"
+            class="min-h-[80px]"
+            :class="[day.isCurrentMonth ? 'bg-white' : 'bg-gray-50 text-gray-500', 'relative px-3 py-2']">
             <time :datetime="day.date" :class="day.isToday ? 'flex h-6 w-6 items-center justify-center rounded-full bg-indigo-600 font-semibold text-white' : undefined">{{ day.date.split('-').pop().replace(/^0/, '') }}</time>
             <ol v-if="day.events.length > 0" class="mt-2">
               <li v-for="event in day.events.slice(0, 2)" :key="event.id">
@@ -160,7 +164,7 @@
             </ol>
           </div>
         </div>
-        <div class="isolate grid w-full grid-cols-7 grid-rows-6 gap-px lg:hidden">
+        <div class="isolate grid w-full grid-cols-7 gap-px lg:hidden">
           <button
             v-for="day in days"
             :key="day.date + '-day-small'"
@@ -176,7 +180,7 @@
         </div>
       </div>
     </div>
-    <div v-if="selectedDay?.events.length > 0" class="px-4 py-10 sm:px-6 lg:hidden">
+    <div v-if="selectedDay?.events.length > 0" class="py-10 sm:px-6 lg:hidden">
       <ol class="overflow-hidden rounded-lg bg-white text-sm shadow ring-1 ring-black ring-opacity-5 divide-y divide-gray-100">
         <li v-for="event in selectedDay.events" :key="event.id" class="flex p-4 pr-6 group focus-within:bg-gray-50 hover:bg-gray-50">
           <div class="flex-auto">
@@ -188,9 +192,11 @@
               {{ event.time }}
             </time>
           </div>
-          <a
-            :href="event.href"
-            class="ml-6 flex-none self-center rounded-md bg-white px-3 py-2 font-semibold text-gray-900 opacity-0 shadow-sm ring-1 ring-inset ring-gray-300 group-hover:opacity-100 hover:ring-gray-400 focus:opacity-100">Edit<span class="sr-only">, {{ event.name }}</span></a>
+          <nuxt-link
+            :to="event.href"
+            class="ml-6 flex-none self-center rounded-md bg-white px-3 py-2 font-semibold text-gray-900 opacity-0 shadow-sm ring-1 ring-inset ring-gray-300 group-hover:opacity-100 hover:ring-gray-400 focus:opacity-100">
+            View<span class="sr-only">, {{ event.name }}</span>
+          </nuxt-link>
         </li>
       </ol>
     </div>
