@@ -25,6 +25,9 @@ FROM base AS build
 WORKDIR /opt/node_app/app
 COPY --from=base --chown=node:node /opt/node_app/app .
 
+ARG NUXT_DIRECTUS_URL
+ENV NUXT_DIRECTUS_URL ${NUXT_DIRECTUS_URL}
+
 COPY ./src ./src
 COPY ./nuxt.config.ts ./
 COPY ./tsconfig.json ./
@@ -41,13 +44,11 @@ WORKDIR /opt/
 COPY --from=build --chown=node:node /opt/node_app/app/.output node_app/app/.output
 WORKDIR /opt/node_app/app
 
-ARG NUXT_DIRECTUS_URL
 ARG STRIPE_KEY
 ARG STRIPE_WEBHOOK_SECRET
 
-ENV NUXT_DIRECTUS_URL=${NUXT_DIRECTUS_URL}
-ENV STRIPE_KEY=${STRIPE_KEY}
-ENV STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET}
+ENV STRIPE_KEY ${STRIPE_KEY}
+ENV STRIPE_WEBHOOK_SECRET ${STRIPE_WEBHOOK_SECRET}
 
 ENV NODE_ENV production
 ENV PORT 3000
