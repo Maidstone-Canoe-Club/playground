@@ -9,6 +9,10 @@
   const expiresBufferMs = 25_000; // 25 seconds
 
   if (expiresIn < expiresBufferMs) {
-    await refreshTokens();
+    try {
+      await refreshTokens();
+    } catch (e) {
+      console.log("could not refresh", e.message);
+    }
   }
 });
