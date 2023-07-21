@@ -20,6 +20,8 @@ export default defineEventHandler(async (event) => {
     });
   }
 
+  console.log("body", rawBody, "endpoint secret", endpointSecret, "sig", sig);
+
   let stripeEvent: Stripe.Event;
 
   try {
@@ -29,7 +31,7 @@ export default defineEventHandler(async (event) => {
     console.log(err);
     throw createError({
       statusCode: 400,
-      message: "Webhook error: Error validating webhook event"
+      statusMessage: "Webhook error: Error validating webhook event"
     });
   }
 
