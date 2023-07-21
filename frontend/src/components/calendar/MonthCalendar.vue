@@ -53,7 +53,7 @@ import {
   getDaysInMonth, getISODay, startOfMonth, getWeekOfMonth, intervalToDuration,
   setDefaultOptions, addMonths, endOfMonth, format
 } from "date-fns";
-import { enGB } from "date-fns/locale";
+import enGB from "date-fns/locale/en-GB/index.js";
 import { dayOfWeekLabel, getDayOrdinal, days } from "~/utils/date";
 import { EventItem } from "~/types";
 

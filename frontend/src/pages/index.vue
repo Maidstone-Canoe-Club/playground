@@ -38,16 +38,15 @@ const { data: home } = await useAsyncData("home", () => {
   return getSingletonItem({ collection: "home" });
 });
 
-const heroImageUrl = ref(null);
-const heroImageSrcSet = ref(null);
+const heroImageUrl = ref<string | null>(null);
+const heroImageSrcSet = ref<string | null>(null);
 
-const whiteWaterUrl = ref(null);
+const whiteWaterUrl = ref<string | null>(null);
 
-if (home.value.header_image) {
+if (home.value?.header_image) {
   heroImageUrl.value = directusUrl + "/assets/" + home.value.header_image + "?quality=80&format=webp";
   heroImageSrcSet.value = `${heroImageUrl.value}&width=1300 1300w, ${heroImageUrl.value}&width=600 600w`;
-
-  whiteWaterUrl.value = directusUrl + "/assets/" + home.value.white_water_image + "?quality=80&format=webp";
+  // whiteWaterUrl.value = directusUrl + "/assets/" + home.value.white_water_image + "?quality=80&format=webp";
 }
 
 </script>

@@ -193,7 +193,7 @@
 import { ChevronLeftIcon, ChevronRightIcon, EllipsisHorizontalIcon } from "@heroicons/vue/24/outline";
 import { format, getISODay, setDefaultOptions } from "date-fns";
 import { Touch } from "vscode-jsonrpc/lib/common/linkedMap";
-import { enGB } from "date-fns/locale";
+import enGB from "date-fns/locale/en-GB/index.js";
 import { useCalendarStore } from "~/stores/calendarStore";
 import { EventItem } from "~/types";
 
