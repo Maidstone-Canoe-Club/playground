@@ -79,7 +79,9 @@
           {{ item.name }}
         </DisclosureButton>
       </div>
-      <div class="border-t border-gray-200 pt-4 pb-3">
+      <div
+        v-if="user"
+        class="border-t border-gray-200 pt-4 pb-3">
         <div class="flex items-center px-4">
           <div class="flex-shrink-0">
             <img class="h-10 w-10 rounded-full" :src="avatarUrl" alt="">
@@ -97,6 +99,13 @@
           <DisclosureButton v-for="item in userNavigation" :key="item.name" as="a" :href="item.href" class="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800">
             {{ item.name }}
           </DisclosureButton>
+        </div>
+      </div>
+      <div v-else>
+        <div class="mt-3 space-y-1">
+          <nuxt-link to="/login" class="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800">
+            Login
+          </nuxt-link>
         </div>
       </div>
     </DisclosurePanel>
