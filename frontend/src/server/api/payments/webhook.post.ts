@@ -24,8 +24,10 @@ export default defineEventHandler(async (event) => {
 
   let stripeEvent: Stripe.Event;
 
+  const bodyBuffer = Buffer.from(rawBody, "utf-8");
+
   try {
-    stripeEvent = stripe.webhooks.constructEvent(rawBody, sig, endpointSecret);
+    stripeEvent = stripe.webhooks.constructEvent(bodyBuffer, sig, endpointSecret);
     console.log("created stripe event");
   } catch (err) {
     console.log(err);
