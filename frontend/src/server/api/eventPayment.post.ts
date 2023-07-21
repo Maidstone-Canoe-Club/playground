@@ -5,15 +5,12 @@ import { EventItem } from "~/types.d";
 
 const stripe = new Stripe(process.env.STRIPE_KEY);
 
-const baseURL = process.env.NUXT_DIRECTUS_URL;
 const directus = new Directus<Types>(process.env.NUXT_DIRECTUS_URL!);
 const events = directus.items("events");
 
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);
   const baseUrl = process.env.BASE_URL ?? "http://localhost:3000";
-
-  console.log("baseurl", baseUrl);
 
   console.log("loading event", query.eventId);
   try {
@@ -31,8 +28,7 @@ export default defineEventHandler(async (event) => {
       metadata: {
         date: eventDate,
         event_id: eventItem.id,
-        user_id: -1
-        // TODO: user id
+        user_id: "d9a9c95d-7791-43be-b458-5d59d4ddd542"
       },
       line_items: [
         {
@@ -41,11 +37,7 @@ export default defineEventHandler(async (event) => {
             currency: "GBP",
             unit_amount: eventItem.price,
             product_data: {
-              name: productName,
-              metadata: {
-                date: eventDate,
-                id: eventItem.id
-              }
+              name: productName
             }
           }
         }

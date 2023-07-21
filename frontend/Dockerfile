@@ -15,6 +15,9 @@ FROM prebase AS base
 
 RUN npm install && npm cache clean --force
 
+ARG NUXT_DIRECTUS_URL
+ENV NUXT_DIRECTUS_URL ${NUXT_DIRECTUS_URL}
+
 ENV PORT 3000
 ENV NITRO_PORT 3000
 ENV HOST 0.0.0.0
@@ -24,9 +27,6 @@ FROM base AS build
 
 WORKDIR /opt/node_app/app
 COPY --from=base --chown=node:node /opt/node_app/app .
-
-ARG NUXT_DIRECTUS_URL
-ENV NUXT_DIRECTUS_URL ${NUXT_DIRECTUS_URL}
 
 COPY ./src ./src
 COPY ./nuxt.config.ts ./

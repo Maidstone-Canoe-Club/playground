@@ -42,6 +42,16 @@ export default defineNuxtConfig({
     "nuxt-headlessui"
   ],
 
+  directus: {
+    autoRefresh: true,
+    onAutoRefreshFailure: () => {
+      return new Promise((resolve) => {
+        console.log("AUTO REFRESH FAILED!");
+        resolve();
+      });
+    }
+  },
+
   googleFonts: {
     families: {
       Inter: [400, 600, 700]

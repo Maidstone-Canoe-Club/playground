@@ -1,10 +1,17 @@
 ﻿import Stripe from "stripe";
+import { bookUserOnEvent } from "~/utils/events";
 
 const stripe = new Stripe(process.env.STRIPE_KEY);
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
 export default defineEventHandler(async (event) => {
-  const payload = await readBody(event);
+  if (!endpointSecret) {
+    throw createError({
+      statusCode: 400,
+      statusMessage: "Webhook error: No endpoint secret"
+    });
+  }
+
   const sig = getRequestHeader(event, "stripe-signature");
   if (!sig) {
     throw createError({
@@ -20,15 +27,11 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  console.log("body", rawBody, "endpoint secret", endpointSecret, "sig", sig);
-
   let stripeEvent: Stripe.Event;
-
   const bodyBuffer = Buffer.from(rawBody, "utf-8");
 
   try {
     stripeEvent = stripe.webhooks.constructEvent(bodyBuffer, sig, endpointSecret);
-    console.log("created stripe event");
   } catch (err) {
     console.log(err);
     throw createError({
@@ -37,8 +40,6 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  console.log("event type", stripeEvent.type);
-
   if (stripeEvent.type === "checkout.session.completed") {
     console.log("completed!");
     const sessionWithLineItems = await stripe.checkout.sessions.retrieve(stripeEvent.data.object.id,
@@ -46,11 +47,9 @@ export default defineEventHandler(async (event) => {
         expand: ["line_items"]
       });
 
-    const lineItems = sessionWithLineItems.line_items;
     const metadata = sessionWithLineItems.metadata;
 
-    console.log("got metadata", metadata);
-    // console.log("got line items!", JSON.stringify(lineItems));
+    await bookUserOnEvent(metadata.user_id, metadata.event_id);
   }
 
   return `handled ${stripeEvent.type}`;
