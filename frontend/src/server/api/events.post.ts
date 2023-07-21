@@ -1,7 +1,7 @@
 ﻿import axios from "axios";
 import { Directus } from "@directus/sdk";
 import { getDate, getDay, getMonth, getWeekOfMonth, parseISO, setDefaultOptions } from "date-fns";
-import { enGB } from "date-fns/locale";
+import enGB from "date-fns/locale/en-GB/index.js";
 import { EventDates, EventItem, RecurringEventPattern, RecurringType } from "~/types.d";
 
 type Types = {
