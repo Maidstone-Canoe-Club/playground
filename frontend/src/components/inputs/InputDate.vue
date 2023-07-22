@@ -7,12 +7,6 @@
       :for="id">
       {{ label }}
     </label>
-    <!--    <input-->
-    <!--      :id="id"-->
-    <!--      v-model="internalValue"-->
-    <!--      :required="required"-->
-    <!--      :type="type"-->
-    <!--      v-bind="$attrs">-->
     <date-picker
       :id="id"
       v-model="internalValue"
