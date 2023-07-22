@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
   // Only return attendees if user is logged in
   // and user has role of coach
 
-  await directus.auth.static("vACWBnWsLMVkLvhr7h4zEv24srlQ7lFW");
+  await directus.auth.static(process.env.DIRECTUS_STATIC_TOKEN!);
 
   const query = getQuery(event);
   const eventId = query.eventId;

@@ -19,7 +19,8 @@ export async function isUserBooked (userId, eventId) : Promise<boolean> {
   return found.data && found.data.length > 0;
 }
 
-export async function bookUserOnEvent (userId, eventId) {
+export async function bookUserOnEvent (userId: string, eventId: string | number) {
+  await directus.auth.static(process.env.DIRECTUS_STATIC_TOKEN!);
   await eventDelegates.createOne({
     user: userId,
     event: eventId
