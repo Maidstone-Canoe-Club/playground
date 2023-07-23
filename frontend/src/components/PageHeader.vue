@@ -154,6 +154,7 @@ const navigation = computed(() => {
     { name: "Home", href: "/", current: route.path === "/" },
     { name: "News", href: "/news", current: route.path === "/news" },
     { name: "Calendar", href: "/calendar", current: route.path === "/calendar" },
+    { name: "Coaching", href: "/content/1/coaching", current: route.path === "/content/1/coaching" },
     { name: "Galleries", href: "/galleries", current: route.path === "/galleries" }
   ];
 });

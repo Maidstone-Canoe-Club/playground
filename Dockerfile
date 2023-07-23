@@ -15,6 +15,7 @@ WORKDIR /directus
 
 COPY --from=builder /builder/snapshots ./snapshots
 COPY --from=builder /builder/extensions/directus-extension-permissions ./extensions/directus-extension-permissions
+COPY --from=builder /builder/extensions/directus-extension-slugify ./extensions/directus-extension-slugify
 
 CMD npx directus bootstrap && \
     npx directus schema apply snapshots/latest.yml --yes && \
