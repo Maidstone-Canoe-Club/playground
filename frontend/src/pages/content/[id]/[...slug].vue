@@ -61,6 +61,6 @@ await redirectToSlug(item.value);
 }
 
 ::v-deep(a) {
-  @apply text-brand underline;
+  @apply text-brand-500 underline;
 }
 </style>
