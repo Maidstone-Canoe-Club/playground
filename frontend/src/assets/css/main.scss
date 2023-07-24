@@ -12,7 +12,8 @@ ul {
   @apply list-disc mx-8 py-4;
 }
 
-li {
+a {
+  @apply text-brand;
 }
 
 :root {
