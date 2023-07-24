@@ -10,6 +10,7 @@
 <script setup lang="ts">
 import { Ref } from "vue";
 import { NewsItem } from "~/types";
+import { redirectToSlug } from "~/utils/redirects";
 
 const { getItems } = useDirectusItems();
 const route = useRoute();
@@ -38,14 +39,16 @@ if (!item.value) {
   });
 }
 
-if (!route.params.slug && item.value.slug) {
-  let redirect = route.path;
-  if (!redirect.endsWith("/")) {
-    redirect += "/";
-  }
+// if (!route.params.slug && item.value.slug) {
+//   let redirect = route.path;
+//   if (!redirect.endsWith("/")) {
+//     redirect += "/";
+//   }
+//
+//   redirect += item.value.slug;
+//   await navigateTo(redirect);
+// }
 
-  redirect += item.value.slug;
-  await navigateTo(redirect);
-}
+await redirectToSlug(item.value);
 
 </script>

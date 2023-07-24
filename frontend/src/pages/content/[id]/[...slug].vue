@@ -47,34 +47,20 @@ if (!item.value) {
   });
 }
 
-// if (!route.params.slug && item.value.slug) {
-//   let redirect = route.path;
-//   if (!redirect.endsWith("/")) {
-//     redirect += "/";
-//   }
-//
-//   redirect += item.value.slug;
-//   await navigateTo(redirect);
-// }
-
 await redirectToSlug(item.value);
 
 </script>
 
-<style scoped lang="scss">
-//@tailwind base;
-//
-//::v-deep(p) {
-//  //margin-bottom: 1rem;
-//  @apply mt-6 text-xl leading-8 text-gray-700;
-//}
-//
-//::v-deep(ul){
-// @apply mt-8 space-y-8 text-gray-600;
-//}
-//
-//::v-deep(li){
-//  @apply mt-8 space-y-8 text-gray-600;
-//}
+<style scoped lang="postcss">
+::v-deep(p) {
+  @apply mb-6 leading-6;
+}
 
+::v-deep(ul){
+ @apply list-disc mx-8 py-4;
+}
+
+::v-deep(a) {
+  @apply text-brand underline;
+}
 </style>

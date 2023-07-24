@@ -1,23 +1,6 @@
 @use "variables" as *;
 @use "mixins" as *;
 
-@tailwind base;
-@tailwind components;
-
-p {
-  @apply mb-6 leading-6;
-}
-
-ul {
-  @apply list-disc mx-8 py-4;
-}
-
-@layer components {
-  a {
-    @apply text-brand;
-  }
-}
-
 :root {
   --black: $black;
   --white: $white;
