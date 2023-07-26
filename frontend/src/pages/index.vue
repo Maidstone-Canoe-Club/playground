@@ -137,7 +137,12 @@ function generateImageUrl (url: string) {
     return null;
   }
 
-  return `${directusUrl}/assets/${url}?quality=80&format=webp`;
+  const fullUrl = `${directusUrl}/assets/${url}`;
+  return buildQuery(fullUrl, {
+    quality: 80,
+    format: "webp",
+    width: 600
+  });
 }
 
 </script>
