@@ -4,8 +4,10 @@
       <div class="flex h-16 justify-between">
         <div class="flex">
           <div class="flex flex-shrink-0 items-center">
-            <img class="block h-8 w-auto lg:hidden" src="/images/logo-no-text.svg" alt="Maidstone Canoe Club logo">
-            <img class="hidden h-8 w-auto lg:block" src="/images/logo-no-text.svg" alt="Maidstone Canoe Club logo">
+            <nuxt-link to="/">
+              <img class="block h-8 w-auto lg:hidden" src="/images/logo-no-text.svg" alt="Maidstone Canoe Club logo">
+              <img class="hidden h-8 w-auto lg:block" src="/images/logo-no-text.svg" alt="Maidstone Canoe Club logo">
+            </nuxt-link>
           </div>
           <div class="hidden sm:space-x-8 sm:-my-px sm:ml-6 sm:flex">
             <nuxt-link v-for="item in navigation" :key="item.name" :to="item.href" :class="[item.current ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700', 'inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium']" :aria-current="item.current ? 'page' : undefined">

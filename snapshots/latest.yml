@@ -1958,6 +1958,84 @@ fields:
       foreign_key_table: null
       foreign_key_column: null
   - collection: home
+    field: racing_image_a
+    type: uuid
+    meta:
+      collection: home
+      conditions: null
+      display: null
+      display_options: null
+      field: racing_image_a
+      group: null
+      hidden: false
+      interface: file-image
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: null
+      special:
+        - file
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: racing_image_a
+      table: home
+      data_type: char
+      default_value: null
+      max_length: 36
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: directus_files
+      foreign_key_column: id
+  - collection: home
+    field: racing_image_b
+    type: uuid
+    meta:
+      collection: home
+      conditions: null
+      display: null
+      display_options: null
+      field: racing_image_b
+      group: null
+      hidden: false
+      interface: file-image
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: null
+      special:
+        - file
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: racing_image_b
+      table: home
+      data_type: char
+      default_value: null
+      max_length: 36
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: directus_files
+      foreign_key_column: id
+  - collection: home
     field: user_updated
     type: string
     meta:
@@ -1996,6 +2074,160 @@ fields:
       generation_expression: null
       has_auto_increment: false
       foreign_key_table: directus_users
+      foreign_key_column: id
+  - collection: home
+    field: white_water_content
+    type: text
+    meta:
+      collection: home
+      conditions: null
+      display: null
+      display_options: null
+      field: white_water_content
+      group: null
+      hidden: false
+      interface: input-multiline
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: null
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: white_water_content
+      table: home
+      data_type: text
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: home
+    field: white_water_heading
+    type: string
+    meta:
+      collection: home
+      conditions: null
+      display: null
+      display_options: null
+      field: white_water_heading
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: null
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: white_water_heading
+      table: home
+      data_type: varchar
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: home
+    field: white_water_image
+    type: uuid
+    meta:
+      collection: home
+      conditions: null
+      display: null
+      display_options: null
+      field: white_water_image
+      group: null
+      hidden: false
+      interface: file-image
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: null
+      special:
+        - file
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: white_water_image
+      table: home
+      data_type: char
+      default_value: null
+      max_length: 36
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: directus_files
+      foreign_key_column: id
+  - collection: home
+    field: white_water_image_b
+    type: uuid
+    meta:
+      collection: home
+      conditions: null
+      display: null
+      display_options: null
+      field: white_water_image_b
+      group: null
+      hidden: false
+      interface: file-image
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: null
+      special:
+        - file
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: white_water_image_b
+      table: home
+      data_type: char
+      default_value: null
+      max_length: 36
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: directus_files
       foreign_key_column: id
   - collection: news
     field: content
@@ -3543,6 +3775,48 @@ relations:
       on_update: NO ACTION
       on_delete: SET NULL
   - collection: home
+    field: racing_image_a
+    related_collection: directus_files
+    meta:
+      junction_field: null
+      many_collection: home
+      many_field: racing_image_a
+      one_allowed_collections: null
+      one_collection: directus_files
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: home
+      column: racing_image_a
+      foreign_key_table: directus_files
+      foreign_key_column: id
+      constraint_name: null
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: home
+    field: racing_image_b
+    related_collection: directus_files
+    meta:
+      junction_field: null
+      many_collection: home
+      many_field: racing_image_b
+      one_allowed_collections: null
+      one_collection: directus_files
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: home
+      column: racing_image_b
+      foreign_key_table: directus_files
+      foreign_key_column: id
+      constraint_name: null
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: home
     field: user_updated
     related_collection: directus_users
     meta:
@@ -3563,6 +3837,48 @@ relations:
       constraint_name: null
       on_update: NO ACTION
       on_delete: NO ACTION
+  - collection: home
+    field: white_water_image
+    related_collection: directus_files
+    meta:
+      junction_field: null
+      many_collection: home
+      many_field: white_water_image
+      one_allowed_collections: null
+      one_collection: directus_files
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: home
+      column: white_water_image
+      foreign_key_table: directus_files
+      foreign_key_column: id
+      constraint_name: null
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: home
+    field: white_water_image_b
+    related_collection: directus_files
+    meta:
+      junction_field: null
+      many_collection: home
+      many_field: white_water_image_b
+      one_allowed_collections: null
+      one_collection: directus_files
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: home
+      column: white_water_image_b
+      foreign_key_table: directus_files
+      foreign_key_column: id
+      constraint_name: null
+      on_update: NO ACTION
+      on_delete: SET NULL
   - collection: news
     field: user_created
     related_collection: directus_users

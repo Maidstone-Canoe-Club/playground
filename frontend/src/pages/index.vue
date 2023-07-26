@@ -6,26 +6,104 @@
         :src="heroImageUrl"
         :srcset="heroImageSrcSet"
         alt="Join us image">
-      <div class="home__header-overlay">
-        <h1 class="home__header-text">
-          Join us
+      <div
+        class="home__header-overlay">
+        <h1 class="mb-2 text-6xl font-bold text-white">
+          Maidstone Canoe Club
         </h1>
-        <p>Words go here</p>
-        <button class="btn btn-outline-primary">
-          Click here to do something
-        </button>
-      </div>
-    </div>
+        <p>Lorem ipsum dolor sit amet. Ut necessitatibus quia aut sapiente facilis et voluptatem quam et aperiam illum ab obcaecati aspernatur 33 quae quos hic voluptatem praesentium. </p>
 
-    <div class="container">
-      <div class="home__activities">
         <div>
-          <img :src="whiteWaterUrl" alt="white water">
-          <h2>White water</h2>
-          <p>A description of white water kayaking at the club</p>
+          <button class="mt-4 rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+            Join us
+          </button>
         </div>
       </div>
     </div>
+
+    <section>
+      <div class="gap-16 items-center py-8 px-4 mx-auto max-w-screen-xl lg:grid lg:grid-cols-2 lg:py-16 lg:px-6">
+        <div class="grid grid-cols-2 gap-4 mt-8">
+          <img
+            v-if="racingUrlA"
+            class="w-full h-[200px] md:h-[350px] object-cover rounded-lg mt-4 lg:mt-10"
+            :src="racingUrlA"
+            alt="Racing">
+          <img
+            v-if="whiteWaterBUrl"
+            class="w-full h-[200px] md:h-[350px] object-cover rounded-lg"
+            :src="whiteWaterBUrl"
+            alt="White water">
+        </div>
+        <div class="flex flex-col gap-4">
+          <h2 class="mb-2 text-4xl font-bold text-gray-900">
+            Paddleboarding
+          </h2>
+          <p>{{ whiteWaterContent }}</p>
+          <div>
+            <button class="rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+              Learn more
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="gap-16 items-center py-8 px-4 mx-auto max-w-screen-xl lg:grid lg:grid-cols-2 lg:py-16 lg:px-6">
+        <div class="flex flex-col gap-4">
+          <h2 class="mb-2 text-4xl font-bold text-gray-900">
+            {{ whiteWaterHeading }}
+          </h2>
+          <p>{{ whiteWaterContent }}</p>
+          <div>
+            <button class="rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+              Learn more
+            </button>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-4 mt-8">
+          <img
+            v-if="whiteWaterUrl"
+            class="w-full h-[200px] md:h-[350px] object-cover rounded-lg"
+            :src="whiteWaterUrl"
+            alt="White water">
+          <img
+            v-if="whiteWaterBUrl"
+            class="w-full h-[200px] md:h-[350px] object-cover rounded-lg mt-4 lg:mt-10"
+            :src="whiteWaterBUrl"
+            alt="White water">
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="gap-16 items-center py-8 px-4 mx-auto max-w-screen-xl lg:grid lg:grid-cols-2 lg:py-16 lg:px-6">
+        <div class="flex flex-col gap-4">
+          <h2 class="mb-2 text-4xl font-bold text-gray-900">
+            Racing
+          </h2>
+          <p>{{ whiteWaterContent }}</p>
+          <div>
+            <button class="rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+              Learn more
+            </button>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-4 mt-8 md:order-first">
+          <img
+            v-if="racingUrlA"
+            class="w-full h-[200px] md:h-[350px] object-cover rounded-lg mt-4 lg:mt-10"
+            :src="racingUrlA"
+            alt="Racing">
+          <img
+            v-if="racingUrlB"
+            class="w-full h-[200px] md:h-[350px] object-cover rounded-lg"
+            :src="racingUrlB"
+            alt="Racing">
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 
@@ -41,12 +119,25 @@ const { data: home } = await useAsyncData("home", () => {
 const heroImageUrl = ref<string | null>(null);
 const heroImageSrcSet = ref<string | null>(null);
 
-const whiteWaterUrl = ref<string | null>(null);
+const whiteWaterUrl = ref<string | null>(generateImageUrl(home.value?.white_water_image));
+const whiteWaterBUrl = ref<string | null>(generateImageUrl(home.value?.white_water_image_b));
+const whiteWaterHeading = ref<string | null>(home.value.white_water_heading);
+const whiteWaterContent = ref<string | null>(home.value.white_water_content);
+
+const racingUrlA = ref<string | null>(generateImageUrl(home.value?.racing_image_a));
+const racingUrlB = ref<string | null>(generateImageUrl(home.value?.racing_image_b));
 
 if (home.value?.header_image) {
   heroImageUrl.value = directusUrl + "/assets/" + home.value.header_image + "?quality=80&format=webp";
   heroImageSrcSet.value = `${heroImageUrl.value}&width=1300 1300w, ${heroImageUrl.value}&width=600 600w`;
-  // whiteWaterUrl.value = directusUrl + "/assets/" + home.value.white_water_image + "?quality=80&format=webp";
+}
+
+function generateImageUrl (url: string) {
+  if (!url) {
+    return null;
+  }
+
+  return `${directusUrl}/assets/${url}?quality=80&format=webp`;
 }
 
 </script>

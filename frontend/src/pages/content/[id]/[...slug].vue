@@ -34,10 +34,14 @@ if (!id) {
 }
 
 const { data: item } = await useAsyncData(`content-${id}`, async () => {
-  return await getItemById<ContentItem>({
-    collection: "content",
-    id
-  });
+  try {
+    return await getItemById<ContentItem>({
+      collection: "content",
+      id
+    });
+  } catch (e) {
+    console.log("error loading content", e);
+  }
 });
 
 if (!item.value) {

@@ -23,6 +23,26 @@
           <dl class="mt-6 border-t border-gray-200 text-sm leading-6 space-y-6 divide-y divide-gray-100">
             <div class="pt-6 sm:flex">
               <dt class="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">
+                Photo
+              </dt>
+              <dd class="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
+                <div
+                  v-if="avatarUrl"
+                  class="flex-shrink-0">
+                  <img class="h-10 w-10 rounded-full" :src="avatarUrl" alt="">
+                </div>
+                <UserCircleIcon
+                  v-else
+                  class="h-12 w-12 text-gray-300"
+                  aria-hidden="true" />
+                <button type="button" class="font-semibold text-indigo-600 hover:text-indigo-500">
+                  Update
+                </button>
+              </dd>
+            </div>
+
+            <div class="pt-6 sm:flex">
+              <dt class="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">
                 Full name
               </dt>
               <dd class="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
@@ -95,7 +115,7 @@
             Emergency contact details
           </h2>
           <p class="mt-1 text-sm leading-6 text-gray-500">
-            This information will be made available to coaches and instructors.
+            This information will be private and only be made available to coaches and instructors.
           </p>
 
           <dl class="mt-6 border-t border-gray-200 text-sm leading-6 space-y-6 divide-y divide-gray-100">
@@ -167,6 +187,20 @@
           </dl>
         </div>
 
+        <!-- MEDICAL INFORMATION -->
+        <div v-if="route.hash === '#medical'">
+          <h2 class="text-base font-semibold leading-7 text-gray-900">
+            Medical information
+          </h2>
+          <p class="mt-1 text-sm leading-6 text-gray-500">
+            This information will be private and only be made available to coaches and instructors.
+          </p>
+
+          <dl class="mt-6 border-t border-gray-200 text-sm leading-6 space-y-6 divide-y divide-gray-100">
+            todo: medical information form
+          </dl>
+        </div>
+
         <!-- CHANGE PASSWORD -->
         <div v-if="route.hash === '#password'">
           <h2 class="text-base font-semibold leading-7 text-gray-900">
@@ -174,7 +208,7 @@
           </h2>
 
           <dl class="mt-6 border-t border-gray-200 text-sm leading-6 space-y-6 divide-y divide-gray-100">
-            <p>todo: change password form</p>
+            todo: change password form
           </dl>
         </div>
       </div>
@@ -183,7 +217,7 @@
 </template>
 
 <script setup lang="ts">
-import { UserCircleIcon, ExclamationCircleIcon, KeyIcon } from "@heroicons/vue/24/outline";
+import { UserCircleIcon, ExclamationCircleIcon, KeyIcon, HeartIcon } from "@heroicons/vue/24/outline";
 import { DirectusUser } from "nuxt-directus/dist/runtime/types";
 import { Ref } from "vue";
 import { format } from "date-fns";
@@ -216,6 +250,7 @@ const secondaryNavigation = computed(() => {
   return [
     { name: "General", href: "#", icon: UserCircleIcon, current: !route.hash },
     { name: "Emergency contact", href: "#emergency", icon: ExclamationCircleIcon, current: route.hash === "#emergency" },
+    { name: "Medical information", href: "#medical", icon: HeartIcon, current: route.hash === "#medical" },
     { name: "Change password", href: "#password", icon: KeyIcon, current: route.hash === "#password" }
   ];
 });
@@ -231,6 +266,9 @@ const currentPage = computed(() => {
 function formatDate (date: string | Date | undefined | null) {
   return date ? format(new Date(date), "do MMMM yyyy") : null;
 }
+
+const directusUrl = useDirectusUrl();
+const avatarUrl = computed(() => user.value ? `${directusUrl}/assets/${user.value.avatar}?width=${40}&height=${40}&fit=cover` : null);
 
 </script>
 
