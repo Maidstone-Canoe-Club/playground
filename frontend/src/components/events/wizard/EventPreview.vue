@@ -46,16 +46,16 @@
 </template>
 
 <script setup lang="ts">
+// @ts-ignore
 import Dinero from "dinero.js";
 import { formatDate } from "#imports";
 import { EventItem } from "~/types";
-// @ts-ignore
 
 defineProps<{
   eventItem: EventItem
 }>();
 
-function formatPrice (amount) {
+function formatPrice (amount: number) {
   if (!amount) {
     return null;
   }
