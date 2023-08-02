@@ -5,7 +5,7 @@ export default <Partial<Config>>{
   theme: {
     extend: {
       colors: {
-        brand: {
+        "mcc-brand": {
           50: "#eef4ff",
           100: "#e0eaff",
           200: "#c7d7fe",

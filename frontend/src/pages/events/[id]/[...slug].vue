@@ -332,7 +332,8 @@
 // @ts-ignore
 import Dinero from "dinero.js";
 import { format } from "date-fns";
-import { HandThumbUpIcon } from "@heroicons/vue/24/outline";
+import { HandThumbUpIcon, CheckIcon } from "@heroicons/vue/24/outline";
+import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from "@headlessui/vue";
 import { EventItem } from "~/types";
 import { isUserBooked } from "~/utils/events";
 
@@ -469,6 +470,8 @@ function renderPrice (amount: number) {
 
   return Dinero({ amount, currency: "GBP" }).toFormat(formatter);
 }
+
+const open = ref(true);
 
 </script>
 

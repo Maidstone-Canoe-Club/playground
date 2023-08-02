@@ -168,7 +168,7 @@ async function onClick () {
     }
   });
 
-  console.log("res", res.data);
+  // console.log("res", res.data);
 }
 
 </script>

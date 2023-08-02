@@ -25,6 +25,7 @@
         <node-interpreter value="project" />
         <envs />
       </option>
+      <option name="RunConfigurationTask" enabled="true" run_configuration_name="build (1)" run_configuration_type="js.build_tools.npm" />
     </method>
   </configuration>
 </component>

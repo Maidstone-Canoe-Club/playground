@@ -221,6 +221,7 @@ import { UserCircleIcon, ExclamationCircleIcon, KeyIcon, HeartIcon } from "@hero
 import { DirectusUser } from "nuxt-directus/dist/runtime/types";
 import { Ref } from "vue";
 import { format } from "date-fns";
+import { useDirectusItems } from "#imports";
 
 definePageMeta({
   middleware: ["auth"]
@@ -269,6 +270,31 @@ function formatDate (date: string | Date | undefined | null) {
 
 const directusUrl = useDirectusUrl();
 const avatarUrl = computed(() => user.value ? `${directusUrl}/assets/${user.value.avatar}?width=${40}&height=${40}&fit=cover` : null);
+
+const { getItems } = useDirectusItems();
+
+const { token } = useDirectusToken();
+
+const res = await getItems({
+  collection: "emergancy_contacts",
+  params: {
+    filter: {
+      user: {
+        _eq: user.value.id
+      }
+    }
+  }
+});
+
+// const res = await useFetch("/api/users/emergancyContacts", {
+//   query: {
+//     userId: user.value.id
+//   },
+//   headers: {
+//     Authorization: `Bearer ${token.value}`
+//   }
+// });
+console.log("user res", res);
 
 </script>
 

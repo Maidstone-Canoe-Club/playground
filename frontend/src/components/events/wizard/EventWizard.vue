@@ -1,5 +1,5 @@
 ﻿<template>
-  <div class="event-wizard">
+  <div class="event-wizard mt-8">
     <state-manager v-slot="{setState, currentState, goBack, canGoBack}">
       <div class="event-wizard__header">
         <nav aria-label="Progress">
@@ -24,7 +24,8 @@
           <state-wrapper name="default">
             <event-type-select
               v-model="eventType"
-              @selected="setState('date')" />
+              @selected="setState('date')"
+              @next="setState('date')" />
           </state-wrapper>
           <state-wrapper name="date">
             <event-date-picker
@@ -101,6 +102,7 @@ async function onSubmit () {
     body
   });
   console.log("res", res.data);
+  await navigateTo("/calendar");
 }
 
 watch(eventType, (val) => {
@@ -128,7 +130,7 @@ watch(eventType, (val) => {
   }
 
   &__content {
-    padding: 1rem 1.5rem 1.5rem;
+    padding: 1rem 0;
   }
 
   &__footer {
