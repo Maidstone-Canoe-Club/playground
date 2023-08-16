@@ -230,7 +230,7 @@ definePageMeta({
 let user: Ref<DirectusUser> = ref(null);
 
 try {
-  user = await useDirectusUser();
+  user = useDirectusUser();
 } catch (err) {
   console.log("error loading user on profile", err);
 }

@@ -11,12 +11,17 @@
         <h1 class="mb-2 text-6xl font-bold text-white">
           Maidstone Canoe Club
         </h1>
-        <p>Lorem ipsum dolor sit amet. Ut necessitatibus quia aut sapiente facilis et voluptatem quam et aperiam illum ab obcaecati aspernatur 33 quae quos hic voluptatem praesentium. </p>
+        <p>
+          Lorem ipsum dolor sit amet. Ut necessitatibus quia aut sapiente facilis et voluptatem quam et aperiam illum
+          ab obcaecati aspernatur 33 quae quos hic voluptatem praesentium.
+        </p>
 
         <div>
-          <button class="mt-4 rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+          <nuxt-link
+            to="/join-us"
+            class="mt-4 rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
             Join us
-          </button>
+          </nuxt-link>
         </div>
       </div>
     </div>
@@ -41,7 +46,8 @@
           </h2>
           <p>{{ whiteWaterContent }}</p>
           <div>
-            <button class="rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+            <button
+              class="rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
               Learn more
             </button>
           </div>
@@ -57,7 +63,8 @@
           </h2>
           <p>{{ whiteWaterContent }}</p>
           <div>
-            <button class="rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+            <button
+              class="rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
               Learn more
             </button>
           </div>
@@ -85,7 +92,8 @@
           </h2>
           <p>{{ whiteWaterContent }}</p>
           <div>
-            <button class="rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+            <button
+              class="rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
               Learn more
             </button>
           </div>
@@ -177,7 +185,7 @@ function generateImageUrl (url: string) {
       justify-content: flex-end;
       color: #fff;
 
-      @media ( max-width: 767px ) {
+      @media (max-width: 767px) {
         padding: 3rem 1rem;
       }
 
