@@ -2,7 +2,7 @@ import {defineEndpoint} from '@directus/extensions-sdk';
 import sendNew from "../sendNewConfirmationEmail";
 
 export default defineEndpoint((router, {services, database}) => {
-    const {ItemsService, UsersService} = services;
+    const {UsersService} = services;
     const adminAccountability = {
         admin: true
     };
@@ -39,13 +39,20 @@ export default defineEndpoint((router, {services, database}) => {
     })
 
     router.post('/', async (req: any, res: any) => {
+
+        const token = req.query.t;
+
+        if(!token){
+            return res.status(400).send("Missing token");
+        }
+
         const userService = new UsersService({knex: database, schema: req.schema, accountability: adminAccountability});
 
         const users = await userService
             .readByQuery({
                 filter: {
                     confirm_token: {
-                        _eq: req.query.t
+                        _eq: token
                     }
                 }
             });
@@ -64,7 +71,7 @@ export default defineEndpoint((router, {services, database}) => {
             return res.json({
                 result: false,
                 statusCode: 102,
-                message: "Email address already confirmed"
+                message: "You have already confirmed your email address"
             })
         }
 

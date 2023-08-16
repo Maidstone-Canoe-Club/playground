@@ -1,7 +1,7 @@
 ﻿<template>
   <div class="flex items-center justify-center py-6 sm:py-12 flex-col gap-2">
     <ShieldCheckIcon
-      v-if="result"
+      v-if="result || alreadyConfirmed"
       class="w-12 h-12 mb-4 text-lime-600" />
     <ExclamationTriangleIcon
       v-else
@@ -12,7 +12,7 @@
     <p>{{ message }}</p>
 
     <nuxt-link
-      v-if="result"
+      v-if="result || alreadyConfirmed || unknownToken || hasError"
       to="/"
       class="mt-4 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
       Click here to go home
@@ -69,8 +69,22 @@ const res = await useFetch<ConfirmResult>(url, {
 });
 
 const result = computed(() => res.data.value?.result ?? false);
-const message = computed(() => res.data.value?.message ?? "You have successfully verified your email address!");
 const expired = computed(() => res.data.value?.statusCode === 103 ?? false);
+const alreadyConfirmed = computed(() => res.data.value?.statusCode === 102 ?? false);
+const unknownToken = computed(() => res.data.value?.statusCode === 101 ?? false);
+const hasError = computed(() => !!res.error.value);
+
+const message = computed(() => {
+  if (result.value) {
+    return "You have successfully verified your email address!";
+  }
+
+  if (res.error.value) {
+    return "Something went wrong: " + res.error.value.data;
+  }
+
+  return res.data.value?.message ?? `Something went wrong (${res.data.value?.statusCode ?? -1})`;
+});
 
 const headingText = computed(() => {
   if (result.value) {
@@ -79,6 +93,10 @@ const headingText = computed(() => {
 
   if (expired.value) {
     return "Link expired";
+  }
+
+  if (alreadyConfirmed.value) {
+    return "Already confirmed";
   }
 
   return "Unable to confirm email";
@@ -92,19 +110,9 @@ async function sendNew () {
   await directus(sendNewUrl, {
     method: "post",
     query: {
-      id: user.value.id
+      id: user.value!.id
     }
   });
-
-  // const sendNewRes = await useFetch(sendNewUrl, {
-  //   method: "post",
-  //   headers: {
-  //
-  //   },
-  //   query: {
-  //     id: user.value.id
-  //   }
-  // });
   sentNewRequest.value = true;
 }
 
