@@ -22,8 +22,10 @@ async function checkUserPermission(userId, collection, accountability, schema, R
 
         console.log("user doesn't have the role, checking id match", accountability.user, userId)
         if (accountability.user !== userId) {
+            console.log("user doesn't have matching id")
             return false;
         }
+        console.log("user has matching id!")
     }
 
     return true;
@@ -64,30 +66,35 @@ export default defineHook(({filter}, {services}) => {
     });
 
     filter('items.read', async (payload, {collection}, {schema, accountability}) => {
-        console.log("read payload", payload);
+        console.log("items.read payload", payload);
         let userId = null;
         if (payload.length > 0 && protectedCollections.includes(collection)) {
             userId = payload[0].user;
         }
-        const hasPermission = await checkUserPermission(userId, collection, accountability, schema, RolesService);
-        if (!hasPermission) {
-            throw new ForbiddenError();
+
+        if(userId) {
+            const hasPermission = await checkUserPermission(userId, collection, accountability, schema, RolesService);
+            if (!hasPermission) {
+                throw new ForbiddenError();
+            }
         }
 
         return payload;
     });
 
     filter('items.query', async (payload, {collection}, {schema, accountability}) => {
-        console.log("query payload", payload);
+        console.log("items.query payload", payload);
 
         let userId = null;
         if (protectedCollections.includes(collection)) {
             userId = payload.filter.user._eq;
         }
 
-        const hasPermission = await checkUserPermission(userId, collection, accountability, schema, RolesService);
-        if (!hasPermission) {
-            throw new ForbiddenError();
+        if(userId) {
+            const hasPermission = await checkUserPermission(userId, collection, accountability, schema, RolesService);
+            if (!hasPermission) {
+                throw new ForbiddenError();
+            }
         }
 
         return payload;

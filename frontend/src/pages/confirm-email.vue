@@ -80,6 +80,7 @@ const message = computed(() => {
   }
 
   if (res.error.value) {
+    console.log("error data", res.error.value.data);
     return "Something went wrong: " + res.error.value.data;
   }
 

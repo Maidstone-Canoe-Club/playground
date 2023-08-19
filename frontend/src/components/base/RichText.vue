@@ -19,6 +19,10 @@ defineProps<{
   @apply list-disc mx-8 py-4;
 }
 
+::v-deep(p + ul){
+  @apply pt-0;
+}
+
 ::v-deep(a) {
   @apply text-[#6475f0] underline;
 }

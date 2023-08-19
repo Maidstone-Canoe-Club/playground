@@ -1,5 +1,7 @@
 <template>
-  <div class="login-form">
+  <form
+    class="login-form"
+    @submit.prevent="onSubmit">
     <input-field
       id="email"
       v-model="email"
@@ -27,7 +29,7 @@
         {{ e.message }}
       </p>
     </div>
-  </div>
+  </form>
 </template>
 
 <script setup lang="ts">

@@ -30,6 +30,7 @@ services:
       ADMIN_PASSWORD: 'password'
 
       EMAIL_FROM: 'no-reply@mattclegg.dev'
+      EMAIL_DOMAIN: 'mattclegg.dev'
       EMAIL_TRANSPORT: 'smtp'
       EMAIL_SMTP_HOST: ${EMAIL_SMTP_HOST}
       EMAIL_SMTP_PORT: ${EMAIL_SMTP_PORT}

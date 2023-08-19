@@ -1,17 +1,17 @@
 @use "variables" as *;
 @use "mixins" as *;
+//
 @tailwind base;
-
-@layer base {
-  h1 {
-    @apply text-6xl font-bold;
-  }
-
-  h2 {
-    @apply text-xl;
-  }
-}
-
+//
+//@layer base {
+//  h1 {
+//    @apply text-6xl font-bold;
+//  }
+//
+//  h2 {
+//    @apply text-xl;
+//  }
+//}
 :root {
   --black: $black;
   --white: $white;

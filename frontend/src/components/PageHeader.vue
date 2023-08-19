@@ -22,7 +22,15 @@
               <div>
                 <MenuButton class="flex max-w-xs items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                   <span class="sr-only">Open user menu</span>
-                  <img class="h-8 w-8 rounded-full" :src="avatarUrl ?? ''" alt="">
+                  <img
+                    v-if="hasAvatar"
+                    class="h-8 w-8 rounded-full"
+                    :src="avatarUrl!"
+                    alt="User avatar">
+                  <UserCircleIcon
+                    v-else
+                    class="h-12 w-12 text-gray-300"
+                    aria-hidden="true" />
                 </MenuButton>
               </div>
               <transition
@@ -125,7 +133,7 @@
 </template>
 
 <script setup lang="ts">
-import { Bars3Icon, XMarkIcon } from "@heroicons/vue/24/outline";
+import { Bars3Icon, UserCircleIcon, XMarkIcon } from "@heroicons/vue/24/outline";
 import { Disclosure, DisclosurePanel, DisclosureButton, Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
 import { DirectusUser } from "nuxt-directus/dist/runtime/types";
 import { Ref } from "vue";
@@ -175,6 +183,7 @@ const userNavigation = [
 
 const directusUrl = useDirectusUrl();
 const avatarUrl = computed(() => user.value ? `${directusUrl}/assets/${user.value.avatar}?width=${40}&height=${40}&fit=cover` : null);
+const hasAvatar = computed(() => !!user.value.avatar);
 
 </script>
 
