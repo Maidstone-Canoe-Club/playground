@@ -5076,18 +5076,6 @@ relations:
       constraint_name: null
       on_update: NO ACTION
       on_delete: NO ACTION
-  - collection: directus_users
-    field: email
-    related_collection: mail_redirect
-    meta: null
-    schema:
-      table: directus_users
-      column: email
-      foreign_key_table: mail_redirect
-      foreign_key_column: id
-      constraint_name: null
-      on_update: NO ACTION
-      on_delete: NO ACTION
   - collection: emergancy_contacts
     field: user
     related_collection: directus_users
