@@ -16,6 +16,9 @@ WORKDIR /directus
 COPY --from=builder /builder/snapshots ./snapshots
 COPY --from=builder /builder/extensions/directus-extension-permissions ./extensions/directus-extension-permissions
 COPY --from=builder /builder/extensions/directus-extension-slugify ./extensions/directus-extension-slugify
+COPY --from=builder /builder/extensions/directus-extension-webhooks ./extensions/directus-extension-webhooks
+COPY --from=builder /builder/extensions/directus-extension-confirm-email ./extensions/directus-extension-confirm-email
+COPY --from=builder /builder/extensions/directus-extension-user-roles ./extensions/directus-extension-user-roles
 
 CMD npx directus bootstrap && \
     npx directus schema apply snapshots/latest.yml --yes && \
