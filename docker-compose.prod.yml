@@ -1,7 +1,7 @@
 ﻿version: '3.8'
 
 services:
-  
+
   directus:
     image: ghcr.io/maidstone-canoe-club/playground-backend:latest
     container_name: mcc-backend-playground
@@ -13,11 +13,10 @@ services:
     volumes:
       - ./uploads:/directus/uploads
       - ./database:/directus/database
-      - ./extensions:/directus/extensions
     environment:
       KEY: '255d861b-5ea1-5996-9aa3-922530ec40b1'
       SECRET: '6116487b-cda1-52c2-b5b5-c8022c45e263'
-  
+
       REFRESH_TOKEN_COOKIE_SAME_SITE: 'Strict'
       CACHE_ENABLED: 'true'
       CACHE_AUTO_PURGE: 'true'
@@ -28,13 +27,13 @@ services:
 
       ADMIN_EMAIL: 'admin@example.com'
       ADMIN_PASSWORD: 'password'
-      
+
       PUBLIC_URL: 'https://mccdev.co.uk/cms'
-      
+
       MAX_PAYLOAD_SIZE: '8mb'
       ASSETS_TRANSFORM_MAX_CONCURRENT: 5
       ASSETS_CACHE_TTL: '1y'
-  
+
   frontend:
     image: ghcr.io/maidstone-canoe-club/playground-frontend:latest
     build:
