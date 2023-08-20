@@ -19,6 +19,7 @@ COPY --from=builder /builder/extensions/directus-extension-slugify ./extensions/
 COPY --from=builder /builder/extensions/directus-extension-webhooks ./extensions/directus-extension-webhooks
 COPY --from=builder /builder/extensions/directus-extension-confirm-email ./extensions/directus-extension-confirm-email
 COPY --from=builder /builder/extensions/directus-extension-user-roles ./extensions/directus-extension-user-roles
+COPY --from=builder /builder/extensions/templates ./extensions/templates
 
 CMD npx directus bootstrap && \
     npx directus schema apply snapshots/latest.yml --yes && \
