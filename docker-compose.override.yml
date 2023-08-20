@@ -8,6 +8,7 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./snapshots:/directus/snapshots
+      - ./extensions:/directus/extensions
     environment:
       EXTENSIONS_AUTO_RELOAD: 'true'
       REFRESH_TOKEN_COOKIE_SAME_SITE: 'None'
