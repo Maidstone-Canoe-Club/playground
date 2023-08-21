@@ -45,7 +45,7 @@
     "date-fns": "^2.29.3",
     "dinero.js": "^1.9.1",
     "nuxt-directus": "^5.4.4",
-    "pinia": "^2.1.4",
+    "pinia": "^2.1.6",
     "quill-image-uploader": "^1.2.4",
     "stripe": "^12.13.0",
     "vue-collapsed": "^1.2.6"
